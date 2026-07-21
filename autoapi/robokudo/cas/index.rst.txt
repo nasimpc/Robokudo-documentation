@@ -1,0 +1,385 @@
+robokudo.cas
+============
+
+.. py:module:: robokudo.cas
+
+.. autoapi-nested-parse::
+
+   Common Analysis Structure (CAS) for RoboKudo.
+
+   This module provides the core data structure used throughout RoboKudo for storing
+   and managing data during pipeline execution. The CAS (Common Analysis Structure)
+   holds sensor data, annotations, and other information that is shared between
+   annotators.
+
+   The module provides:
+
+   * Standard view definitions for common data types
+   * Methods for storing and retrieving data
+   * Support for annotations and filtering
+   * Timestamp management
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.cas.CASViews
+   robokudo.cas.CAS
+
+
+Module Contents
+---------------
+
+.. py:class:: CASViews
+
+   Standard view definitions for the Common Analysis Structure.
+
+   This class defines the standard keys used to store and access different types
+   of data in the CAS. These keys ensure consistent access to common data types
+   like images, point clouds, and camera information.
+
+
+   .. py:attribute:: COLOR_IMAGE
+      :type:  str
+      :value: 'color_image'
+
+
+      RGB image data
+
+
+
+   .. py:attribute:: DEPTH_IMAGE
+      :type:  str
+      :value: 'depth_image'
+
+
+      Depth image data
+
+
+
+   .. py:attribute:: COLOR2DEPTH_RATIO
+      :type:  str
+      :value: 'color2depth_ratio'
+
+
+      Scale factor to scale the `COLOR_IMAGE` to the resolution of the `DEPTH_IMAGE` in x, y format.
+
+      Example: 1280x960 RGB, 640x480 DEPTH -> 0.5 along X and Y
+
+
+
+   .. py:attribute:: CAM_INFO
+      :type:  str
+      :value: 'cam_info'
+
+
+      ROS camera info message coming from ROS
+
+
+
+   .. py:attribute:: CAM_INTRINSIC
+      :type:  str
+      :value: 'cam_intrinsic'
+
+
+      Open3D pinhole camera intrinsic model for RGB to be set by the camera driver.
+
+
+
+   .. py:attribute:: PC_CAM_INTRINSIC
+      :type:  str
+      :value: 'pc_cam_intrinsic'
+
+
+      Camera intrinsic that has been used for point cloud generation. This can be different, 
+      because depth and RGB resolutions might mismatch.
+
+
+
+   .. py:attribute:: CLOUD
+      :type:  str
+      :value: 'cloud'
+
+
+      Point cloud data
+
+
+
+   .. py:attribute:: QUERY
+      :type:  str
+      :value: 'query'
+
+
+      Query information
+
+
+
+   .. py:attribute:: VIEWPOINT_CAM_TO_WORLD
+      :type:  str
+      :value: 'viewpoint_cam_to_world'
+
+
+      DEPRECATED: Use CAM_TO_WORLD_TRANSFORM instead.
+      Camera to world transform.
+      Type: robokudo.types.tf.StampedTransform
+
+
+
+   .. py:attribute:: CAM_TO_WORLD_TRANSFORM
+      :type:  str
+      :value: 'cam_to_world_transform'
+
+
+      Camera to world. 
+      Type: semantic_digital_twin.spatial_types.spatial_types.HomogeneousTransformationMatrix
+
+
+
+   .. py:attribute:: DATA_TIMESTAMP
+      :type:  str
+      :value: 'data_timestamp'
+
+
+      Nanoseconds since epoch at which the sensor data has been received.
+      type: Int
+
+
+
+   .. py:attribute:: CAS_ID
+      :type:  str
+      :value: 'cas_id'
+
+
+      Monotonic ID of the CAS instance within a single pipeline run.
+      type: Int
+
+
+
+   .. py:attribute:: OBJECT_IMAGE
+      :type:  str
+      :value: 'object_image'
+
+
+      Object image data. This view is used in imagistic reasoning pipelines where a 
+      rendered scene can be fully segmented per object.
+
+
+
+   .. py:attribute:: OBJECT_COLOR_MAP
+      :type:  str
+      :value: 'object_color_map'
+
+
+      Object color mapping data which assigns objects visible in OBJECT_IMAGE to entity names.
+
+
+
+.. py:class:: CAS
+
+   The main data representation in RoboKudo.
+
+   This class provides the central data structure used by annotators to store and
+   retrieve information. Each pipeline has its own CAS instance that maintains
+   views (singular data like sensor readings) and annotations (multiple descriptors
+   of the same data).
+
+   Views can be extended during runtime as they are supposed to be flexibly extended by different Annotators.
+   However, some views are prevalent in most pipelines and can be accessed directly via @property.
+
+
+   .. py:attribute:: timestamp
+      :type:  float
+
+      Unix timestamp when this CAS was created. In Nanoseconds since Epoch.
+
+
+
+   .. py:attribute:: timestamp_readable
+      :type:  str
+
+      Human readable timestamp string.
+
+
+
+   .. py:attribute:: views
+      :type:  typing_extensions.Dict[str, typing_extensions.Any]
+
+      Dictionary storing view data, each view stores data that is typically singular for a single CAS.
+
+      Example: Sensor data, cam info and cloud which are read from the sensors.
+
+
+
+   .. py:attribute:: annotations
+      :type:  typing_extensions.List[robokudo.types.core.Annotation]
+      :value: []
+
+
+      List of annotations, each annotation describes a certain part of the acquired sensor data. In contrast to views
+      there can be multiple annotations for the same 'thing' in the data.
+
+
+
+   .. py:method:: __post_init__() -> None
+
+
+   .. py:property:: color_image
+      :type: typing_extensions.Optional[numpy.ndarray]
+
+
+
+   .. py:property:: depth_image
+      :type: typing_extensions.Optional[numpy.ndarray]
+
+
+
+   .. py:property:: color2depth_ratio
+      :type: typing_extensions.Optional[typing_extensions.Tuple[float, float]]
+
+
+
+   .. py:property:: cam_info
+      :type: typing_extensions.Optional[sensor_msgs.msg.CameraInfo]
+
+
+
+   .. py:property:: cam_intrinsic
+      :type: typing_extensions.Optional[open3d.camera.PinholeCameraIntrinsic]
+
+
+
+   .. py:property:: pc_cam_intrinsic
+      :type: typing_extensions.Optional[open3d.camera.PinholeCameraIntrinsic]
+
+
+
+   .. py:property:: cloud
+      :type: typing_extensions.Optional[open3d.geometry.PointCloud]
+
+
+
+   .. py:property:: viewpoint_cam_to_world
+      :type: typing_extensions.Optional[robokudo.types.tf.StampedTransform]
+
+
+
+   .. py:property:: cam_to_world_transform
+      :type: typing_extensions.Optional[semantic_digital_twin.spatial_types.spatial_types.HomogeneousTransformationMatrix]
+
+
+
+   .. py:property:: data_timestamp
+      :type: typing_extensions.Optional[int]
+
+
+
+   .. py:property:: query
+      :type: typing_extensions.Optional[typing_extensions.Any]
+
+
+
+   .. py:property:: cas_id
+      :type: typing_extensions.Optional[int]
+
+
+
+   .. py:method:: get(view_name: str) -> typing_extensions.Any
+
+      Get a view by name.
+
+      :param view_name: Name of the view to retrieve
+      :return: The view data
+      :raises KeyError: If the view does not exist
+
+
+
+   .. py:method:: contains(view_name: str) -> bool
+
+      Check if a view exists.
+
+      :param view_name: Name of the view to check
+      :return: True if the view exists
+
+
+
+   .. py:method:: get_copy(view_name: str) -> typing_extensions.Any
+
+      Get a deep copy of a view.
+
+      :param view_name: Name of the view to copy
+      :return: Deep copy of the view data
+      :raises KeyError: If the view does not exist
+
+
+
+   .. py:method:: set(view_name: str, value: typing_extensions.Any) -> None
+
+      Put data in the CAS index by a given view name. This method will make a deepcopy of value.
+
+      :param view_name: The name of the view which should be selected from constants in the CASView class.
+      :param value: The value that will be placed in the CAS under view_name by making a deepcopy of it.
+
+
+
+   .. py:method:: set_ref(view_name: str, value: typing_extensions.Any) -> None
+
+      Put data in the CAS index by a given view name. In contrast to set(), this will not make a copy but just
+      does an assignment.
+
+      :param view_name: The name of the view which should be selected from constants in the CASView class.
+      :param value: The value that will be placed in the CAS under view_name by making assigning it.
+
+
+
+   .. py:attribute:: T
+
+
+   .. py:method:: filter_by_type(type_to_include: typing_extensions.Type[T], input_list: typing_extensions.List[typing_extensions.Any]) -> typing_extensions.List[T]
+      :staticmethod:
+
+
+      Filter a list to include only objects of a specific type.
+
+      :param type_to_include: Type to filter for
+      :param input_list: List to filter
+      :return: Filtered list containing only objects of the specified type
+
+
+
+   .. py:method:: filter_annotations_by_type(type_to_include: typing_extensions.Type[T]) -> typing_extensions.List[T]
+
+      Filter annotations to include only those of a specific type.
+
+      :param type_to_include: Type to filter for
+      :return: A filtered list of annotations in CAS
+
+
+
+   .. py:method:: _filter_objects(objects: typing_extensions.List[typing_extensions.Any], criteria: typing_extensions.Dict[str, typing_extensions.Tuple[str, typing_extensions.Any]]) -> typing_extensions.List[typing_extensions.Any]
+      :staticmethod:
+
+
+      Filters a list of objects based on specified criteria.
+
+      :param objects: List of objects to be filtered.
+      :param criteria: A dictionary where keys are attribute names and values are tuples containing
+                       the comparison operator as a string ("==", ">", "<", ">=", "<=") and the value to compare against.
+      :return: Filtered list of objects matching all criteria
+
+
+
+   .. py:method:: filter_by_type_and_criteria(type_to_include: typing_extensions.Type, input_list: typing_extensions.List[typing_extensions.Any], criteria: typing_extensions.Dict[str, typing_extensions.Tuple[str, typing_extensions.Any]]) -> typing_extensions.List[typing_extensions.Any]
+
+      Filters a list of objects based on specified criteria. Objects must be of type 'type_to_include'
+
+      :param type_to_include: All the returned objects must be of this type.
+      :param input_list: List of objects to be filtered.
+      :param criteria: A dictionary where keys are attribute names and values are tuples containing
+                       the comparison operator as a string ("==", ">", "<", ">=", "<=") and the value to compare against.
+      :return: A list of objects of type 'type_to_include' that match all specified attribute values.
+
+
+

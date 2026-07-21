@@ -1,0 +1,60 @@
+robokudo.annotators.vis
+=======================
+
+.. py:module:: robokudo.annotators.vis
+
+.. autoapi-nested-parse::
+
+   Visualization control for RoboKudo annotators.
+
+   This module provides annotators for controlling visualization updates.
+   It supports:
+
+   * Manual visualization redraw triggering
+   * Pipeline-specific visualization control
+   * Output buffer management
+   * Visualization state management
+   * Display synchronization
+
+   The module is used for:
+
+   * Visualization control
+   * Display updates
+   * GUI synchronization
+   * Output buffer management
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.vis.Redraw
+
+
+Module Contents
+---------------
+
+.. py:class:: Redraw(name: str = 'Redraw')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for triggering visualization updates.
+
+   This annotator sets the redraw flag on the pipeline to make visualizers show the
+   latest visualization output.
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Set redraw flag to trigger visualization update.
+
+      Gets the annotator output pipeline map and sets the redraw flag for the current
+      pipeline.
+
+      :return: SUCCESS status
+
+
+

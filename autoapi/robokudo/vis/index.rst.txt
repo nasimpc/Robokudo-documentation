@@ -1,0 +1,33 @@
+robokudo.vis
+============
+
+.. py:module:: robokudo.vis
+
+.. autoapi-nested-parse::
+
+   RoboKudo visualization package.
+
+   This package provides visualization capabilities for RoboKudo pipelines:
+
+   * OpenCV-based 2D visualization
+   * Open3D-based 3D visualization
+   * ROS-based visualization
+   * Pipeline state visualization
+   * Shared visualization state management
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/robokudo/vis/cv_visualizer/index
+   /autoapi/robokudo/vis/multiprocessed_o3d_visualizer/index
+   /autoapi/robokudo/vis/o3d_visualizer/index
+   /autoapi/robokudo/vis/ros_visualizer/index
+   /autoapi/robokudo/vis/visualizer/index
+   /autoapi/robokudo/vis/visualizer_manager/index
+
+

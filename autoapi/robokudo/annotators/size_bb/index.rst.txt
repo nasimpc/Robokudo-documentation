@@ -1,0 +1,46 @@
+robokudo.annotators.size_bb
+===========================
+
+.. py:module:: robokudo.annotators.size_bb
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.size_bb.SizeBBAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: SizeBBAnnotator(name: str = 'SizeBBAnnotator')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   A class to analyze 3D point clouds and compute oriented bounding box sizes.
+
+   This annotator processes object hypotheses by computing their oriented 3D bounding
+   boxes and storing size information as annotations. It performs coordinate
+   transformations and uses minimum area rectangles to determine object dimensions.
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process object hypotheses to compute and annotate their 3D bounding box sizes.
+
+      For each object hypothesis with sufficient points:
+
+      * Transforms point cloud to world coordinates
+      * Projects points to 2D and finds minimum area rectangle
+      * Computes 3D oriented bounding box
+      * Annotates size information
+      * Updates visualization
+
+      :return: SUCCESS if processing completed, FAILURE if camera viewpoint not found
+      :raises Exception: If camera viewpoint transform cannot be found in CAS
+
+
+

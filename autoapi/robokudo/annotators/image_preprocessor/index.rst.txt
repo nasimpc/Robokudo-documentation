@@ -1,0 +1,158 @@
+robokudo.annotators.image_preprocessor
+======================================
+
+.. py:module:: robokudo.annotators.image_preprocessor
+
+.. autoapi-nested-parse::
+
+   Image preprocessing and point cloud generation.
+
+   This module provides an annotator for:
+
+   * Converting RGB-D camera data to point clouds
+   * Handling color and depth image synchronization
+   * Managing camera intrinsic parameters
+   * Providing visualization modes for debugging
+
+   .. note::
+      Depth values are expected to be in millimeters.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.image_preprocessor.ImagePreprocessorAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: ImagePreprocessorAnnotator(name: str = 'ImagePreprocessor', descriptor: ImagePreprocessorAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   RGB-D image preprocessor and point cloud generator.
+
+   This annotator:
+
+   * Converts RGB-D camera data to point clouds
+   * Handles color/depth image synchronization
+   * Manages camera intrinsic parameters
+   * Provides visualization modes for debugging
+
+   .. warning::
+      Requires properly configured camera intrinsics and color-to-depth ratio.
+
+
+   .. py:class:: ViewMode
+
+      Visualization mode enumeration.
+
+
+      .. py:attribute:: color
+         :type:  int
+         :value: 1
+
+
+         Display color image (1)
+
+
+
+      .. py:attribute:: depth
+         :type:  int
+         :value: 2
+
+
+         Display depth image (2)
+
+
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for image preprocessing.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring preprocessing.
+
+
+         .. py:attribute:: depth_trunc
+            :type:  float
+            :value: 9.0
+
+
+            Maximum depth distance in meters, points beyond are discarded from cloud creation
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: color
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Optional color image currently being worked with
+
+
+
+   .. py:attribute:: depth
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Optional depth image currently being worked with
+
+
+
+   .. py:attribute:: display_mode
+      :type:  int
+      :value: 1
+
+
+      The display mode to use (color or depth)
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process RGB-D images and generate point cloud.
+
+      The method:
+
+      * Loads color and depth images from CAS
+      * Synchronizes and scales images
+      * Converts to Open3D format
+      * Generates point cloud
+      * Updates visualization based on view mode
+
+      :return: SUCCESS after processing
+      :raises RuntimeError: If color-to-depth ratio is not set
+
+
+
+   .. py:method:: key_callback(key: int) -> None
+
+      Handle keyboard input for view mode switching.
+
+      :param key: ASCII value of pressed key
+
+      Available keys:
+
+      * '1': Switch to color view mode
+      * '2': Switch to depth view mode
+
+
+

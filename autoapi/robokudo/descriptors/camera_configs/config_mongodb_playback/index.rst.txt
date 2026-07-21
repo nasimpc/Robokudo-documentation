@@ -1,0 +1,71 @@
+robokudo.descriptors.camera_configs.config_mongodb_playback
+===========================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_mongodb_playback
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_mongodb_playback.MongoCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: MongoCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig`, :py:obj:`robokudo.descriptors.camera_configs.components.WorldDescriptorComponent`
+
+
+   Configuration class for MongoDB-based camera data playback.
+
+   This class defines the configuration parameters for reading camera data from a
+   MongoDB database, typically used for offline processing or testing with stored
+   scene data.
+
+   .. note::
+       This configuration is used to read previously stored camera data from a
+       MongoDB database, allowing for replay and analysis of recorded scenes.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'mongo'
+
+
+      Name of the camera configuration in the registry.
+
+      Must be unique.
+
+
+
+   .. py:attribute:: interface_type
+      :type:  str
+      :value: 'StorageReader'
+
+
+      Type of camera interface.
+
+
+
+   .. py:attribute:: loop
+      :type:  bool
+      :value: True
+
+
+      Flag to enable looping over database entries.
+
+
+
+   .. py:attribute:: db_name
+      :type:  str
+      :value: 'rk_scenes'
+
+
+      Name of the MongoDB database to read from.
+
+
+

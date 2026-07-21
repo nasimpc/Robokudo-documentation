@@ -1,0 +1,102 @@
+robokudo.io.cas_annotation_codecs
+=================================
+
+.. py:module:: robokudo.io.cas_annotation_codecs
+
+.. autoapi-nested-parse::
+
+   KRROOD-backed codecs for CAS annotation serialization.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.cas_annotation_codecs.Open3DPointCloudJSONSerializer
+   robokudo.io.cas_annotation_codecs.NumpyScalarJSONSerializer
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.io.cas_annotation_codecs.serialize_annotations
+   robokudo.io.cas_annotation_codecs.deserialize_annotations
+   robokudo.io.cas_annotation_codecs.krrood_to_json
+   robokudo.io.cas_annotation_codecs.krrood_from_json
+
+
+Module Contents
+---------------
+
+.. py:class:: Open3DPointCloudJSONSerializer
+
+   Bases: :py:obj:`krrood.adapters.json_serializer.ExternalClassJSONSerializer`\ [\ :py:obj:`robokudo.io.open3d_codec_utils.o3d.geometry.PointCloud`\ ]
+
+
+   Serialize Open3D point clouds using base64-encoded PCD payloads.
+
+
+   .. py:method:: to_json(obj: robokudo.io.open3d_codec_utils.o3d.geometry.PointCloud) -> typing_extensions.Dict[str, typing_extensions.Any]
+      :classmethod:
+
+
+      Convert an Open3D point cloud into a JSON-compatible payload.
+
+
+
+   .. py:method:: from_json(data: typing_extensions.Dict[str, typing_extensions.Any], clazz: type[robokudo.io.open3d_codec_utils.o3d.geometry.PointCloud], **kwargs: typing_extensions.Any) -> robokudo.io.open3d_codec_utils.o3d.geometry.PointCloud
+      :classmethod:
+
+
+      Restore an Open3D point cloud from a JSON payload.
+
+
+
+.. py:class:: NumpyScalarJSONSerializer
+
+   Bases: :py:obj:`krrood.adapters.json_serializer.ExternalClassJSONSerializer`\ [\ :py:obj:`numpy.generic`\ ]
+
+
+   Serialize NumPy scalar values with dtype-preserving metadata.
+
+
+   .. py:method:: to_json(obj: numpy.generic) -> typing_extensions.Dict[str, typing_extensions.Any]
+      :classmethod:
+
+
+      Convert a NumPy scalar value to JSON-compatible data.
+
+
+
+   .. py:method:: from_json(data: typing_extensions.Dict[str, typing_extensions.Any], clazz: type[numpy.generic], **kwargs: typing_extensions.Any) -> typing_extensions.Any
+      :classmethod:
+
+
+      Recreate a NumPy scalar value from serialized data.
+
+
+
+.. py:function:: serialize_annotations(annotations: typing_extensions.List[typing_extensions.Any]) -> typing_extensions.List[typing_extensions.Dict[str, typing_extensions.Any]]
+
+   Serialize annotation objects with the KRROOD serializer.
+
+
+.. py:function:: deserialize_annotations(data: typing_extensions.Any, **kwargs: typing_extensions.Any) -> typing_extensions.List[typing_extensions.Any]
+
+   Deserialize annotation payloads with optional constructor keyword arguments.
+
+
+.. py:function:: krrood_to_json(value: typing_extensions.Any) -> typing_extensions.Any
+
+   Serialize an arbitrary value with KRROOD.
+
+
+.. py:function:: krrood_from_json(value: typing_extensions.Any, **kwargs: typing_extensions.Any) -> typing_extensions.Any
+
+   Deserialize an arbitrary value with KRROOD.
+
+

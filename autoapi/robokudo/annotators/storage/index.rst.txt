@@ -1,0 +1,99 @@
+robokudo.annotators.storage
+===========================
+
+.. py:module:: robokudo.annotators.storage
+
+.. autoapi-nested-parse::
+
+   Storage writer annotator for RoboKudo.
+
+   This module provides an annotator for storing sensor data in MongoDB.
+   It supports:
+
+   * MongoDB integration
+   * CAS data persistence
+   * View data storage
+   * Database management
+   * Configurable database settings
+
+   The module is used for:
+
+   * Data recording
+   * Offline processing
+   * Dataset creation
+   * Experiment logging
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.storage.StorageWriter
+
+
+Module Contents
+---------------
+
+.. py:class:: StorageWriter(name: str = 'StorageWriter', descriptor: StorageWriter = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for storing sensor data in MongoDB.
+
+   This annotator provides methods to store sensor data in a MongoDB database,
+   allowing for data recording and offline processing without using ROS bag files.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for storage writer.
+
+
+      .. py:class:: Parameters
+
+         Parameter container for storage configuration.
+
+
+         .. py:attribute:: db_name
+            :type:  str
+            :value: 'rk_scenes'
+
+
+            Database name
+
+
+
+         .. py:attribute:: drop_database_on_storage
+            :type:  bool
+            :value: True
+
+
+            Whether to clear database before recording
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: storage
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Store current CAS data in MongoDB.
+
+      Creates a deep copy of the CAS, flattens it into a dictionary,
+      and stores both views and CAS data in the database.
+
+      :return: SUCCESS if storage successful, FAILURE otherwise
+
+
+

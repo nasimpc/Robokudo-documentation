@@ -1,0 +1,100 @@
+robokudo.utils.non_maxima_suppression
+=====================================
+
+.. py:module:: robokudo.utils.non_maxima_suppression
+
+.. autoapi-nested-parse::
+
+   Non-Maxima-Suppression (NMS) implementation for object detection.
+
+   This module provides NMS implementations for filtering overlapping bounding boxes.
+
+   :module: non_maxima_suppression :synopsis: Non-Maxima-Suppression for object detection
+   :moduleauthor: Lennart Heinbokel
+
+   :Created:     2023-02-02
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.non_maxima_suppression._iou
+   robokudo.utils.non_maxima_suppression.non_max_suppression_
+   robokudo.utils.non_maxima_suppression.class_based_nms
+
+
+Module Contents
+---------------
+
+.. py:function:: _iou(box1: typing_extensions.Tuple[int, int, int, int], box2: typing_extensions.Tuple[int, int, int, int]) -> float
+
+   Calculate the intersection over union (IoU) of two bounding boxes.
+
+   :param box1: First bounding box coordinates (x1, y1, x2, y2) where:
+       * x1, y1: coordinates of the top-left corner
+       * x2, y2: coordinates of the bottom-right corner
+   :param box2: Second bounding box coordinates in the same format as box1
+   :return: The intersection over union value [0,1]
+
+   :Example:
+
+   .. code-block:: python
+
+       box1 = (10, 10, 20, 20)
+       box2 = (15, 15, 25, 25)
+       iou = _iou(box1, box2)  # Returns overlap ratio
+
+
+.. py:function:: non_max_suppression_(predictions: typing_extensions.List[typing_extensions.Tuple[typing_extensions.Tuple[int, int, int, int], float, str]], confidence_treshold: float = 0.5, iou_threshold: float = 0.4) -> typing_extensions.List[typing_extensions.Tuple[typing_extensions.Tuple[int, int, int, int], float, str]]
+
+   Perform non-maxima suppression (NMS) on object detection results.
+
+   :param predictions: List of tuples, where each tuple contains:
+       * bounding box coordinates (x1, y1, x2, y2)
+       * confidence score
+       * class label
+   :param confidence_treshold: Minimum confidence score for a box to be considered
+   :param iou_threshold: IoU threshold above which boxes are considered to overlap
+   :return: Filtered list of predictions after applying NMS
+
+   :Example:
+
+   .. code-block:: python
+
+       predictions = [
+           ((10, 10, 20, 20), 0.9, "person"),
+           ((15, 15, 25, 25), 0.8, "person")
+       ]
+       filtered = non_max_suppression_(predictions)
+
+
+.. py:function:: class_based_nms(predictions: typing_extensions.List[typing_extensions.Tuple[typing_extensions.Tuple[int, int, int, int], float, str]], confidence_threshold: float = 0.5, iou_threshold: float = 0.4) -> typing_extensions.List[typing_extensions.Tuple[typing_extensions.Tuple[int, int, int, int], float, str]]
+
+   Perform class-based non-maximum suppression (NMS) on object detection results.
+
+   :param predictions: List of tuples, where each tuple contains:
+       * bounding box coordinates (x1, y1, x2, y2)
+       * confidence score
+       * class label
+   :param confidence_threshold: Minimum confidence score for a box to be considered
+   :param iou_threshold: IoU threshold above which boxes are considered to overlap
+   :return: Filtered list of predictions after applying class-based NMS
+
+   :Example:
+
+   .. code-block:: python
+
+       predictions = [
+           ((10, 10, 20, 20), 0.9, "person"),
+           ((15, 15, 25, 25), 0.8, "car")
+       ]
+       filtered = class_based_nms(predictions)
+
+   .. note::
+       This function performs NMS independently for each class, which prevents
+       boxes of different classes from suppressing each other.
+
+

@@ -1,0 +1,193 @@
+robokudo.io.file_reader_interface
+=================================
+
+.. py:module:: robokudo.io.file_reader_interface
+
+.. autoapi-nested-parse::
+
+   File-based data reading interface for RoboKudo.
+
+   This module provides interfaces for reading sensor data from the local filesystem.
+   It supports reading:
+
+   * RGB-D camera data (color and depth images)
+   * Camera calibration information
+   * Timestamped data sequences
+
+   The module is primarily used for:
+
+   * Unit testing with recorded data
+   * Simple demos and examples
+   * Development and debugging
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.io.file_reader_interface.T
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.file_reader_interface.FileReaderInterface
+   robokudo.io.file_reader_interface.RGBDFileReaderInterface
+
+
+Module Contents
+---------------
+
+.. py:data:: T
+
+.. py:class:: FileReaderInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.io.camera_interface.CameraInterface`
+
+
+   A camera interface for reading stored data from the local filesystem.
+
+   This interface reads sensor data from files in a specified directory.
+   Files must follow the naming convention:
+   * rk_TIMESTAMP_color_image.jpg - Color image data
+   * rk_TIMESTAMP_depth_image.png - Depth image data
+   * rk_TIMESTAMP_cam_info.json - Camera calibration data
+
+   The 'rk_' prefix is configurable. Data types in filenames must match
+   CASViews definitions.
+
+   .. note::
+       This interface is primarily for testing and demos. For production,
+       use StorageReaderInterface instead.
+
+
+   .. py:class:: DictIteratorReader(data: typing_extensions.Optional[typing_extensions.Dict[str, typing_extensions.Dict[str, typing_extensions.Any]]] = None, data_sequence: typing_extensions.Optional[typing_extensions.List[str]] = None)
+
+      Helper class for iterating over dictionary data in sequence.
+
+      This class provides cursor-based iteration over dictionary data,
+      maintaining the sequence order and supporting reset operations.
+
+
+      .. py:attribute:: index
+         :type:  typing_extensions.Optional[int]
+         :value: None
+
+
+         Current position in the sequence
+
+
+
+      .. py:attribute:: data
+         :type:  typing_extensions.Dict[str, typing_extensions.Dict[str, typing_extensions.Any]]
+
+         Dictionary containing the data
+
+
+
+      .. py:attribute:: data_sequence
+         :type:  typing_extensions.List[str]
+         :value: []
+
+
+         List defining iteration order
+
+
+
+      .. py:method:: reset_cursor() -> None
+
+         Reset the iterator to the beginning of the sequence.
+
+         Sets index to 0 if there is data, None otherwise.
+
+
+
+      .. py:method:: cursor_has_data() -> bool
+
+         Check if there is more data to read.
+
+         :return: True if more data is available, False otherwise
+
+
+
+      .. py:method:: get_next_data() -> typing_extensions.Optional[typing_extensions.Dict]
+
+         Get the next data item in the sequence.
+
+         :return: Next data item if available, None otherwise
+
+
+
+
+   .. py:attribute:: initialized
+      :type:  bool
+      :value: False
+
+
+      Whether the interface was successfully initialized
+
+
+
+   .. py:attribute:: loaded_paths
+      :type:  typing_extensions.Dict[str, typing_extensions.Dict[str, pathlib.Path]]
+
+      Dictionary mapping timestamps to file paths
+
+
+
+   .. py:attribute:: loaded_data
+      :type:  typing_extensions.Dict[str, typing_extensions.Dict[str, typing_extensions.Any]]
+
+      Dictionary mapping timestamps to loaded data
+
+
+
+   .. py:attribute:: data_reader
+
+      Iterator for accessing loaded data
+
+
+
+   .. py:method:: has_new_data() -> bool
+
+      Check if new data is available to read.
+
+      Handles looping behavior based on camera configuration and
+      maintains cursor position in the data sequence.
+
+      :return: True if new data is available, False otherwise
+
+
+
+.. py:class:: RGBDFileReaderInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`FileReaderInterface`
+
+
+   Specialized file reader interface for RGB-D camera data.
+
+   This class extends FileReaderInterface to handle the specific case of
+   reading RGB-D camera data, including color images, depth images, and
+   camera calibration information.
+
+   Inherits all instance variables from FileReaderInterface.
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      Set the next RGB-D data frame into the CAS.
+
+      This method:
+      * Reads the next color and depth images
+      * Applies any necessary fixes (e.g., Kinect height fix)
+      * Sets camera calibration and transformation data
+      * Updates the CAS with all loaded data
+
+      :param cas: Common Analysis Structure to update
+
+
+

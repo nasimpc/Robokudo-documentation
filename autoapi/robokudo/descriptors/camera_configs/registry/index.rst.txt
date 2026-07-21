@@ -1,0 +1,55 @@
+robokudo.descriptors.camera_configs.registry
+============================================
+
+.. py:module:: robokudo.descriptors.camera_configs.registry
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.registry.CameraConfigRegistry
+
+
+Module Contents
+---------------
+
+.. py:class:: CameraConfigRegistry
+
+   Registry for camera config classes.
+
+
+   .. py:attribute:: _registry
+      :type:  typing_extensions.Dict[str, typing_extensions.Type[robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig]]
+
+      Map of camera config registry name to their class.
+
+
+
+   .. py:method:: register_all(package_name: str = 'robokudo.descriptors.camera_configs') -> None
+      :classmethod:
+
+
+      Register all camera configs of the given package to the camera config registry.
+
+      :param package_name: The name of the package to register camera configs from.
+      :raises ImportError: If the given package cannot be imported.
+      :raises ValueError: If there is a duplicate registry name with conflicting
+          classes.
+
+
+
+   .. py:method:: create_config(config_type: str, **kwargs: typing_extensions.Any) -> typing_extensions.Any
+      :classmethod:
+
+
+      Create a camera config instance based on the given config type.
+
+      :param config_type: The type of the camera config to create.
+      :raises ValueError: If the given config type is not registered.
+      :raises TypeError: If the keyword arguments are invalid for the camera config
+          class.
+
+
+

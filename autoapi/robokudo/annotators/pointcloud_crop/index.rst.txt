@@ -1,0 +1,154 @@
+robokudo.annotators.pointcloud_crop
+===================================
+
+.. py:module:: robokudo.annotators.pointcloud_crop
+
+.. autoapi-nested-parse::
+
+   Point cloud cropping and visualization.
+
+   This module provides an annotator for:
+
+   * Cropping point clouds using axis-aligned bounding boxes
+   * Supporting both sensor and world coordinate frames
+   * Generating and visualizing point cloud masks
+   * Combining masks with color images
+
+   .. note::
+      Cropping can be done in either sensor coordinates (default) or world coordinates.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.pointcloud_crop.PointcloudCropAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: PointcloudCropAnnotator(name: str = 'PointcloudCropAnnotator', descriptor: PointcloudCropAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Point cloud cropping using axis-aligned bounding boxes.
+
+   Crop a subset of points from a pointcloud data based on min/max X,Y,Z values.
+   The crop is either done in sensor coordinates (default) or relative to the world frame.
+
+   .. warning::
+      When using world coordinates, requires valid camera-to-world transform in CAS.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for point cloud cropping.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring point cloud cropping.
+
+
+         .. py:attribute:: min_x
+            :type:  float
+            :value: -2.0
+
+
+            Minimum X coordinate
+
+
+
+         .. py:attribute:: min_y
+            :type:  float
+            :value: -2.0
+
+
+            Minimum Y coordinate
+
+
+
+         .. py:attribute:: min_z
+            :type:  float
+            :value: -9.0
+
+
+            Minimum Z coordinate
+
+
+
+         .. py:attribute:: max_x
+            :type:  float
+            :value: 2.0
+
+
+            Maximum X coordinate
+
+
+
+         .. py:attribute:: max_y
+            :type:  float
+            :value: 2.0
+
+
+            Maximum Y coordinate
+
+
+
+         .. py:attribute:: max_z
+            :type:  float
+            :value: 3.0
+
+
+            Maximum Z coordinate
+
+
+
+         .. py:attribute:: relative_to_world
+            :type:  bool
+            :value: False
+
+
+            Whether to crop the PC in camera/sensor coordinates or whether it shoudl be transformed to world coordinates beforehand.
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: color
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      A copy of the color image currently being worked with.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process and crop point cloud data.
+
+      The method:
+
+      * Loads point cloud and camera data from CAS
+      * Optionally transforms to world coordinates
+      * Crops using axis-aligned bounding box
+      * Generates visualization mask
+      * Updates CAS with cropped cloud
+      * Creates combined visualization
+
+      :return: SUCCESS after processing
+      :raises Exception: If world transform not found when needed
+
+
+

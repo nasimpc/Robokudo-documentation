@@ -1,0 +1,236 @@
+robokudo.types.ros
+==================
+
+.. py:module:: robokudo.types.ros
+
+.. autoapi-nested-parse::
+
+   ROS message type definitions.
+
+   This module provides Python class representations of common ROS message types.
+   These classes are used to maintain compatibility with ROS message structures
+   while working in pure Python environments.
+
+   The module includes:
+
+   * Standard ROS header
+   * Camera-related message types
+   * Region of interest definitions
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.types.ros.Header
+   robokudo.types.ros.RegionOfInterest
+   robokudo.types.ros.CameraInfo
+
+
+Module Contents
+---------------
+
+.. py:class:: Header
+
+   Bases: :py:obj:`robokudo.types.core.Type`
+
+
+   ROS message header type.
+
+   Standard ROS message header containing sequence number, timestamp,
+   and coordinate frame information.
+
+
+   .. py:attribute:: seq
+      :type:  int
+      :value: 0
+
+
+      Sequence number
+
+
+
+   .. py:attribute:: frame_id
+      :type:  str
+      :value: ''
+
+
+      Coordinate frame identifier
+
+
+
+   .. py:attribute:: stamp
+      :type:  float
+      :value: 0.0
+
+
+      Time stamp in seconds
+
+
+
+.. py:class:: RegionOfInterest
+
+   Bases: :py:obj:`robokudo.types.core.Type`
+
+
+   ROS region of interest message type.
+
+   Defines a rectangular region within an image.
+
+
+   .. py:attribute:: x_offset
+      :type:  int
+      :value: 0
+
+
+      X coordinate of top-left corner
+
+
+
+   .. py:attribute:: y_offset
+      :type:  int
+      :value: 0
+
+
+      Y coordinate of top-left corner
+
+
+
+   .. py:attribute:: height
+      :type:  int
+      :value: 0
+
+
+      Height of region in pixels
+
+
+
+   .. py:attribute:: width
+      :type:  int
+      :value: 0
+
+
+      Width of region in pixels
+
+
+
+   .. py:attribute:: do_rectify
+      :type:  bool
+      :value: False
+
+
+      Whether to rectify the region
+
+
+
+.. py:class:: CameraInfo
+
+   Bases: :py:obj:`robokudo.types.core.Type`
+
+
+   ROS camera calibration and metadata message type.
+
+   Contains camera calibration data and image metadata including:
+   * Image dimensions
+   * Distortion model and parameters
+   * Camera matrices (K, R, P)
+   * ROI and binning information
+
+
+   .. py:attribute:: header
+      :type:  Header
+
+      Message header
+
+
+
+   .. py:attribute:: height
+      :type:  int
+      :value: 0
+
+
+      Image height in pixels
+
+
+
+   .. py:attribute:: width
+      :type:  int
+      :value: 0
+
+
+      Image width in pixels
+
+
+
+   .. py:attribute:: distortion_model
+      :type:  str
+      :value: ''
+
+
+      Name of distortion model
+
+
+
+   .. py:attribute:: D
+      :type:  typing_extensions.List[float]
+      :value: []
+
+
+      Distortion parameters
+
+
+
+   .. py:attribute:: K
+      :type:  typing_extensions.List[float]
+      :value: []
+
+
+      Intrinsic camera matrix (3x3)
+
+
+
+   .. py:attribute:: R
+      :type:  typing_extensions.List[float]
+      :value: []
+
+
+      Rotation matrix (3x3)
+
+
+
+   .. py:attribute:: P
+      :type:  typing_extensions.List[float]
+      :value: []
+
+
+      Projection matrix (3x4)
+
+
+
+   .. py:attribute:: binning_x
+      :type:  int
+      :value: 0
+
+
+      Horizontal binning factor
+
+
+
+   .. py:attribute:: binning_y
+      :type:  int
+      :value: 0
+
+
+      Vertical binning factor
+
+
+
+   .. py:attribute:: roi
+      :type:  RegionOfInterest
+
+      Region of interest
+
+
+

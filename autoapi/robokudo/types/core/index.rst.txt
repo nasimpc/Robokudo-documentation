@@ -1,0 +1,132 @@
+robokudo.types.core
+===================
+
+.. py:module:: robokudo.types.core
+
+.. autoapi-nested-parse::
+
+   Core type definitions for Robokudo.
+
+   This module provides the base type hierarchy for Robokudo's type system.
+   It is comparable to uima.cas.TOP in uimacpp and provides the foundation
+   for all other types in the system.
+
+   The module defines:
+
+   * Base Type class
+   * Common type mixins (Identifiable, Nameable)
+   * Query and Annotation types
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.types.core.Type
+   robokudo.types.core.Identifiable
+   robokudo.types.core.Nameable
+   robokudo.types.core.Query
+   robokudo.types.core.Annotation
+   robokudo.types.core.IdentifiableAnnotation
+
+
+Module Contents
+---------------
+
+.. py:class:: Type
+
+   Base class for all Robokudo types.
+
+   This is the root of the type hierarchy, comparable to uima.cas.TOP in uimacpp.
+   All other types in the system should inherit from this class.
+
+
+.. py:class:: Identifiable
+
+   Bases: :py:obj:`Type`
+
+
+   Mixin class for types that need unique identification.
+
+   Adds an ID field to types that need to be uniquely identified.
+
+
+   .. py:attribute:: id
+      :type:  str
+      :value: ''
+
+
+      Unique identifier string
+
+
+
+.. py:class:: Nameable
+
+   Bases: :py:obj:`Type`
+
+
+   Mixin class for types that need a name.
+
+   Adds a name field to types that need to be named.
+
+
+   .. py:attribute:: name
+      :type:  str
+      :value: ''
+
+
+      Name of the instance
+
+
+
+.. py:class:: Query
+
+   Bases: :py:obj:`Type`
+
+
+   Type representing a query in the system.
+
+   Encapsulates query information for processing.
+
+
+   .. py:attribute:: query
+      :type:  str
+      :value: ''
+
+
+      Query string to be processed
+
+
+
+.. py:class:: Annotation
+
+   Bases: :py:obj:`Type`
+
+
+   Base class for all annotations.
+
+   Represents metadata or annotations added to data during processing.
+
+
+   .. py:attribute:: source
+      :type:  str
+      :value: ''
+
+
+      Name of the annotator that created the annotation
+
+
+
+.. py:class:: IdentifiableAnnotation
+
+   Bases: :py:obj:`Annotation`, :py:obj:`Identifiable`
+
+
+   Annotation type with unique identification.
+
+   Combines annotation capabilities with unique identification.
+   Inherits source from Annotation and id from Identifiable.
+
+

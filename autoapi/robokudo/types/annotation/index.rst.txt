@@ -1,0 +1,409 @@
+robokudo.types.annotation
+=========================
+
+.. py:module:: robokudo.types.annotation
+
+.. autoapi-nested-parse::
+
+   Annotation types for robokudo.
+
+   This module provides various annotation types used for object classification,
+   semantic information, location data, geometric shapes, and pose information.
+   All annotation types inherit from the base Annotation class.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.types.annotation.Classification
+   robokudo.types.annotation.SemanticColor
+   robokudo.types.annotation.LocationAnnotation
+   robokudo.types.annotation.Plane
+   robokudo.types.annotation.Shape
+   robokudo.types.annotation.Cuboid
+   robokudo.types.annotation.Sphere
+   robokudo.types.annotation.Cylinder
+   robokudo.types.annotation.ColorHistogram
+   robokudo.types.annotation.PoseAnnotation
+   robokudo.types.annotation.PositionAnnotation
+   robokudo.types.annotation.StampedPoseAnnotation
+   robokudo.types.annotation.StampedPositionAnnotation
+   robokudo.types.annotation.StampedTransformAnnotation
+   robokudo.types.annotation.Encoding
+   robokudo.types.annotation.BoundingBox3DAnnotation
+   robokudo.types.annotation.CloudAnnotation
+   robokudo.types.annotation.SpatiallyNearestAnnotation
+   robokudo.types.annotation.TextAnnotation
+
+
+Module Contents
+---------------
+
+.. py:class:: Classification
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Classification annotation for objects.
+
+   This class represents a classification result, including the type of classification
+   (instance, class, or shape), the class name, confidence score, and class ID.
+
+
+   .. py:attribute:: classification_type
+      :type:  str
+      :value: ''
+
+
+      Type of classification (INSTANCE, CLASS, or SHAPE)
+
+
+
+   .. py:attribute:: classname
+      :type:  str
+      :value: ''
+
+
+      Name of the classified class
+
+
+
+   .. py:attribute:: confidence
+      :type:  float
+      :value: 0.0
+
+
+      Confidence score of the classification
+
+
+
+   .. py:attribute:: class_id
+      :type:  int
+      :value: 0
+
+
+      Numeric identifier for the class
+
+
+
+.. py:class:: SemanticColor
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Semantic color annotation.
+
+   This class represents semantic color information, including the color name
+   and its ratio/proportion in the annotated object or region.
+
+
+   .. py:attribute:: color
+      :type:  str
+      :value: ''
+
+
+      Name of the color
+
+
+
+   .. py:attribute:: ratio
+      :type:  float
+      :value: 0.0
+
+
+      Proportion/ratio of this color in the object/region
+
+
+
+.. py:class:: LocationAnnotation
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Location annotation for objects.
+
+   This class represents a semantic location in the environment.
+
+
+   .. py:attribute:: region
+      :type:  semantic_digital_twin.world_description.world_entity.Region | None
+      :value: None
+
+
+      Referenced semantic region
+
+
+
+   .. py:attribute:: name
+      :type:  str
+      :value: ''
+
+
+      Legacy fallback location name
+
+
+
+.. py:class:: Plane
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Plane annotation for surface detection.
+
+   This class represents a detected plane in 3D space, including its model
+   parameters and inlier points.
+
+
+   .. py:attribute:: model
+      :type:  typing_extensions.List[float]
+      :value: []
+
+
+      4-dimensional plane equation parameters [a, b, c, d] for ax + by + cz + d = 0
+
+
+
+   .. py:attribute:: inliers
+      :type:  typing_extensions.List[int]
+      :value: []
+
+
+      List of pointcloud indices that belong to this plane
+
+
+
+.. py:class:: Shape
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Base class for shape annotations.
+
+   This class stores a SemDT geometry shape and inlier point indices.
+
+
+   .. py:attribute:: inliers
+      :type:  typing_extensions.List[int]
+      :value: []
+
+
+      List of pointcloud indices that belong to this shape
+
+
+
+   .. py:attribute:: geometry
+      :type:  semantic_digital_twin.world_description.geometry.Shape
+
+      SemDT geometry shape represented by this annotation
+
+
+
+   .. py:property:: shape_name
+      :type: str
+
+
+      Return the semantic name of the stored shape.
+
+
+
+.. py:class:: Cuboid
+
+   Bases: :py:obj:`Shape`
+
+
+   Cuboid shape annotation.
+
+   This class represents a cuboid shape as a SemDT box geometry.
+
+
+   .. py:attribute:: geometry
+      :type:  semantic_digital_twin.world_description.geometry.Box
+
+      SemDT box geometry represented by this annotation
+
+
+
+.. py:class:: Sphere
+
+   Bases: :py:obj:`Shape`
+
+
+   Sphere shape annotation.
+
+   This class represents a sphere shape as a SemDT sphere geometry.
+
+
+   .. py:attribute:: geometry
+      :type:  semantic_digital_twin.world_description.geometry.Sphere
+
+      SemDT sphere geometry represented by this annotation
+
+
+
+.. py:class:: Cylinder
+
+   Bases: :py:obj:`Shape`
+
+
+   Cylinder shape annotation.
+
+   This class represents a cylinder shape as a SemDT cylinder geometry.
+
+
+   .. py:attribute:: geometry
+      :type:  semantic_digital_twin.world_description.geometry.Cylinder
+
+      SemDT cylinder geometry represented by this annotation
+
+
+
+.. py:class:: ColorHistogram
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Color histogram annotation.
+
+   This class usually represents a 2D color histogram, typically containing hue and
+   saturation information.
+
+
+   .. py:attribute:: hist
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      2D histogram array
+
+
+
+   .. py:attribute:: normalized
+      :type:  bool
+      :value: False
+
+
+      Whether the histogram is normalized
+
+
+
+.. py:class:: PoseAnnotation
+
+   Bases: :py:obj:`robokudo.types.tf.Pose`, :py:obj:`robokudo.types.core.Annotation`
+
+
+   Pose annotation combining transform and annotation functionality.
+
+   This class inherits from both Pose and Annotation to provide pose information
+   as an annotation type.
+
+
+.. py:class:: PositionAnnotation
+
+   Bases: :py:obj:`robokudo.types.tf.Position`, :py:obj:`robokudo.types.core.Annotation`
+
+
+   Position annotation combining position and annotation functionality.
+
+   This class inherits from both Position and Annotation to provide position
+   information as an annotation type.
+
+
+.. py:class:: StampedPoseAnnotation
+
+   Bases: :py:obj:`robokudo.types.tf.StampedPose`, :py:obj:`robokudo.types.core.Annotation`
+
+
+   Timestamped pose annotation.
+
+   This class combines timestamped pose information with annotation functionality.
+
+
+.. py:class:: StampedPositionAnnotation
+
+   Bases: :py:obj:`robokudo.types.tf.StampedPosition`, :py:obj:`robokudo.types.core.Annotation`
+
+
+   Timestamped position annotation.
+
+   This class combines timestamped position information with annotation functionality.
+
+
+.. py:class:: StampedTransformAnnotation
+
+   Bases: :py:obj:`robokudo.types.tf.StampedTransform`, :py:obj:`robokudo.types.core.Annotation`
+
+
+   Timestamped transform annotation.
+
+   This class combines timestamped transform information with annotation functionality.
+
+
+.. py:class:: Encoding
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   An abstract Encoding Type.
+
+   This class represents various types of encodings such as feature vectors,
+   latent space representations, or other variables.
+
+
+   .. py:attribute:: encoding
+      :type:  typing_extensions.Any
+      :value: None
+
+
+      The encoded representation
+
+
+
+.. py:class:: BoundingBox3DAnnotation
+
+   Bases: :py:obj:`robokudo.types.cv.BoundingBox3D`, :py:obj:`robokudo.types.core.Annotation`
+
+
+   3D bounding box annotation.
+
+   This class combines 3D bounding box functionality with annotation capabilities.
+
+
+.. py:class:: CloudAnnotation
+
+   Bases: :py:obj:`robokudo.types.cv.Points3D`, :py:obj:`robokudo.types.core.Annotation`
+
+
+   Point cloud annotation.
+
+   This class combines 3D point cloud functionality with annotation capabilities.
+
+
+.. py:class:: SpatiallyNearestAnnotation
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Annotation to describe the spatially nearest object to the camera.
+   Supposed to be unique for an amount of objects or humans.
+
+
+.. py:class:: TextAnnotation
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Text annotation.
+
+
+   .. py:attribute:: text
+      :type:  str
+      :value: ''
+
+
+      Text content of the annotation
+
+
+

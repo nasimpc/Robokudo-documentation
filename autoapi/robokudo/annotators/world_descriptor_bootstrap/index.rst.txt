@@ -1,0 +1,109 @@
+robokudo.annotators.world_descriptor_bootstrap
+==============================================
+
+.. py:module:: robokudo.annotators.world_descriptor_bootstrap
+
+.. autoapi-nested-parse::
+
+   Bootstrap static world descriptor content into the shared world.
+
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   robokudo.annotators.world_descriptor_bootstrap.WorldDescriptorBootstrapError
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.world_descriptor_bootstrap.WorldDescriptorBootstrapAnnotator
+
+
+Module Contents
+---------------
+
+.. py:exception:: WorldDescriptorBootstrapError
+
+   Bases: :py:obj:`RuntimeError`
+
+
+   Raised when world descriptor bootstrap fails.
+
+
+.. py:class:: WorldDescriptorBootstrapAnnotator(name: str = 'WorldDescriptorBootstrap', descriptor: WorldDescriptorBootstrapAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Augment the current shared world with descriptor-defined entities.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for world descriptor bootstrap.
+
+
+      .. py:class:: Parameters
+
+         Parameters for world descriptor bootstrap.
+
+
+         .. py:attribute:: world_descriptor_ros_package
+            :type:  str
+            :value: 'robokudo'
+
+
+
+         .. py:attribute:: world_descriptor_name
+            :type:  str
+            :value: 'world_iai_kitchen20'
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: module_loader
+
+
+   .. py:attribute:: _last_augmented_world_id
+      :type:  int | None
+      :value: None
+
+
+
+   .. py:method:: load_world_descriptor() -> robokudo.world_descriptor.BaseWorldDescriptor
+
+      Load the configured world descriptor module.
+
+
+
+   .. py:method:: _update_tracker_if_active() -> None
+
+      Keep tracker state synchronized after world augmentation.
+
+
+
+   .. py:method:: augment_world(world_descriptor: robokudo.world_descriptor.BaseWorldDescriptor) -> None
+
+      Merge descriptor entities into the current shared world.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Load descriptor world and merge it into the current world.
+
+
+

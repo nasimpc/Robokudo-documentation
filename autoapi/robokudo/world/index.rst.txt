@@ -1,0 +1,129 @@
+robokudo.world
+==============
+
+.. py:module:: robokudo.world
+
+.. autoapi-nested-parse::
+
+   General methods to access the current World.
+
+   Reasoning about alternate world states is done in the corresponding Annotators.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.world.this
+   robokudo.world._rk_world_lock
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.world.get_world_entity_tracker
+   robokudo.world.init_world_with_entity_tracker
+   robokudo.world.init_world_entity_tracker_from_world
+   robokudo.world.world_instance
+   robokudo.world.set_world
+   robokudo.world.unsafe_set_world
+   robokudo.world.clear_world
+   robokudo.world.unsafe_clear_world
+   robokudo.world.world_has_body_by_name
+   robokudo.world.setup_world_for_camera_frame
+
+
+Module Contents
+---------------
+
+.. py:data:: this
+
+.. py:data:: _rk_world_lock
+
+   Lock for safe creation of the central SemDT World and entity tracker.
+
+
+.. py:function:: get_world_entity_tracker() -> semantic_digital_twin.adapters.world_entity_kwargs_tracker.WorldEntityWithIDKwargsTracker
+
+   Get the entity tracker instance of for the current world.
+
+   :return: The current entity tracker instance.
+
+
+.. py:function:: init_world_with_entity_tracker() -> semantic_digital_twin.adapters.world_entity_kwargs_tracker.WorldEntityWithIDKwargsTracker
+
+   Initialize the world and entity tracker and return the entity tracker.
+
+   :return: The newly created entity tracker instance.
+
+
+.. py:function:: init_world_entity_tracker_from_world(world: semantic_digital_twin.world.World) -> semantic_digital_twin.adapters.world_entity_kwargs_tracker.WorldEntityWithIDKwargsTracker
+
+   Initialize the entity tracker from the given world and return the entity tracker.
+
+   :return: The newly created entity tracker instance.
+
+
+.. py:function:: world_instance() -> semantic_digital_twin.world.World
+
+   Return the world state for the currently running perception pipeline.
+
+   .. warning::
+   This is NOT necessarily the belief state World based on the previous analysis results.
+
+   :return: A singleton-like World instance.
+
+
+.. py:function:: set_world(world: semantic_digital_twin.world.World) -> None
+
+   Clear the world state safely by overwriting it with the given instance.
+
+   :param world: The new world state.
+
+
+.. py:function:: unsafe_set_world(world: semantic_digital_twin.world.World) -> None
+
+   Unsafely set the world state without acquiring the lock.
+
+   .. warning::
+       Always acquire the lock manually before calling this method. Take a look at `this.set_world()` or
+       `this.init_world_with_entity_tracker()` for example.
+
+   :param world: The new world state to set.
+
+
+.. py:function:: clear_world() -> None
+
+   Clear the world state by instantiating a new World.
+
+
+.. py:function:: unsafe_clear_world() -> None
+
+   Unsafely clear the world state without acquiring the lock.
+
+   .. warning::
+       Always acquire the lock manually before calling this method. Take a look at `this.clear_world()` or
+       `this.world_instance()` for examples.
+
+
+.. py:function:: world_has_body_by_name(world: semantic_digital_twin.world.World, body_name: str) -> bool
+
+   Check whether a body with a given name exists in the given world.
+
+   :param world: The world to check in.
+   :param body_name: The body name to search for.
+   :return: True if the body exists, False otherwise.
+
+
+.. py:function:: setup_world_for_camera_frame(world_frame: str, camera_frame: str) -> None
+
+   Set up the world and camera frames if they do not exist yet.
+
+   :param world_frame: The name of the world frame.
+   :param camera_frame: The name of the camera frame.
+
+

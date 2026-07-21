@@ -1,0 +1,126 @@
+robokudo.vis.cv_visualizer
+==========================
+
+.. py:module:: robokudo.vis.cv_visualizer
+
+.. autoapi-nested-parse::
+
+   OpenCV-based visualization for RoboKudo pipelines.
+
+   This module provides OpenCV-based visualization capabilities for RoboKudo pipelines.
+   It handles:
+
+   * 2D image visualization with annotator overlays
+   * Mouse interaction handling
+   * Keyboard controls for navigation and control
+   * Window management
+   * Pipeline state visualization
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.vis.cv_visualizer.CVVisualizer
+
+
+Module Contents
+---------------
+
+.. py:class:: CVVisualizer(*args: typing_extensions.Any, **kwargs: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.vis.visualizer.Visualizer`, :py:obj:`robokudo.vis.visualizer.Visualizer.Observer`
+
+
+   OpenCV-based visualizer for 2D image data.
+
+   This class provides visualization of 2D image data from pipeline annotators using
+   OpenCV windows. It supports:
+
+   * Image display with annotator overlays
+   * Mouse interaction handling
+   * Keyboard navigation between annotators
+   * Window management
+   * Shared visualization state
+
+   .. note::
+       This Visualizer works with a shared state and needs notifications
+
+
+   .. py:method:: tick() -> None
+
+      Update the visualization display.
+
+      This method:
+
+      * Gets current annotator outputs
+      * Updates display if needed
+      * Renders annotator name overlay
+      * Manages OpenCV window
+
+
+
+   .. py:method:: mouse_callback_cv(event: int, x: int, y: int, flags: int, param: typing_extensions.Any) -> None
+
+      Mouse callback for the 2D Visualizer.
+
+      Prints double click events and forwards every event to the active annotator.
+
+      :param event: OpenCV mouse event type
+      :param x: X coordinate of mouse event
+      :param y: Y coordinate of mouse event
+      :param flags: OpenCV event flags
+      :param param: Additional parameters (unused)
+
+
+
+   .. py:method:: window_title() -> str
+
+      Get the window title for this visualizer.
+
+
+
+   .. py:method:: notify(observable: robokudo.vis.visualizer.Visualizer.Observable, *args: typing_extensions.Any, **kwargs: typing_extensions.Any) -> None
+
+      Handle notification of state changes.
+
+      :param observable: The object that sent the notification
+
+
+
+   .. py:method:: static_post_tick() -> None
+      :staticmethod:
+
+
+      Handle keyboard input after visualization update.
+
+      This method:
+
+      * Checks for keyboard input
+      * Routes input to appropriate visualizer
+      * Handles termination requests
+
+
+
+   .. py:method:: get_gui_handler_for_detected_key() -> typing_extensions.Optional[CVVisualizer]
+      :staticmethod:
+
+
+      Get the visualizer instance for the focused window.
+
+      :returns: The visualizer instance for the focused window, or None if not found
+
+
+
+   .. py:method:: handle_keycallback(key: int) -> bool
+
+      Handle a key-press that happened in the corresponding GUI of this GUIHandler.
+
+      :param key: An ASCII char
+      :return: false if GUI reports abort (right now this only happens when ESC is
+          pressed)
+
+
+

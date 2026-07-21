@@ -1,0 +1,134 @@
+robokudo.annotators.icp_pose_refinement
+=======================================
+
+.. py:module:: robokudo.annotators.icp_pose_refinement
+
+.. autoapi-nested-parse::
+
+   Pose refinement using iterative closest point (ICP).
+
+   This module provides an annotator for:
+
+   * Refining object pose estimates using ICP
+   * Matching against reference point cloud models
+   * Supporting multiple initial pose variants
+   * Evaluating registration quality
+
+   The module uses:
+
+   * Open3D ICP implementation
+   * Point-to-point registration
+   * Multiple pose hypotheses
+   * PLY model loading
+   * Visualization tools
+
+   .. warning::
+      Currently limited to refining against a single pre-loaded model.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.icp_pose_refinement.ICPPoseRefinementAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: ICPPoseRefinementAnnotator(name: str = 'ICPPoseRefinementAnnotator', descriptor: ICPPoseRefinementAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Pose refinement using iterative closest point (ICP).
+
+   This annotator:
+
+   * Refines object pose estimates using ICP
+   * Matches against reference point cloud models
+   * Evaluates multiple initial pose variants
+   * Selects best registration result
+   * Creates refined pose annotations
+
+   .. note::
+      Point cloud models can be generated from meshes using CloudCompare's
+      "Sample points on a mesh" feature.
+
+   .. warning::
+      Currently limited to refining against a single pre-loaded model.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for ICP refinement.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring model loading.
+
+
+         .. py:attribute:: ros_pkg_path
+            :type:  typing_extensions.Optional[str]
+            :value: None
+
+
+            If set, use use data_path as a relative path to self.ros_pkg_path
+
+
+
+         .. py:attribute:: data_path
+            :type:  typing_extensions.Optional[str]
+            :value: None
+
+
+            Relative Path to the folder containing the models
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: class_name_to_ply_model
+
+
+   .. py:method:: get_model_path(class_name: str = '') -> typing_extensions.Optional[pathlib.Path]
+
+      Get path to PLY model file.
+
+      Resolves model path using:
+
+      * ROS package path if provided
+      * Direct data path otherwise
+
+      :param class_name: Name of object class to load model for
+      :return: Path to PLY file or None if not found
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+      Process object hypotheses and refine poses.
+
+      The method:
+
+      * Loads point cloud and object hypotheses
+      * For each hypothesis with pose:
+        * Creates initial pose variants
+        * Performs ICP registration for each variant
+        * Selects best registration result
+        * Creates refined pose annotation
+        * Generates visualization markers
+
+      :return: SUCCESS after processing, even if annotator deactivated
+
+
+

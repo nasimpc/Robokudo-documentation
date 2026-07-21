@@ -1,0 +1,276 @@
+robokudo.annotators.pointcloud_cluster_extractor
+================================================
+
+.. py:module:: robokudo.annotators.pointcloud_cluster_extractor
+
+.. autoapi-nested-parse::
+
+   Point cloud clustering and object detection.
+
+   This module provides annotators for:
+
+   * Extracting object clusters from point clouds above detected planes
+   * Generating ROIs and masks for detected clusters
+   * Visualizing detected clusters with unique colors
+
+   The module uses DBSCAN clustering and oriented bounding boxes (OBB) for object detection.
+
+   .. note::
+      The clustering process requires a plane annotation in the CAS to function.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.annotators.pointcloud_cluster_extractor.DILATION_KERNEL
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.pointcloud_cluster_extractor.PointCloudClusterExtractor
+   robokudo.annotators.pointcloud_cluster_extractor.NaivePointCloudClusterExtractor
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.annotators.pointcloud_cluster_extractor.generate_roi_with_mask_from_points
+   robokudo.annotators.pointcloud_cluster_extractor.cluster_points
+
+
+Module Contents
+---------------
+
+.. py:data:: DILATION_KERNEL
+
+.. py:function:: generate_roi_with_mask_from_points(image_height: int, image_width: int, pc_cam_intrinsics: open3d.camera.PinholeCameraIntrinsic, cloud: open3d.geometry.PointCloud, color2depth_ratio: typing_extensions.Tuple[int, int] = (1, 1)) -> typing_extensions.Tuple[robokudo.types.cv.ImageROI, numpy.typing.NDArray]
+
+   Generate ROI and mask from projected point cloud points.
+
+   Projects 3D points to image plane and creates:
+
+   * ROI bounding the projected points
+   * Binary mask of projected points
+   * Dilated mask to account for point sparsity
+
+   :param image_height: Height of the target image
+   :param image_width: Width of the target image
+   :param pc_cam_intrinsics: Camera intrinsic parameters
+   :param cloud: Point cloud to project
+   :param color2depth_ratio: Scale ratio between color and depth images, defaults to (1, 1)
+   :return: Tuple of (ROI with mask, full image mask)
+
+
+.. py:function:: cluster_points(input_cloud: open3d.geometry.PointCloud, eps: float, min_points: int, rk_logger: logging.Logger) -> typing_extensions.List[int]
+
+   Cluster points using DBSCAN algorithm.
+
+   :param input_cloud: Point cloud to cluster
+   :param eps: DBSCAN epsilon parameter (density threshold)
+   :param min_points: Minimum points for a cluster
+   :param rk_logger: Logger instance for progress reporting
+   :return: List of point indices for each cluster
+
+   .. note::
+      Points labeled as noise (label=-1) are ignored in the output.
+
+
+.. py:class:: PointCloudClusterExtractor(name: str = 'PointCloudClusterExtractor', descriptor: PointCloudClusterExtractor = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Annotator for object detection.
+
+   The main idea is to look for the Plane annotation in the CAS extract the points that belong to the plane,
+   constructs an oriented bounding box around it, pull it up to create volume above the plane and
+   then extract all the inlier points. After that, a clustering process is executed
+   and each cluster is annotated in the CAS.
+
+   .. warning::
+      Requires a Plane annotation in the CAS to function.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for point cloud clustering.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring cluster extraction.
+
+
+         .. py:attribute:: dbscan_min_cluster_count
+            :type:  int
+            :value: 90
+
+
+            Minimum points for DBSCAN cluster
+
+
+
+         .. py:attribute:: min_cluster_count
+            :type:  int
+            :value: 1000
+
+
+            Minimum total points for valid cluster
+
+
+
+         .. py:attribute:: min_on_plane_point_count
+            :type:  int
+            :value: 90
+
+
+            Minimum points above plane, defaults to 90
+
+
+
+         .. py:attribute:: eps
+            :type:  float
+            :value: 0.04
+
+
+            DBSCAN epsilon parameter (density threshold)
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: points_and_indices_from_plane(plane_model: robokudo.types.annotation.Plane, cloud: open3d.geometry.PointCloud) -> typing_extensions.Tuple[open3d.geometry.OrientedBoundingBox, open3d.geometry.OrientedBoundingBox, open3d.geometry.PointCloud, typing_extensions.List[int], open3d.geometry.PointCloud]
+
+      Extract points above a detected plane.
+
+      Based on an input cloud and a plane model, extract all the points that are above that plane in the input cloud.
+      Returns various data structures for further analysis and visualization.
+
+      :param plane_model:
+      :param cloud:
+      :return: A tuple consisting of:
+          plane_obb = The OBB around the points belonging to the plane_model in cloud
+          on_plane_obb = The OBB put above plane_obb, with the same width and depth, but extended upwards
+          on_plane_cloud = Points found in on_plane_obb
+          on_plane_cloud_indices = Indices of Points found in on_plane_obb
+          outlier_cloud = All points that do not belong to the plane/table itself.
+      :raises Exception: If insufficient points found above plane
+
+      .. note::
+         The function ensures the plane normal points upward by rotating
+         the OBB if necessary.
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+      Process point cloud to detect and annotate object clusters.
+
+      The method:
+
+      * Extracts points above detected plane
+      * Clusters points using DBSCAN
+      * Creates ObjectHypothesis annotations for each cluster
+      * Generates ROIs and masks for visualization
+      * Visualizes clusters with unique colors
+
+      :return: SUCCESS if clusters are found, FAILURE if no clusters or errors
+      :raises Exception: If no plane model in CAS or insufficient points
+
+
+
+.. py:class:: NaivePointCloudClusterExtractor(name: str = 'NaivePointCloudClusterExtractor', descriptor: NaivePointCloudClusterExtractor = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Annotator for object detection. Simply takes an input cloud and clusters it.
+
+   .. note::
+      Unlike PointCloudClusterExtractor, this does not require a plane model.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for naive point cloud clustering.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring cluster extraction.
+
+
+         .. py:attribute:: dbscan_min_cluster_count
+            :type:  int
+            :value: 90
+
+
+            Minimum points for DBSCAN cluster
+
+
+
+         .. py:attribute:: min_cluster_count
+            :type:  int
+            :value: 1000
+
+
+            Minimum total points for valid cluster
+
+
+
+         .. py:attribute:: min_on_plane_point_count
+            :type:  int
+            :value: 90
+
+
+            Minimum points above plane
+
+
+
+         .. py:attribute:: eps
+            :type:  float
+            :value: 0.04
+
+
+            DBSCAN epsilon parameter (density threshold)
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+      Process point cloud to detect and annotate object clusters.
+
+      The method:
+
+      * Clusters points directly using DBSCAN
+      * Creates ObjectHypothesis annotations for each cluster
+      * Generates ROIs and masks for visualization
+      * Visualizes clusters with unique colors
+
+      :return: SUCCESS if clusters found, FAILURE if no clusters or errors
+      :raises Exception: If insufficient points in clusters
+
+
+

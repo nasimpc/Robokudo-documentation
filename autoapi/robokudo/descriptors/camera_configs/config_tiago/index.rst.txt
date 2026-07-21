@@ -1,0 +1,83 @@
+robokudo.descriptors.camera_configs.config_tiago
+================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_tiago
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_tiago.TiagoCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: TiagoCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig`, :py:obj:`robokudo.descriptors.camera_configs.components.RGBDComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.TfComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.StableViewpointComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.WorldDescriptorComponent`
+
+
+   Configuration class for the TIAGo robot's Xtion camera.
+
+   This class defines the configuration parameters for the Xtion RGB-D camera
+   mounted on the TIAGo robot. It includes settings for camera interface,
+   topic names, and transformation settings.
+
+   .. note::
+       The configuration uses the Kinect interface type for compatibility with
+       the Xtion camera, as both cameras use similar RGB-D data formats.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'tiago'
+
+
+      Name of the camera configuration in the registry.
+
+      Must be unique.
+
+
+
+   .. py:attribute:: interface_type
+      :type:  str
+      :value: 'Kinect'
+
+
+      Type of camera interface.
+
+
+
+   .. py:attribute:: topic_depth
+      :type:  str
+      :value: '/xtion/depth_registered/image_raw/compressedDepth'
+
+
+
+   .. py:attribute:: topic_cam_info
+      :type:  str
+      :value: '/xtion/rgb/camera_info'
+
+
+
+   .. py:attribute:: topic_color
+      :type:  str
+      :value: '/xtion/rgb/image_raw/compressed'
+
+
+
+   .. py:attribute:: tf_from
+      :type:  str
+      :value: '/xtion_rgb_optical_frame'
+
+
+
+   .. py:attribute:: tf_to
+      :type:  str
+      :value: '/odom'
+
+
+

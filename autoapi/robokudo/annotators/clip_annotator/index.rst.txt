@@ -1,0 +1,63 @@
+robokudo.annotators.clip_annotator
+==================================
+
+.. py:module:: robokudo.annotators.clip_annotator
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.clip_annotator.ClipAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: ClipAnnotator(name: str = 'ClipAnnotator')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   A simple CLIP annotator that uses a given vocabulary to annotate all incoming object
+   hypothesis.
+
+
+   .. py:attribute:: device
+
+      Torch device to be used by the annotator.
+
+
+
+   .. py:attribute:: clip_model
+
+      CLIP model used for feature extraction.
+
+
+
+   .. py:attribute:: clip_preprocess
+
+      CLIP preprocessor used for feature extraction.
+
+
+
+   .. py:attribute:: vocabulary
+      :type:  typing_extensions.List[str]
+      :value: ['Milk Container', 'Conflakes', 'Pancake Batter', 'Instant Coffee', 'Crepe Pan', 'Dish Soap']
+
+
+      The vocabulary used for object classification.
+
+
+
+   .. py:attribute:: vocabulary_index
+      :type:  faiss.IndexFlatIP
+
+      A faiss index for text features used in similarity search.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+

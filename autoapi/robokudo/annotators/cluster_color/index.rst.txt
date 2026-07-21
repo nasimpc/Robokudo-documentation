@@ -1,0 +1,303 @@
+robokudo.annotators.cluster_color
+=================================
+
+.. py:module:: robokudo.annotators.cluster_color
+
+.. autoapi-nested-parse::
+
+   Robokudo Color Analysis Module.
+
+   This module provides functionality for semantic color analysis of object hypotheses.
+   It analyzes RGB regions of interest (ROIs) and masks to determine dominant colors
+   using HSV color space segmentation.
+
+   .. warning::
+      The non-numba version of color counting may contain bugs in color counting.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.cluster_color.Color
+   robokudo.annotators.cluster_color.ClusterColorAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: Color
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Enumeration of semantic colors used for classification.
+
+   * Primary colors: RED, GREEN, BLUE
+   * Secondary colors: YELLOW, CYAN, MAGENTA
+   * Grayscale: WHITE, BLACK, GREY
+
+
+   .. py:attribute:: RED
+      :value: (0,)
+
+
+
+   .. py:attribute:: YELLOW
+      :value: (1,)
+
+
+
+   .. py:attribute:: GREEN
+      :value: (2,)
+
+
+
+   .. py:attribute:: CYAN
+      :value: (3,)
+
+
+
+   .. py:attribute:: BLUE
+      :value: (4,)
+
+
+
+   .. py:attribute:: MAGENTA
+      :value: (5,)
+
+
+
+   .. py:attribute:: WHITE
+      :value: (6,)
+
+
+
+   .. py:attribute:: BLACK
+      :value: (7,)
+
+
+
+   .. py:attribute:: GREY
+      :value: (8,)
+
+
+
+.. py:class:: ClusterColorAnnotator(name: str = 'ClusterColorAnnotator', descriptor: ClusterColorAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Calculate the semantic color for every Object Hypothesis (cluster) that has a RGB
+   ROI and a Mask.
+
+   This annotator analyzes object hypotheses by:
+
+   * Converting RGB image regions to HSV color space
+   * Using HSV thresholds to classify pixels into semantic color categories
+   * Counting pixel distributions for each color
+   * Annotating objects with their dominant colors
+
+   The color classification uses configurable thresholds for:
+
+   * Hue ranges for primary/secondary colors
+   * Saturation threshold for chromatic colors
+   * Value thresholds for black/white/grey
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for the ClusterColorAnnotator.
+
+      Defines parameters that control the color analysis behavior:
+
+      * Number of color divisions in hue space
+      * Thresholds for color classification
+      * Minimum ratio for color annotation
+
+
+      .. py:class:: Parameters
+
+         Parameters for color analysis configuration.
+
+
+         .. py:attribute:: num_of_colors
+            :type:  int
+            :value: 6
+
+
+
+         .. py:attribute:: color_range
+            :type:  float
+            :value: 42.666666666666664
+
+
+
+         .. py:attribute:: jit_compile_on_init
+            :type:  bool
+            :value: False
+
+
+
+         .. py:attribute:: min_value_color
+            :type:  int
+            :value: 60
+
+
+
+         .. py:attribute:: min_saturation_color
+            :type:  int
+            :value: 60
+
+
+
+         .. py:attribute:: max_value_black
+            :type:  int
+            :value: 60
+
+
+
+         .. py:attribute:: min_value_white
+            :type:  int
+            :value: 120
+
+
+
+         .. py:attribute:: ratio_annotation_threshold
+            :type:  float
+            :value: 0.2
+
+
+
+         .. py:attribute:: analysis_scope
+            :type:  typing_extensions.Type
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: color_name_to_bgr_values
+      :type:  typing_extensions.Dict[Color, typing_extensions.Tuple[int, Ellipsis]]
+
+
+   .. py:attribute:: color_hue_positions
+
+
+   .. py:attribute:: cluster_color_info
+      :type:  typing_extensions.List[typing_extensions.List[typing_extensions.Tuple[Color, int, float]]]
+      :value: []
+
+
+
+   .. py:attribute:: cluster_rois
+      :type:  typing_extensions.List[robokudo.types.cv.Rect]
+      :value: []
+
+
+
+   .. py:method:: count_colors_numba(hsv_image: numpy.typing.NDArray, mask: numpy.typing.NDArray) -> typing_extensions.Tuple[int, typing_extensions.Dict[Color, int]]
+
+      Wrapper function for the numba version of the count colors method.
+
+      The wrapper handles the pythonic/object style data and prepares everything for
+      the requirements of the numba method.
+
+      :param hsv_image: Image in HSV color space
+      :param mask: Binary mask indicating pixels to analyze
+      :return: A tuple with the number of analyzed pixels (given by the mask) as well
+          as a dict with the counted colors. The key is a Color enum from this module.
+
+
+
+   .. py:method:: count_colors_numba_impl(hsv_image: numpy.typing.NDArray, mask: numpy.typing.NDArray, total_amount_of_colors: int, min_saturation_color: int, min_value_color: int, max_value_black: int, min_value_white: int, number_of_colors: int, color_range: float) -> typing_extensions.Tuple[int, numpy.typing.NDArray]
+      :staticmethod:
+
+
+      Iterate over the masked pixels on a given hsv image to count how many pixels can
+      be assigned to the defined color ranges. Requires the numba library and passes
+      the required parameters to avoid class access and object-mode from numba.
+
+      :param hsv_image: Image in HSV color space.
+      :param mask: Binary mask indicating pixels to analyze.
+      :param total_amount_of_colors: Total number of color categories.
+      :param min_saturation_color: Minimum saturation for chromatic colors.
+      :param min_value_color: Minimum value for chromatic colors.
+      :param max_value_black: Maximum value for black classification.
+      :param min_value_white: Minimum value for white classification.
+      :param number_of_colors: Number of hue divisions.
+      :param color_range: Size of each hue division.
+      :return: A tuple with the number of analyzed pixels (given by the mask) as well
+          as a numpy array with the counted colors. The id refers the indices of the
+          Color enum from this module.
+
+
+
+   .. py:method:: count_colors(hsv_image: numpy.typing.NDArray, mask: numpy.typing.NDArray) -> typing_extensions.Tuple[int, dict]
+
+      Non-numba version of the count_colors_numba_impl method.
+
+      Use only if you can't use numba.
+
+      .. warning::
+         Seems to contain a bug in color counting.
+
+      :param hsv_image: Image in HSV color space
+      :param mask: Binary mask indicating pixels to analyze
+      :return: A tuple with the number of analyzed pixels and a dict with color counts
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process current scene to analyze colors of object hypotheses.
+
+      Steps:
+
+      * Gets current point cloud and color image
+      * Creates color annotations for each object hypothesis
+      * Updates visualization with color information
+      * Prepares 3D visualization geometries
+
+      :return: SUCCESS after processing is complete
+
+
+
+   .. py:method:: create_color_annotations(color: numpy.typing.NDArray) -> None
+
+      Create color annotations for all object hypotheses.
+
+      For each object hypothesis with a valid ROI mask:
+
+      * Extract color image region and mask
+      * Convert to HSV color space
+      * Count pixel colors using numba-optimized implementation
+      * Sort colors by frequency
+      * Add color annotations for colors above ratio threshold
+      * Store color information for visualization
+
+      :param color: Input color image
+
+
+
+   .. py:method:: draw_visualization(visualization_img: numpy.typing.NDArray) -> numpy.typing.NDArray
+
+      Draw visualization of detected colors on the image.
+
+      For each ROI:
+
+      * Draw bounding box in dominant color
+      * Add text label with ROI index and dominant color name
+      * Create color histogram showing distribution of detected colors
+
+      :param visualization_img: Image to draw visualization on
+      :return: Image with visualization overlays
+
+
+

@@ -1,0 +1,25 @@
+# About the Framework
+This framework is developed by the [Institute for Artificial Intelligence](https://ai.uni-bremen.de/) and [DFG-funded CRC 1320 EASE](https://ease-crc.org). The institute is headed by [Prof. Michael Beetz](https://ai.uni-bremen.de/team/michael_beetz).
+
+To contact us, please reach out to us via mail:
+```{eval-rst}
+:email:`robokudo@cs.uni-bremen.de`
+```
+We would also like to thank earlier contributors to the overall conceptual apparatus of the perception framework in our institute, namely Dr. Ferenc Balint-Benczedi, Jan-Hendrik Worch, Thiemo Wiedemeyer, Nico Blodow, Zoltan-Csaba Marton, Christian Kerl & Florian Seidl.
+
+## Imprint
+Anbieter dieser Internet-Seiten ist im Rechtssinn die Universität Bremen.  
+
+Universität Bremen  
+Arbeitsgruppe Künstliche Intelligenz  
+Fachbereich 3  
+Am Fallturm 1  
+28359 Bremen  
+  
+Telefon +49 421 218-64000  
+Internet: www.ai.uni-bremen.de  
+
+Die Universität Bremen ist eine Körperschaft des Öffentlichen Rechts.
+Sie wird durch den Rektor Prof. Dr.-Ing. Bernd Scholz-Reiter gesetzlich vertreten.
+Zuständige Aufsichtsbehörde ist die Senatorin für Bildung und Wissenschaft, Rembertiring 8 – 12, 28195 Bremen.
+Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG Umsatzsteuer-Nr.: DE 811 245 070

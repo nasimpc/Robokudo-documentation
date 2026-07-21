@@ -1,0 +1,140 @@
+robokudo.utils.type_conversion
+==============================
+
+.. py:module:: robokudo.utils.type_conversion
+
+.. autoapi-nested-parse::
+
+   Type conversion utilities for Robokudo.
+
+   This module provides functions for converting between different type representations:
+
+   * ROS message types to Python dictionaries
+   * Robokudo annotations to ROS geometry messages
+   * Pose and position annotations to transform matrices
+
+   The module supports bidirectional conversion between:
+   * ROS CameraInfo messages
+   * Geometry messages (Pose, PoseStamped)
+   * Robokudo annotation types
+   * Transform matrices
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.type_conversion.ros_cam_info_to_dict
+   robokudo.utils.type_conversion.ros_cam_info_from_dict
+   robokudo.utils.type_conversion.get_geometry_msgs_pose_from_position_annotation
+   robokudo.utils.type_conversion.get_geometry_msgs_pose_from_pose_annotation
+   robokudo.utils.type_conversion.get_geometry_msgs_pose_stamped_from_pose_annotation
+   robokudo.utils.type_conversion.get_geometry_msgs_pose_stamped_from_position_annotation
+   robokudo.utils.type_conversion.get_transform_matrix_from_pose_annotation
+   robokudo.utils.type_conversion.get_o3d_obb_from_bounding_box_annotation
+   robokudo.utils.type_conversion.o3d_cam_intrinsics_from_ros_cam_info
+   robokudo.utils.type_conversion.convert_ros_to_cv_image
+   robokudo.utils.type_conversion.convert_cv_to_ros_image
+
+
+Module Contents
+---------------
+
+.. py:function:: ros_cam_info_to_dict(cam_info: sensor_msgs.msg.CameraInfo) -> typing_extensions.Dict
+
+   Convert ROS CameraInfo message to dictionary.
+
+   :param cam_info: ROS CameraInfo message
+   :return: Dictionary representation of camera info
+
+
+.. py:function:: ros_cam_info_from_dict(dict_cam_info: typing_extensions.Dict) -> sensor_msgs.msg.CameraInfo
+
+   Convert dictionary to ROS CameraInfo message.
+
+   :param dict_cam_info: Dictionary containing camera info
+   :return: ROS CameraInfo message
+
+
+.. py:function:: get_geometry_msgs_pose_from_position_annotation(position_annotation: robokudo.types.annotation.PositionAnnotation) -> geometry_msgs.msg.Pose
+
+   Convert position annotation to ROS Pose message.
+
+   Creates a Pose with position from annotation and identity quaternion.
+
+   :param position_annotation: Position annotation to convert
+   :return: ROS Pose message
+
+
+.. py:function:: get_geometry_msgs_pose_from_pose_annotation(pose_annotation: robokudo.types.annotation.PoseAnnotation) -> geometry_msgs.msg.Pose
+
+   Convert pose annotation to ROS Pose message.
+
+   :param pose_annotation: Pose annotation to convert
+   :return: ROS Pose message
+
+
+.. py:function:: get_geometry_msgs_pose_stamped_from_pose_annotation(pose_annotation: robokudo.types.annotation.PoseAnnotation, header: std_msgs.msg.Header) -> geometry_msgs.msg.PoseStamped
+
+   Convert pose annotation to ROS PoseStamped message.
+
+   :param pose_annotation: Pose annotation to convert
+   :param header: Header to use for stamped pose
+   :return: ROS PoseStamped message
+
+
+.. py:function:: get_geometry_msgs_pose_stamped_from_position_annotation(position_annotation: robokudo.types.annotation.PositionAnnotation, header: std_msgs.msg.Header) -> geometry_msgs.msg.PoseStamped
+
+   Convert position annotation to ROS PoseStamped message.
+
+   Creates a PoseStamped with position from annotation and identity quaternion.
+
+   :param position_annotation: Position annotation to convert
+   :param header: Header to use for stamped pose
+   :return: ROS PoseStamped message
+
+
+.. py:function:: get_transform_matrix_from_pose_annotation(pose_annotation: robokudo.types.annotation.PoseAnnotation) -> numpy.typing.NDArray
+
+   Convert pose annotation to 4x4 transform matrix.
+
+   :param pose_annotation: Pose annotation to convert
+   :return: 4x4 homogeneous transform matrix
+
+
+.. py:function:: get_o3d_obb_from_bounding_box_annotation(bounding_box_annotation: robokudo.types.annotation.BoundingBox3DAnnotation) -> open3d.geometry.OrientedBoundingBox
+
+   Convert a bounding box annotation to an open3d oriented bounding box.
+
+   :param bounding_box_annotation: Bounding box annotation to convert
+   :return: Open3D OrientedBoundingBox representation of bounding box annotation
+
+
+.. py:function:: o3d_cam_intrinsics_from_ros_cam_info(cam_info: sensor_msgs.msg.CameraInfo) -> open3d.camera.PinholeCameraIntrinsic
+
+   Convert ROS CameraInfo to Open3D camera intrinsics.
+
+   :param cam_info: ROS camera info message
+   :return: Open3D camera intrinsics
+
+
+.. py:function:: convert_ros_to_cv_image(ros_image: sensor_msgs.msg.Image) -> numpy.typing.NDArray
+
+   Convert ROS image message to OpenCV image.
+
+   :param ros_image: ROS image message
+   :return: OpenCV image array
+   :raises CvBridgeError: If conversion fails
+
+
+.. py:function:: convert_cv_to_ros_image(cv_image: numpy.typing.NDArray) -> sensor_msgs.msg.Image
+
+   Convert OpenCV image to ROS image message.
+
+   :param cv_image: OpenCV image array
+   :return: ROS image message
+   :raises CvBridgeError: If conversion fails
+
+

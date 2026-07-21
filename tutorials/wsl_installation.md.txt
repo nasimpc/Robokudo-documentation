@@ -1,0 +1,213 @@
+# Using RoboKudo within WSL
+
+This is a installation guide of RoboKudo on a Windows System and the WSL (Windows Subserver for Linux). Many of the steps will be similar to the current standing guide, with additions of specific aforementioned steps.
+**Please note that Windows is not a first-class citizen and does not receive explicit support.**
+
+:::{warning}
+This tutorial is only tested for ROS 1.
+:::
+
+:::{note}
+Each Step has the [OS] written in it to clarify where you need to proceed.
+:::
+
+## Requirements
+
+- Window 10 (Version xx.xx+) or Windows 11
+
+## Installation of WSL & Setting up Requirements
+
+### [Windows]: Create a Ubuntu 20.04 WSL
+
+Start Powershell.
+
+First of you need to upgrade WSL to WSL2 in case you haven't done so already. Simply call:
+
+```powershell
+wsl --upgrade
+```
+
+After the upgrade is done, create a Ubuntu 20.04 installation using the following command:
+
+```powershell
+wsl --install --distribution Ubuntu-20.04
+```
+
+This will leave you with a working WSL you can start by simply typing `wsl`. You can also access its files directly from your Windows Explorer.
+
+---
+
+### [WSL]: Create .bashrc in ~
+
+Afterwards, open up a Terminal and start your Ubuntu WSL Distribution and go to your home ~ and create a .bashrc. 
+
+```bash
+cd ~
+touch .bashrc
+```
+
+Open it up using your text editor (`vim`) of choice and write following configuration into it.
+
+```bash
+cd ~ # Recommended, else it constantly starts in /mnt/xxx somewhere
+
+# This makes it possible for RoboKudo's Windows to be rendered correctly (and at all) without errors.
+# It will, however, remove any coloring you had in the Terminal.
+export LIBGL_ALWAYS_INDIRECT=0
+export LIBGL_ALWAYS_SOFTWARE=1
+
+# This will automatically grab the adress of the VcXsrv for the Windows.
+DISPLAY=$(grep nameserver /etc/resolv.conf | awk '{print $2}'):0.0
+```
+
+After this we can start off the installation as normal for now on the RoboKudo end.
+
+## Installing RoboKudo
+
+*From here on out, the steps are the same as the official guide on [Link](https://robokudo.ai.uni-bremen.de/installation.html#pycharm-plugins)*. On errors and other things, you can go to the original guide and check the main guide.
+
+### [WSL]: Install ROS Noetic
+
+Follow the Guide  on http://wiki.ros.org/noetic/Installation/Ubuntu and install the full Version of ROS, `ros-noetic-desktop-full`. It works similarly than a simple Linux Install.
+
+### [WSL]: Install RoboKudo
+
+#### Install Catkin Functionalities
+
+```bash
+sudo apt-get install python3-catkin-tools
+```
+
+#### Install specific Ros Noetic Packages
+
+```bash
+sudo apt-get install ros-noetic-rqt-py-trees ros-noetic-ddynamic-reconfigure-python python3-venv
+```
+
+#### Create a ROS Workspace named robokudo_ws
+
+```bash
+source /opt/ros/noetic/setup.bash
+mkdir -p ~/robokudo_ws/src
+cd ~/robokudo_ws/
+catkin build
+source ~/robokudo_ws/devel/setup.bash
+```
+
+#### Clone the RoboKudo Repository
+
+```bash
+cd ~/robokudo_ws/src/
+# as a user:
+git clone --recurse-submodules https://gitlab.informatik.uni-bremen.de/robokudo/robokudo.git
+# or as a contributing developer with privileged access to the repo:
+git clone --recurse-submodules git@gitlab.informatik.uni-bremen.de:robokudo/robokudo.git
+```
+
+#### Install RoboKudo Dependencies:
+
+```bash
+cd ~/robokudo_ws/src/robokudo/
+rosdep install --from-path . --ignore-src # If you get an error related to ddynamic-reconfigure-python, ensure you installed it in the first section of this manual and then go to the next command.
+
+python3 -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+#### Install OpenCV-Python
+
+This is a necessary Installation for WSL, which allows us to use a window for the OpenCV Window we're using which can be used and tracked by the Weston Window Manager.
+
+```bash
+pip install opencv-python
+```
+
+#### Build the Workspace using catkin build
+
+```bash
+catkin build
+source ~/robokudo_ws/devel/setup.bash # You can add this line to your .bashrc to automnatically call it whenever you start your WSL.
+```
+
+## IDE Setup, using it with PyCharm
+
+In case you want to use it with PyCharm, you'd be required to have the Pro Version of the software. This Python IDE actually comes with integrated functionalities to use WSL.
+
+*Most of the guide follows the main guide and can be used as a reference in case something doesn't work or has changed. Most notable differences include: Installing opencv-python, using the Professional Edition, and using/adding WSL Host.*
+
+### Requirements:
+
+- PyCharm Professional Edition
+
+### Installation
+
+#### [Windows]: Install PyCharm for Windows
+
+Go to  https://www.jetbrains.com/pycharm/download/#section=windows and download the **Professional Edition** and install it. 
+
+*It should automatically, once you run it, start a WSL in the IDE Native Terminal with your.*
+
+#### [Windows]: Open PyCharm and add the WSL Host
+
+In the open PyCharm Professional Window, select WSL under **Remote Development** and select the WSL instance which we've created. It'll add it as the host, from which you can click the Plus button to open a workspace project. 
+
+#### [Windows]: Open RoboKudo Workspace
+
+Once you've clicked on the plus (top right corner of the WSL Window in PyCharm, we can go on and open the RoboKudo Workspace as the project of choice. Navigate to your RoboKudo folder for the directory (which should be in the wsl server bit) and select the folder 'robokudo_ws'. Once PyCharm is done processing some things, click on the newly added Project.
+
+#### [Windows]: Setup the Virtual Environment
+
+Under **File -> Settings -> Project: -> Python Interpreter** click on the **Little Cog Icon** next to the Project Interpreter and select 'Add'. Create a new Virtualenv Environment called rk_venv in your home directory in wsl. The BaseInterpreter can be left on the default (It should be the system python under /usr/bin/python3.X). **Activate ‘Inherit global site-packages’.**
+
+#### [Windows]: Setting things up for rk_env
+
+In the project file explorer on the left, go to devel → lib → python3 →  dist-packages. It should contain ‘robokudo_msgs’. Rightclick the **dist-packages folder** → ‘Mark directory as’ → Sources Root . Check out the giskard tutorial  above to see a screenshot of that. If the python3 folder doesn’t exist,  please make sure that you called  `catkin build` in the previous step after cloning RoboKudo.
+
+In the **dist-packages folder** of the previous step, mark all robokudo packages (except robokudo_msgs) as ‘Excluded’. This ensures to avoid naming conflicts.
+
+Mark the ‘src’ directory of robokudo also as ‘Source’. Analogous  to the previous step. The path should be  robokudo_ws/src/robokudo/robokudo/src 
+
+- Install/update the pip dependencies for your virtual environment. In PyCharm, go to File → Settings → Project:  → Project interpreter, and install the following packages:
+
+```txt
+pytest
+open3d
+numpy # atleast version 1.22.2 must be installed for numpy.typing
+pydot
+scipy
+pymongo
+numba
+pyyaml
+opencv-python # Very important to make it work with WSL
+```
+
+#### Start Developing with PyCharm
+
+- Start PyCharm as explained above: Source your RoboKudo Workspace and start PyCharm with the shell script from the terminal:
+
+```bash
+source ~/robokudo_ws/devel/setup.bash # if you don't source it automatically in your .bashrc
+~/pycharm.sh
+```
+
+- Open a new terminal and execute:
+
+```bash
+roscore
+```
+
+- Open a new terminal and execute:
+
+```bash
+rosbag play ~/Downloads/test.bag --loop
+```
+
+- Open a new terminal and execute (behaviour tree visualization):
+
+```bash
+rosrun rqt_py_trees rqt_py_trees
+```
+
+- In PyCharm, go to robokudo/robokudo/scripts/ and either ‘run’ or  ‘debug’ main.py. If you would like to specify a specific Analysis Engine you want to run, supply the _ae parameter to the run configuration. Example: `_ae=mydemo
+
+

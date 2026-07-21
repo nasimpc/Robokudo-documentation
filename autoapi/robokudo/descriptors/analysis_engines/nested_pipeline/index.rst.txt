@@ -1,0 +1,88 @@
+robokudo.descriptors.analysis_engines.nested_pipeline
+=====================================================
+
+.. py:module:: robokudo.descriptors.analysis_engines.nested_pipeline
+
+.. autoapi-nested-parse::
+
+   Analysis engine demonstrating nested pipeline functionality.
+
+   This module provides an analysis engine that demonstrates how to create and use
+   nested pipelines within the main processing pipeline. It implements a main pipeline
+   with a nested belief state pipeline that runs in parallel.
+
+   The pipeline implements the following functionality:
+
+   * Main pipeline with Kinect camera input
+   * Nested belief state pipeline with counting annotators
+   * Conditional execution based on belief state
+   * Visualization redraw control
+
+   .. note::
+       This is a demonstration pipeline that shows how to structure complex
+       processing flows using nested pipelines and conditional execution.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.analysis_engines.nested_pipeline.AnalysisEngine
+
+
+Module Contents
+---------------
+
+.. py:class:: AnalysisEngine
+
+   Bases: :py:obj:`robokudo.analysis_engine.AnalysisEngineInterface`
+
+
+   Analysis engine demonstrating nested pipeline architecture.
+
+   This class implements a pipeline that combines a main processing pipeline
+   with a nested belief state pipeline. It demonstrates how to structure
+   complex processing flows using nested pipelines and conditional execution.
+
+   The pipeline includes:
+
+   * Main pipeline with camera data processing
+   * Nested belief state pipeline with counting annotators
+   * Conditional execution control
+   * Pipeline redraw functionality
+
+   .. note::
+       The nested pipeline uses counting annotators to simulate belief state
+       processing, with configurable success/failure conditions.
+
+
+   .. py:method:: name() -> str
+
+      Get the name of the analysis engine.
+
+      :return: The name identifier of this analysis engine
+      :rtype: str
+
+
+
+   .. py:method:: implementation() -> robokudo.pipeline.Pipeline
+
+      Create a pipeline with nested belief state processing.
+
+      This method constructs a processing pipeline that includes both a main
+      pipeline for camera data processing and a nested pipeline for belief
+      state management. The nested pipeline uses counting annotators to
+      simulate belief state processing.
+
+      The nested pipeline configuration:
+
+      * Annotator A: Runs for 9 iterations, succeeds on 10th
+      * Annotator B: Runs for 9 iterations, succeeds on 10th
+      * Success check every 2 iterations
+
+      :return: The configured pipeline with nested belief state processing
+
+
+

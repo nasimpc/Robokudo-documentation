@@ -1,0 +1,158 @@
+robokudo.annotators.annotation_writer
+=====================================
+
+.. py:module:: robokudo.annotators.annotation_writer
+
+.. autoapi-nested-parse::
+
+   Annotation writer classes for RoboKudo.
+
+   This module provides annotators for writing and publishing annotations.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.annotation_writer.AnnotationStorageWriter
+   robokudo.annotators.annotation_writer.AnnotationPublisherWriter
+
+
+Module Contents
+---------------
+
+.. py:class:: AnnotationStorageWriter(name: str = 'AnnotationStorageWriter', descriptor: AnnotationStorageWriter = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for writing annotations to storage in JSON format.
+
+   This annotator writes the current CAS annotations to files in a specified
+   directory, using JSON serialization.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for annotation storage writer.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring annotation storage.
+
+
+         .. py:attribute:: basic_path
+            :type:  str
+            :value: 'annotations'
+
+
+            Base directory for storing annotations, defaults to "annotations
+
+
+
+         .. py:attribute:: suffix
+            :type:  str
+            :value: 'json'
+
+
+            File extension for annotation files, defaults to "json
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: counter
+      :type:  int
+      :value: -1
+
+
+      Counter for generating sequential filenames
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Write current CAS annotations to storage.
+
+      Serializes the current annotations to JSON and writes them to a file
+      in the configured directory. Files are numbered sequentially.
+
+      :return: SUCCESS after writing annotations
+
+
+
+.. py:class:: AnnotationPublisherWriter(name: str = 'AnnotationPublisherWriter', descriptor: AnnotationPublisherWriter = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for publishing annotations via ROS topics.
+
+   This annotator publishes the current CAS annotations as JSON-encoded
+   strings over a ROS topic.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for annotation publisher.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring annotation publishing.
+
+
+         .. py:attribute:: topic_name
+            :type:  str
+            :value: '/annotations'
+
+
+            Name of the ROS topic to publish on, defaults to "/annotations
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: pub
+      :type:  typing_extensions.Optional[rclpy.publisher.Publisher]
+      :value: None
+
+
+      ROS publisher for annotations
+
+
+
+   .. py:method:: setup(timeout: float) -> None
+
+      Set up the ROS2 publisher for annotation messages.
+
+      :param timeout: Maximum time to wait for setup completion
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Publish current CAS annotations.
+
+      Serializes the current annotations to JSON and publishes them
+      on the configured ROS topic.
+
+      :return: SUCCESS after publishing annotations
+
+
+

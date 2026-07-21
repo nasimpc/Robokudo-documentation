@@ -1,0 +1,283 @@
+robokudo.io.storage
+===================
+
+.. py:module:: robokudo.io.storage
+
+.. autoapi-nested-parse::
+
+   MongoDB storage interface for RoboKudo.
+
+   This module provides the core interface between RoboKudo and MongoDB for storing
+   and retrieving sensor data and annotations. It supports:
+
+   * Codec-driven serialization of CAS views
+   * KRROOD-backed annotation serialization
+   * Configurable view persistence boundaries
+   * Thread-safe database operations
+
+   The module handles:
+
+   * RGB-D camera data
+   * Camera calibration and transform objects
+   * Custom RoboKudo types
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.storage.Storage
+
+
+Module Contents
+---------------
+
+.. py:class:: Storage(db_name: str)
+
+   Main interface between RoboKudo and MongoDB.
+
+   This class holds the main interface code between RoboKudo and the MongoDB database.
+   It stores sensor data and CAS views by converting specialized types (NumPy arrays,
+   ROS messages, etc.) into a BSON‑encodable dictionary format.
+
+
+   .. py:attribute:: BLACKLISTED_TYPES
+      :type:  typing_extensions.Tuple[type, Ellipsis]
+
+
+   .. py:attribute:: VIEW_COLLECTION_NAME
+      :type:  str
+      :value: 'cas_views'
+
+
+
+   .. py:attribute:: cas_view_codecs
+
+
+   .. py:method:: is_blacklisted(obj: typing_extensions.Any) -> bool
+      :staticmethod:
+
+
+      Check if an object is of a blacklisted type.
+
+      :param obj: Object to check
+      :return: True if object type is blacklisted, False otherwise
+
+
+
+   .. py:method:: instantiate_mongo_client() -> pymongo.MongoClient
+      :staticmethod:
+
+
+      Create a MongoDB client instance.
+
+      Uses environment variables RK_MONGO_HOST and RK_MONGO_PORT if set, otherwise
+      defaults to localhost:27017.
+
+      :return: MongoDB client instance
+
+
+
+   .. py:class:: Reader(db_name: str)
+
+      Deprecated cursor-based MongoDB reader.
+
+      .. deprecated:: Use ListReader instead for better pymongo compatibility
+
+
+      .. py:attribute:: db_reader
+
+
+      .. py:method:: reset_cursor() -> None
+
+         Reset the cursor to the start of the collection.
+
+
+
+      .. py:method:: collection_has_frames() -> bool
+
+         Check if collection has any frames.
+
+         :return: True if frames exist, False otherwise
+
+
+
+      .. py:method:: cursor_has_frames() -> bool
+
+         Check if cursor has more frames.
+
+         :return: True if more frames exist, False otherwise
+
+
+
+      .. py:method:: get_next_frame() -> typing_extensions.Optional[dict]
+
+         Get the next frame from the cursor.
+
+         :return: Next frame data or None if no more frames
+
+
+
+
+   .. py:class:: ListReader(db_name: str)
+
+      List-based MongoDB reader.
+
+      This class reads all matching records into a list for iteration, providing
+      better compatibility across pymongo versions and simpler cursor management.
+
+
+      .. py:attribute:: db_reader
+
+         MongoDB database instance.
+
+
+
+      .. py:attribute:: index
+         :type:  typing_extensions.Optional[int]
+         :value: None
+
+
+         Current position in data list.
+
+
+
+      .. py:attribute:: data
+         :type:  typing_extensions.List[typing_extensions.Dict[typing_extensions.Any, typing_extensions.Any]]
+         :value: []
+
+
+         List of loaded documents.
+
+
+
+      .. py:method:: reset_cursor() -> None
+
+         Reset the reader state.
+
+         Clears and reloads all documents from the database.
+
+
+
+      .. py:method:: cursor_has_frames() -> bool
+
+         Check if more frames are available.
+
+         :return: True if more frames exist, False otherwise
+
+
+
+      .. py:method:: get_next_frame() -> typing_extensions.Optional[typing_extensions.Dict[typing_extensions.Any, typing_extensions.Any]]
+
+         Get the next frame from the data list.
+
+         :return: Next frame data or None if no more frames
+
+
+
+
+   .. py:attribute:: db_name
+
+      Name of the MongoDB database.
+
+
+
+   .. py:attribute:: client
+      :type:  pymongo.MongoClient
+
+      MongoDB client connection.
+
+
+
+   .. py:attribute:: db
+      :type:  pymongo.synchronous.database.Database
+
+      MongoDB database instance.
+
+
+
+   .. py:method:: drop_database() -> None
+
+      Drop the entire database.
+
+
+
+   .. py:method:: encode_view_document(view_name: str, view_value: typing_extensions.Any) -> typing_extensions.Dict[str, typing_extensions.Any]
+      :staticmethod:
+
+
+      Encode one CAS view value into a serializable view document.
+
+
+
+   .. py:method:: decode_view_document(view_document: typing_extensions.Dict[str, typing_extensions.Any]) -> tuple[str, typing_extensions.Any]
+      :staticmethod:
+
+
+      Decode one serialized view document into a CAS view value.
+
+
+
+   .. py:method:: store_views_in_mongo(cas_dict: typing_extensions.Dict[str, typing_extensions.Any]) -> None
+
+      Store CAS views in MongoDB.
+
+      Persist CAS views in a dedicated view collection and store references to those
+      view records in ``cas_dict["view_ids"]``.
+
+      :param cas_dict: CAS as a dictionary to persist
+
+
+
+   .. py:method:: load_views_from_mongo_in_cas(cas_document: typing_extensions.Dict[str, typing_extensions.Any]) -> None
+
+      Load views from MongoDB into a CAS document.
+
+      Retrieve and decode each persisted view referenced in ``view_ids``.
+
+      :param cas_document: CAS document to update with loaded views
+
+
+
+   .. py:method:: load_annotations_from_mongo_in_cas(cas_document: typing_extensions.Dict[str, typing_extensions.Any], cas: robokudo.cas.CAS) -> None
+      :staticmethod:
+
+
+      Load annotations from MongoDB into a CAS.
+
+      Restore the annotations from the database and insert them into the CAS. If no
+      (pickled) annotations are available, cas will be untouched.
+
+      :param cas_document: A dict representing a frame of a CAS in the database
+      :param cas: The 'robokudo.cas.CAS' instance where the annotations shall be
+          inserted to
+
+
+
+   .. py:method:: generate_dict_from_real_cas(cas: robokudo.cas.CAS) -> typing_extensions.Dict[str, typing_extensions.Any]
+      :staticmethod:
+
+
+      Convert a CAS instance to a MongoDB-compatible dictionary.
+
+      Generate a dictionary representation from CAS that is ready for storage. All
+      views are validated through the active view codec registry.
+
+      :param cas: Input CAS that should be used to create a dict-representation of it.
+      :return: A dict with references to parts of the input CAS.
+
+
+
+   .. py:method:: store_cas_dict(cas_dict: typing_extensions.Dict[str, typing_extensions.Any]) -> pymongo.results.InsertOneResult
+
+      Store a CAS dictionary in MongoDB.
+
+      Stores the views and creates a CAS document in MongoDB that references them.
+
+      :param cas_dict: Dictionary representation of a CAS
+      :return: MongoDB ObjectId of the stored CAS document
+
+
+

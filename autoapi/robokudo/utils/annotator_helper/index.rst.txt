@@ -1,0 +1,175 @@
+robokudo.utils.annotator_helper
+===============================
+
+.. py:module:: robokudo.utils.annotator_helper
+
+.. autoapi-nested-parse::
+
+   Annotator utility functions for Robokudo.
+
+   This module provides helper functions for working with annotators and their data.
+   It supports:
+
+   * Coordinate frame transformations
+   * Point cloud manipulation
+   * Image processing
+   * Bounding box visualization
+   * Camera parameter handling
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.annotator_helper.transform_pose_from_cam_to_world
+   robokudo.utils.annotator_helper.transform_pose_from_world_to_cam
+   robokudo.utils.annotator_helper.transform_cloud_from_cam_to_world
+   robokudo.utils.annotator_helper.transform_cloud_from_world_to_cam
+   robokudo.utils.annotator_helper.get_cam_to_world_transform_matrix
+   robokudo.utils.annotator_helper.get_world_to_cam_transform_matrix
+   robokudo.utils.annotator_helper.draw_bounding_boxes_from_object_hypotheses
+   robokudo.utils.annotator_helper.scale_cam_intrinsics
+   robokudo.utils.annotator_helper.get_color_image
+   robokudo.utils.annotator_helper.resize_mask
+   robokudo.utils.annotator_helper.generate_source_name
+
+
+Module Contents
+---------------
+
+.. py:function:: transform_pose_from_cam_to_world(cas: robokudo.cas.CAS, pose: robokudo.types.annotation.PoseAnnotation) -> robokudo.types.annotation.PoseAnnotation
+
+   Transform pose from camera to world coordinates.
+
+   Uses transform from CAS to convert pose from camera frame to world frame.
+
+   :param cas: CAS containing camera-to-world transform
+   :param pose: Pose in camera coordinates
+   :return: Transformed pose in world coordinates
+   :raises AssertionError: If camera-to-world transform not in CAS
+
+
+.. py:function:: transform_pose_from_world_to_cam(cas: robokudo.cas.CAS, pose: robokudo.types.annotation.PoseAnnotation) -> robokudo.types.annotation.PoseAnnotation
+
+   Transform pose from world to camera coordinates.
+
+   Uses transform from CAS to convert pose from world frame to camera frame.
+
+   :param cas: CAS containing camera-to-world transform
+   :param pose: Pose in world coordinates
+   :return: Transformed pose in camera coordinates
+   :raises AssertionError: If camera-to-world transform not in CAS
+
+
+.. py:function:: transform_cloud_from_cam_to_world(cas: robokudo.cas.CAS, cloud: open3d.geometry.PointCloud, transform_inplace: bool = False) -> open3d.geometry.PointCloud
+
+   Transform point cloud from camera to world coordinates.
+
+   Uses transform from CAS to convert point cloud from camera frame to world frame.
+
+   :param cas: CAS containing camera-to-world transform
+   :param cloud: Point cloud in camera coordinates
+   :param transform_inplace: Whether to modify input cloud directly
+   :return: Transformed point cloud in world coordinates
+   :raises KeyError: If camera-to-world transform not in CAS
+
+
+.. py:function:: transform_cloud_from_world_to_cam(cas: robokudo.cas.CAS, cloud: open3d.geometry.PointCloud, transform_inplace: bool = False) -> open3d.geometry.PointCloud
+
+   Transform point cloud from world to camera coordinates.
+
+   Uses transform from CAS to convert point cloud from world frame to camera frame.
+
+   :param cas: CAS containing camera-to-world transform
+   :param cloud: Point cloud in world coordinates
+   :param transform_inplace: This bool will control if the given 'cloud' is deepcopied
+       before the transformation is done. Set this value to True, if it is OK that the
+       given cloud variable is changed. Set this to value to False (default), if a
+       deepcopy should performed beforehand.
+   :return: Transformed point cloud in camera coordinates
+   :raises KeyError: If camera-to-world transform not in CAS
+
+
+.. py:function:: get_cam_to_world_transform_matrix(cas: robokudo.cas.CAS) -> numpy.typing.NDArray
+
+   Get camera-to-world transform matrix from CAS.
+
+   :param cas: CAS containing camera-to-world transform
+   :return: 4x4 camera-to-world transform matrix
+   :raises KeyError: If camera-to-world transform not in CAS
+
+
+.. py:function:: get_world_to_cam_transform_matrix(cas: robokudo.cas.CAS) -> numpy.typing.NDArray
+
+   Get world-to-camera transform matrix from CAS.
+
+   :param cas: CAS containing camera-to-world transform
+   :return: 4x4 world-to-camera transform matrix
+   :raises KeyError: If camera-to-world transform not in CAS
+
+
+.. py:function:: draw_bounding_boxes_from_object_hypotheses(img: numpy.typing.NDArray, object_hypotheses: typing_extensions.List[robokudo.types.scene.ObjectHypothesis], text_function: typing_extensions.Callable[[robokudo.types.scene.ObjectHypothesis], str]) -> None
+
+   Draw bounding boxes for object hypotheses on the image.
+
+   Draws rectangles and labels for each object hypothesis ROI.
+
+   :param img: Input image to draw on
+   :param object_hypotheses: List of object hypotheses
+   :param text_function: Function to generate label text from hypothesis
+
+
+.. py:function:: scale_cam_intrinsics(annotator: robokudo.annotators.core.BaseAnnotator) -> None
+
+   Scale camera intrinsics based on color-to-depth ratio.
+
+   If the color2depth ratio is not 1,1, we will usually scale the color image to the
+   same size the depth image has. This also requires an adjustment of the cam
+   intrinsics.
+
+   If color2depth ratio is not 1,1, we'll scale the cam intrinsics in annotator. You
+   need to have a self.cam_intrinsics variable!
+
+   :param annotator: Annotator containing camera parameters
+
+
+.. py:function:: get_color_image(annotator: robokudo.annotators.core.BaseAnnotator) -> numpy.typing.NDArray
+
+   Load and potentially resize the color image from the CAS.
+
+   This is useful, as the resolution of the RGB image might differ from the resolution
+   of the depth image. This function resizes the color image to the resolution of the
+   depth image.
+
+   This is important later on when we want to create a point cloud from the depth image
+   and the color image and crop the point cloud to the bounding box of the object
+   hypothesis, which is defined in the color image coordinate system.
+
+   :param annotator: Annotator to get image from
+   :return: The resized color image.
+
+
+.. py:function:: resize_mask(annotator: robokudo.annotators.core.BaseAnnotator, mask: numpy.typing.NDArray) -> numpy.typing.NDArray
+
+   Resize mask to match color image resolution.
+
+   The mask is potentially created after the input image has been scaled down (see
+   get_scaled_color_image_for_depth_image, we usually scale the RGB down). If that's
+   the case, we have to bring it back to the original resolution. This method checks
+   some usual error cases and decides if we need to resize at all.
+
+   :param annotator: Annotator containing resolution info
+   :param mask: A binary image.
+   :return: The scaled version of mask, according to the COLOR2DEPTH_RATIO.
+
+
+.. py:function:: generate_source_name(annotator: robokudo.annotators.core.BaseAnnotator) -> str
+
+   Helper to create the standard name for the 'source' field of Annotations.
+
+   :param annotator: The annotator to generate the source name for
+   :return: The source name as string
+
+

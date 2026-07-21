@@ -1,0 +1,59 @@
+robokudo.gui
+============
+
+.. py:module:: robokudo.gui
+
+.. autoapi-nested-parse::
+
+   GUI-related behavior tree components for RoboKudo.
+
+   This module provides behaviors that control GUI rendering and visualization in RoboKudo
+   pipelines. The behaviors can be used to trigger redrawing of annotator outputs and
+   manage pipeline visualization state.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.gui.SetPipelineRedraw
+
+
+Module Contents
+---------------
+
+.. py:class:: SetPipelineRedraw(name: str = 'SetPipelineRedraw')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   A behavior that triggers GUI redraw of pipeline outputs.
+
+   This behavior indicates that the GUI output of the owning Pipeline
+   should render its AnnotatorOutputs in the next tick(). Useful when
+   you want to render current AnnotatorOutputs while the Pipeline is
+   still running.
+
+   .. note::
+       This behavior must be added directly as a child to a
+       :class:`robokudo.pipeline.Pipeline` node.
+
+
+   .. py:attribute:: rk_logger
+      :value: None
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Execute the behavior's update step.
+
+      Checks if the parent is a Pipeline and sets its redraw flag. Returns SUCCESS if
+      redraw was set, FAILURE if parent is not a Pipeline.
+
+      :return: Behavior execution status
+
+
+

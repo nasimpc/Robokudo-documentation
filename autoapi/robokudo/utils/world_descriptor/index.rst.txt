@@ -1,0 +1,27 @@
+robokudo.utils.world_descriptor
+===============================
+
+.. py:module:: robokudo.utils.world_descriptor
+
+.. autoapi-nested-parse::
+
+   World descriptor utilities for Robokudo.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.world_descriptor.load_world_descriptor
+
+
+Module Contents
+---------------
+
+.. py:function:: load_world_descriptor(annotator: robokudo.annotators.core.BaseAnnotator) -> robokudo.world_descriptor.BaseWorldDescriptor
+
+   Load world descriptor from annotator parameters.
+
+

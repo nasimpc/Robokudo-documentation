@@ -1,0 +1,513 @@
+robokudo.descriptors
+====================
+
+.. py:module:: robokudo.descriptors
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/robokudo/descriptors/analysis_engines/index
+   /autoapi/robokudo/descriptors/camera_configs/index
+   /autoapi/robokudo/descriptors/worlds/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.CollectionReaderAnnotator
+   robokudo.descriptors.CameraConfigRegistry
+   robokudo.descriptors.KinectCameraInterface
+   robokudo.descriptors.StorageReaderInterface
+   robokudo.descriptors.OpenCVCameraWithoutDepthInterface
+   robokudo.descriptors.RGBDFileReaderInterface
+   robokudo.descriptors.CrDescriptorFactory
+
+
+Package Contents
+----------------
+
+.. py:class:: CollectionReaderAnnotator(descriptor: CollectionReaderAnnotator, name: str = 'CollectionReader')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Sensor data collection and CAS initialization.
+
+   This annotator:
+
+   * Reads sensor data from camera interfaces
+   * Initializes new CAS instances
+   * Manages multiple collection readers
+   * Monitors data availability
+   * Preserves existing queries
+
+   .. note::
+      Uses separate camera interfaces for different sensor types.
+
+
+   .. py:class:: Descriptor(camera_config: robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig, camera_interface: robokudo.io.camera_interface.CameraInterface)
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for collection reader.
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: collection_readers
+      :type:  typing_extensions.List[CollectionReaderAnnotator]
+
+
+   .. py:attribute:: start_timer
+      :type:  typing_extensions.Optional[float]
+      :value: None
+
+
+
+   .. py:attribute:: iterations_since_last_data
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: iterations_since_last_data_warn_threshold
+      :type:  int
+      :value: 40
+
+
+
+   .. py:method:: initialise() -> None
+
+      Initialize the collection reader.
+
+      Called when:
+
+      * First tick is received
+      * Status changes from non-running
+
+      Clears feedback messages for all children.
+
+
+
+   .. py:method:: add_collection_reader(descriptor: CollectionReaderAnnotator) -> None
+
+      Add another collection reader descriptor.
+
+      :param descriptor: Configuration descriptor for additional reader
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process sensor data and update CAS.
+
+      The method:
+
+      * Checks for new data from all readers
+      * Creates new CAS when data available
+      * Preserves existing queries
+      * Updates feedback messages
+      * Monitors data availability
+
+      :return: SUCCESS if data processed, RUNNING if waiting
+
+
+
+   .. py:method:: terminate(new_status: py_trees.common.Status) -> None
+
+      Handle behavior termination.
+
+      :param new_status: New status (SUCCESS, FAILURE or INVALID)
+
+
+
+.. py:class:: CameraConfigRegistry
+
+   Registry for camera config classes.
+
+
+   .. py:attribute:: _registry
+      :type:  typing_extensions.Dict[str, typing_extensions.Type[robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig]]
+
+      Map of camera config registry name to their class.
+
+
+
+   .. py:method:: register_all(package_name: str = 'robokudo.descriptors.camera_configs') -> None
+      :classmethod:
+
+
+      Register all camera configs of the given package to the camera config registry.
+
+      :param package_name: The name of the package to register camera configs from.
+      :raises ImportError: If the given package cannot be imported.
+      :raises ValueError: If there is a duplicate registry name with conflicting
+          classes.
+
+
+
+   .. py:method:: create_config(config_type: str, **kwargs: typing_extensions.Any) -> typing_extensions.Any
+      :classmethod:
+
+
+      Create a camera config instance based on the given config type.
+
+      :param config_type: The type of the camera config to create.
+      :raises ValueError: If the given config type is not registered.
+      :raises TypeError: If the keyword arguments are invalid for the camera config
+          class.
+
+
+
+.. py:class:: KinectCameraInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`ROSCameraInterface`
+
+
+   Interface for Kinect-style RGB-D cameras using ROS.
+
+   This class implements a camera interface for RGB-D cameras that publish color and
+   depth images through ROS topics. It supports both raw and compressed image formats.
+
+
+   .. py:attribute:: color_subscriber
+      :type:  message_filters.Subscriber
+
+      Color image subscriber.
+
+
+
+   .. py:attribute:: depth_subscriber
+      :type:  message_filters.Subscriber
+
+      Depth image subscriber.
+
+
+
+   .. py:attribute:: cam_info_subscriber
+      :type:  message_filters.Subscriber
+
+      Camera info subscriber.
+
+
+
+   .. py:attribute:: color
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Latest color image.
+
+
+
+   .. py:attribute:: depth
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Latest depth image.
+
+
+
+   .. py:attribute:: cam_info
+      :type:  typing_extensions.Optional[sensor_msgs.msg.CameraInfo]
+      :value: None
+
+
+      Latest camera info message.
+
+
+
+   .. py:attribute:: cam_intrinsic
+      :type:  typing_extensions.Optional[open3d.camera.PinholeCameraIntrinsic]
+      :value: None
+
+
+      Open3D camera intrinsics.
+
+
+
+   .. py:attribute:: color2depth_ratio
+      :type:  typing_extensions.Optional[typing_extensions.Tuple[float, float]]
+      :value: None
+
+
+      Ratio between color and depth image sizes.
+
+
+
+   .. py:attribute:: timestamp
+      :type:  typing_extensions.Optional[float]
+      :value: None
+
+
+      Latest message timestamp.
+
+
+
+   .. py:attribute:: lock
+      :type:  threading.Lock
+
+      Thread synchronization lock.
+
+
+
+   .. py:method:: compressed_depth_configured() -> bool
+
+      Check if compressed depth images are configured.
+
+      :return: True if compressed depth is configured, False otherwise
+
+
+
+   .. py:method:: compressed_color_configured() -> bool
+
+      Check if compressed color images are configured.
+
+      :return: True if compressed color is configured, False otherwise
+
+
+
+   .. py:method:: get_node() -> rclpy.node.Node
+
+
+   .. py:method:: blackhole_callback(data: typing_extensions.Any) -> None
+
+      This callback is just a dummy to receive data coming from a workaround
+      subscription to handle problems with the ApproximateTimeSynchronizer.
+
+      :param data: Dummy data
+
+
+
+   .. py:method:: callback(color_data: typing_extensions.Union[sensor_msgs.msg.Image, sensor_msgs.msg.CompressedImage], depth_data: typing_extensions.Optional[typing_extensions.Union[sensor_msgs.msg.Image, sensor_msgs.msg.CompressedImage]] = None, cam_info: typing_extensions.Optional[sensor_msgs.msg.CameraInfo] = None) -> None
+
+      Process synchronized camera data.
+
+      This callback handles incoming color, depth, and camera info messages. It
+      converts the data to OpenCV format and stores it for later use.
+
+      TODO make this generic. handle the encoding and order properly. For standard and
+      compressed images. this might also depend on the fix of image_transport_plugins
+      being published as a package. Startpoint can be found at the bottom of this
+      method.
+
+      :param color_data: Color image message
+      :param depth_data: Depth image message
+      :param cam_info: Camera calibration message
+
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      This method is supposed to read in, convert (if needed) and put the data into
+      the CAS. If you are running a CameraInterface which is getting data via callback
+      methods, please make sure to keep callbacks light and do the main conversion
+      work here! Callbacks should be short.
+
+      :param cas: The CAS where the data should be placed in
+
+
+
+.. py:class:: StorageReaderInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.io.camera_interface.CameraInterface`
+
+
+   A camera interface for reading data from MongoDB storage.
+
+   This interface reads sensor data and annotations that were previously stored using
+   the StorageWriter annotator. It handles data deserialization and restoration of the
+   Common Analysis Structure (CAS) views.
+
+
+   .. py:attribute:: storage
+      :type:  robokudo.io.storage.Storage
+
+      MongoDB storage interface.
+
+
+
+   .. py:attribute:: reader
+      :type:  robokudo.io.storage.Storage.ListReader
+
+      List-based reader for MongoDB data.
+
+
+
+   .. py:method:: has_new_data() -> bool
+
+      Check if more data is available to read.
+
+      Handles looping behavior based on camera configuration and maintains cursor
+      position in the data sequence.
+
+      :return: True if more data is available, False otherwise
+
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      Update the Common Analysis Structure with data from storage.
+
+      This method:
+      * Retrieves the next frame from storage
+      * Restores views and annotations
+      * Updates camera intrinsics
+      * Sets depth availability flag
+
+      :param cas: Common Analysis Structure to update
+
+
+
+.. py:class:: OpenCVCameraWithoutDepthInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.io.camera_interface.CameraInterface`
+
+
+   An openCV camera without depth information.
+
+   An OpenCV-based interface for RGB-only cameras and video sources.
+
+   This class handles various types of RGB input sources through OpenCV:
+   * Live camera feeds (USB webcams, IP cameras)
+   * Video file playback
+   * Single image or image sequence loading
+
+   Supports features like:
+   * Automatic input type detection
+   * Configurable frame looping
+   * Image normalization
+   * Static camera calibration
+
+
+   .. py:attribute:: video_capture
+      :type:  cv2.VideoCapture
+
+      OpenCV video capture object.
+
+
+
+   .. py:attribute:: device_driver_flag
+      :type:  int
+
+      OpenCV-specific driver flags.
+
+
+
+   .. py:attribute:: stream_type
+      :type:  int
+      :value: 0
+
+
+      Type of input (video/camera/image)
+
+
+
+   .. py:attribute:: _loop_counter
+      :type:  int
+
+      Number of remaining playback loops.
+
+      Only works on video/image files.
+
+
+
+   .. py:attribute:: _backup_color
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Backup of image for single-image file mode.
+
+
+
+   .. py:method:: has_new_data() -> bool
+
+      Check if new frame data is available.
+
+      For video/camera streams, attempts to grab the next frame. For single images,
+      checks if backup image is available.
+
+      :return: True if new data is available, False otherwise
+
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      Update the Common Analysis Structure with latest frame data.
+
+      This method:
+      * Retrieves the next frame from video/camera or backup
+      * Handles looping behavior for videos and images
+      * Applies optional contrast/brightness normalization
+      * Updates the CAS with frame and camera data
+
+      :param cas: Common Analysis Structure to update
+
+
+
+.. py:class:: RGBDFileReaderInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`FileReaderInterface`
+
+
+   Specialized file reader interface for RGB-D camera data.
+
+   This class extends FileReaderInterface to handle the specific case of
+   reading RGB-D camera data, including color images, depth images, and
+   camera calibration information.
+
+   Inherits all instance variables from FileReaderInterface.
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      Set the next RGB-D data frame into the CAS.
+
+      This method:
+      * Reads the next color and depth images
+      * Applies any necessary fixes (e.g., Kinect height fix)
+      * Sets camera calibration and transformation data
+      * Updates the CAS with all loaded data
+
+      :param cas: Common Analysis Structure to update
+
+
+
+.. py:class:: CrDescriptorFactory
+
+   Factory class for creating CollectionReader descriptors.
+
+
+   .. py:attribute:: _camera_interface_types
+
+      Mapping of camera names to their corresponding camera interface types.
+
+
+
+   .. py:method:: create_descriptor(camera: str, **kwargs: typing_extensions.Any) -> robokudo.annotators.collection_reader.CollectionReaderAnnotator.Descriptor
+      :staticmethod:
+
+
+      Create a CollectionReader descriptor for the specified camera.
+
+      :param camera: The name of the camera to create a descriptor for.
+      :param kwargs: Additional keyword arguments to pass to the camera configuration.
+      :returns: A CollectionReader descriptor for the specified camera.
+      :raises ValueError: If the given camera config name is not registered in the
+          camera config registry.
+      :raises TypeError: If the keyword arguments are invalid for the camera config
+          class.
+
+
+

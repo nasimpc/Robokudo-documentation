@@ -1,0 +1,85 @@
+robokudo.utils.decorators
+=========================
+
+.. py:module:: robokudo.utils.decorators
+
+.. autoapi-nested-parse::
+
+   Decorator utilities for RoboKudo annotators.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.decorators.timer_decorator
+   robokudo.utils.decorators.record_time
+   robokudo.utils.decorators.publish_variables
+
+
+Module Contents
+---------------
+
+.. py:function:: timer_decorator(func: typing_extensions.Callable[[Ellipsis], typing_extensions.Any]) -> typing_extensions.Callable[[Ellipsis], typing_extensions.Any]
+
+   Log execution time of decorated function.
+
+   :param func: Function to be timed
+   :return: Wrapped function that logs execution time
+
+   :Example:
+
+   .. code-block:: python
+
+       @timer_decorator
+       def my_function():
+           # Function code here
+           pass
+
+   .. note::
+       Uses rk_logger if available, otherwise prints to stdout
+
+
+.. py:function:: record_time(func: typing_extensions.Callable[[Ellipsis], typing_extensions.Any]) -> typing_extensions.Callable[[Ellipsis], typing_extensions.Any]
+
+   Record execution time of annotator method.
+
+   :param func: Annotator method to time
+   :return: Wrapped method that records execution time
+
+   :Example:
+
+   .. code-block:: python
+
+       @record_time
+       def compute(self):
+           # Method code here
+           pass
+
+   .. note::
+       Only works on annotator instance methods
+
+
+.. py:function:: publish_variables(func: typing_extensions.Callable[[Ellipsis], typing_extensions.Any]) -> typing_extensions.Callable[[Ellipsis], typing_extensions.Any]
+
+   Publish annotator variables after method execution.
+
+   :param func: Annotator method to wrap
+   :return: Wrapped method that publishes variables
+   :raises AssertionError: If not used on BaseAnnotator instance method
+
+   :Example:
+
+   .. code-block:: python
+
+       @publish_variables
+       def update(self):
+           # Method code here
+           pass
+
+   .. note::
+       Only works on BaseAnnotator instance methods
+
+

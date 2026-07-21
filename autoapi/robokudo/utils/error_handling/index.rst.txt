@@ -1,0 +1,116 @@
+robokudo.utils.error_handling
+=============================
+
+.. py:module:: robokudo.utils.error_handling
+
+.. autoapi-nested-parse::
+
+   Error handling utilities for RoboKudo.
+
+   This module provides error handling utilities for behavior trees.
+
+   :module: error_handling :synopsis: Error handling utilities for behavior trees
+   :moduleauthor: RoboKudo Team
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.error_handling.raise_to_blackboard
+   robokudo.utils.error_handling.has_blackboard_exception
+   robokudo.utils.error_handling.get_blackboard_exception
+   robokudo.utils.error_handling.clear_blackboard_exception
+   robokudo.utils.error_handling.catch_and_raise_to_blackboard
+
+
+Module Contents
+---------------
+
+.. py:function:: raise_to_blackboard(exception: typing_extensions.Optional[Exception]) -> None
+
+   Store exception in blackboard.
+
+   :param exception: Exception to store or None to clear
+
+   :Example:
+
+   .. code-block:: python
+
+       try:
+           # Some code that might raise
+           pass
+       except Exception as e:
+           raise_to_blackboard(e)
+
+
+.. py:function:: has_blackboard_exception() -> bool
+
+   Check if blackboard contains an exception.
+
+   :return: True if exception exists and is not None
+
+   :Example:
+
+   .. code-block:: python
+
+       if has_blackboard_exception():
+           # Handle exception
+           pass
+
+
+.. py:function:: get_blackboard_exception() -> typing_extensions.Optional[Exception]
+
+   Retrieve exception from blackboard.
+
+   :return: Stored exception or None if not found
+   :rtype: Exception or None
+
+   :Example:
+
+   .. code-block:: python
+
+       exc = get_blackboard_exception()
+       if exc is not None:
+           # Handle exception
+           pass
+
+
+.. py:function:: clear_blackboard_exception() -> None
+
+   Clear any stored exception from blackboard.
+
+   :Example:
+
+   .. code-block:: python
+
+       clear_blackboard_exception()
+       assert not has_blackboard_exception()
+
+
+.. py:function:: catch_and_raise_to_blackboard(function: typing_extensions.Callable[[Ellipsis], typing_extensions.Any]) -> typing_extensions.Union[py_trees.common.Status, typing_extensions.Callable]
+
+   Catch and store exceptions in blackboard.
+
+   This decorator is used to catch exceptions in Annotators to place them into the blackboard. Mostly useful in
+   analysis-engines that have a query-interface which should return a failure back to the action-server caller
+   if one of the Annotators yields an exception.
+
+   :param function: The update or compute method of the desired Annotator
+   :return: Exception that has been catched or found in the Blackboard or wrapped function that handles exceptions
+
+   :Example:
+
+   .. code-block:: python
+
+       @catch_and_raise_to_blackboard
+       def update(self) -> Status:
+           # Method code here
+           pass
+
+   .. warning::
+       Should not be used on ThreadedAnnotators
+
+

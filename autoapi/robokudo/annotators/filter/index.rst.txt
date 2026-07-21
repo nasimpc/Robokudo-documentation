@@ -1,0 +1,107 @@
+robokudo.annotators.filter
+==========================
+
+.. py:module:: robokudo.annotators.filter
+
+.. autoapi-nested-parse::
+
+   Filter annotator for RoboKudo.
+
+   This module provides an annotator for filtering annotations based on custom conditions.
+   It supports:
+
+   * Dynamic filtering through callable functions
+   * Custom filter arguments
+   * In-place annotation list modification
+   * Flexible condition evaluation
+
+   The module is used for:
+
+   * Annotation filtering
+   * Data preprocessing
+   * Result refinement
+   * Conditional processing
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.filter.FilterAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: FilterAnnotator(name: str = 'FilterAnnotator', descriptor: FilterAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for applying filter conditions to annotations.
+
+   This annotator applies a provided filter function to the current set of
+   annotations, modifying the annotation list in-place based on the filter results.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for filter annotator.
+
+      :ivar parameters: Filter parameters
+      :type parameters: FilterAnnotator.Descriptor.Parameters
+
+
+      .. py:class:: Parameters
+
+         Parameter container for filter configuration.
+
+
+         .. py:attribute:: func
+            :type:  typing_extensions.Optional[typing_extensions.Callable]
+            :value: None
+
+
+            Filter function to apply
+
+
+
+         .. py:attribute:: func_args
+            :type:  typing_extensions.Optional[typing_extensions.Tuple]
+            :value: None
+
+
+            Positional arguments for filter function
+
+
+
+         .. py:attribute:: func_kwargs
+            :type:  typing_extensions.Optional[typing_extensions.Dict]
+            :value: None
+
+
+            Keyword arguments for filter function
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Apply the filter function to current annotations.
+
+      The filter function is applied to each annotation with the configured
+      arguments. Only annotations that pass the filter are kept.
+
+      :return: SUCCESS status
+
+
+

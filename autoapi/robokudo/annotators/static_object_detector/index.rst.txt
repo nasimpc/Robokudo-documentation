@@ -1,0 +1,290 @@
+robokudo.annotators.static_object_detector
+==========================================
+
+.. py:module:: robokudo.annotators.static_object_detector
+
+.. autoapi-nested-parse::
+
+   Robokudo Static Object Detector Module
+
+   This module provides functionality for detecting objects at predefined locations
+   using either manually configured bounding boxes or a world descriptor.
+   The detector can create object hypotheses with poses, masks, and class labels.
+
+   .. note::
+      All poses are defined relative to the camera frame by default unless pose_in_world_coordinates is True.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.static_object_detector.StaticObjectMode
+   robokudo.annotators.static_object_detector.StaticObjectDetectorAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: StaticObjectMode
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Generic enumeration.
+
+   Derive from this class to define new enumerations.
+
+
+   .. py:attribute:: BOUNDING_BOX
+      :value: 'bounding_box'
+
+
+
+   .. py:attribute:: WORLD_DESCRIPTOR
+      :value: 'world_descriptor'
+
+
+
+.. py:class:: StaticObjectDetectorAnnotator(name: str = 'StaticObjectDetector', descriptor: StaticObjectDetectorAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Find a cluster based on a preconfigured Bounding Box, Pose and Class name.
+
+   This annotator can:
+
+   * Create object hypotheses at fixed locations using manual bounding box coordinates
+   * Read predefined objects from the shared world to automatically infer bounding boxes
+   * Generate pose annotations in either camera or world coordinates
+   * Create masks for the detected regions
+
+   .. note::
+      The detector supports both Euler angles and quaternions for rotation specification.
+      Parameters can be dynamically reconfigured through ROS dynamic reconfigure.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for the StaticObjectDetectorAnnotator.
+
+      Defines all configurable parameters including:
+
+      * Bounding box dimensions and position
+      * Object knowledge database settings
+      * Pose generation options
+      * Coordinate frame settings
+
+
+      .. py:class:: Parameters
+
+         Parameters controlling the static object detection behavior.
+
+
+         .. py:attribute:: bounding_box_x
+            :type:  int
+            :value: 1
+
+
+
+         .. py:attribute:: bounding_box_y
+            :type:  int
+            :value: 1
+
+
+
+         .. py:attribute:: bounding_box_width
+            :type:  int
+            :value: 10
+
+
+
+         .. py:attribute:: bounding_box_height
+            :type:  int
+            :value: 10
+
+
+
+         .. py:attribute:: mode
+            :type:  StaticObjectMode
+
+            Defines the mode which mainly decide which sources of information are used to generate the Object Hypothesis
+
+
+
+         .. py:attribute:: class_name
+            :type:  str
+            :value: 'unknown'
+
+
+            Define the class_name which is used for the object of interest
+            Only used for StaticObjectMode.BOUNDING_BOX
+
+
+
+         .. py:attribute:: class_names
+            :type:  typing_extensions.List[str]
+            :value: []
+
+
+            Used for StaticObjectMode.WORLD_DESCRIPTOR
+
+
+
+         .. py:attribute:: create_pose_annotation
+            :type:  bool
+            :value: False
+
+
+            If True a Pose will be created for the object. Pose is relative to the camera frame by default.
+
+            Only effective in Mode=StaticObjectDetectorAnnotator.Mode.WORLD_DESCRIPTOR
+
+
+
+         .. py:attribute:: create_bounding_box_annotation
+            :type:  bool
+            :value: False
+
+
+            If True a BoundingBox will be created for the object.
+
+            Only effective in Mode=StaticObjectDetectorAnnotator.Mode.WORLD_DESCRIPTOR
+
+
+
+         .. py:attribute:: create_mask
+            :type:  bool
+            :value: True
+
+
+            If this is a true, a mask based on the ROI will be generated that marks every pixel as ON
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: color
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+
+   .. py:attribute:: depth
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+
+   .. py:attribute:: cloud
+      :type:  typing_extensions.Optional[open3d.geometry.PointCloud]
+      :value: None
+
+
+
+   .. py:attribute:: cam_intrinsics
+      :value: None
+
+
+
+   .. py:attribute:: object_body
+      :type:  typing_extensions.Optional[semantic_digital_twin.world_description.world_entity.Body]
+      :value: None
+
+
+
+   .. py:attribute:: object_bodies_by_name
+      :type:  typing_extensions.Dict[str, semantic_digital_twin.world_description.world_entity.Body]
+
+
+   .. py:method:: detect_from_bb_descriptor(color_rgb: numpy.typing.NDArray) -> robokudo.types.scene.ObjectHypothesis
+
+      Detect only based on the BB.
+
+      :param color_rgb: Image in RGB order
+
+
+
+   .. py:method:: _body_name(body: semantic_digital_twin.world_description.world_entity.Body) -> str
+      :staticmethod:
+
+
+
+   .. py:method:: _select_body_shape_collection(body: semantic_digital_twin.world_description.world_entity.Body)
+      :staticmethod:
+
+
+
+   .. py:method:: _get_body_bb_size_and_center(body: semantic_digital_twin.world_description.world_entity.Body) -> tuple[numpy.ndarray, numpy.ndarray] | None
+
+
+   .. py:method:: detect_from_body(body: semantic_digital_twin.world_description.world_entity.Body, object_id: int = 0, world_to_cam_transform_matrix: numpy.ndarray | None = None) -> robokudo.types.scene.ObjectHypothesis | None
+
+      Detect from singular, passed SDT Body instance
+
+
+
+   .. py:method:: detect_from_body_base(world_to_cam_transform_matrix: typing_extensions.Optional[numpy.typing.NDArray] = None) -> typing_extensions.List[robokudo.types.scene.ObjectHypothesis]
+
+      Detect from a completed world descriptor
+
+      :return: A list of ObjectHypothesis objects
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process current scene to detect configured static objects.
+
+      Steps:
+
+      * Gets current color image, depth image and point cloud
+      * If using a world descriptor, validates object class exists
+      * Scales color image to match depth image
+      * Creates object hypothesis with:
+
+        * Bounding box from configuration or world descriptor
+        * Pose annotation if enabled
+        * Point cloud from ROI
+        * Mask if enabled
+
+      :return: SUCCESS if detection completed, FAILURE if required transforms not found
+      :raises Exception: If camera parameters are invalid or missing
+
+
+
+   .. py:method:: add_classification_annotation(object_hypothesis: robokudo.types.scene.ObjectHypothesis, class_name: str) -> None
+      :staticmethod:
+
+
+      Add a classification annotation to the given object hypothesis.
+
+      :param object_hypothesis: The object hypothesis to annotate.
+      :param class_name: The name of the annotation class.
+
+
+
+   .. py:method:: get_rotation_list_based_on_parameters(rotation_x: float, rotation_y: float, rotation_z: float, rotation_w: float) -> typing_extensions.List[float]
+
+      Return a quaternion based on the parametrization of the Annotator.
+
+      :param rotation_x: rotation about x-axis
+      :param rotation_y: rotation about y-axis
+      :param rotation_z: rotation about z-axis
+      :param rotation_w: rotation about w-axis
+      :return: 4-dim list with Quaternion
+
+
+
+   .. py:method:: get_cloud_from_2d_bb_roi(color_rgb: numpy.typing.NDArray) -> open3d.geometry.PointCloud
+
+

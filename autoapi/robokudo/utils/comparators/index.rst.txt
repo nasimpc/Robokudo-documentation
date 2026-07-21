@@ -1,0 +1,303 @@
+robokudo.utils.comparators
+==========================
+
+.. py:module:: robokudo.utils.comparators
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.utils.comparators.FeatureComparator
+   robokudo.utils.comparators.TranslationComparator
+   robokudo.utils.comparators.OrientationComparator
+   robokudo.utils.comparators.BboxComparator
+   robokudo.utils.comparators.SizeComparator
+   robokudo.utils.comparators.HistogramComparator
+   robokudo.utils.comparators.SemanticColorComparator
+   robokudo.utils.comparators.ClassificationComparator
+   robokudo.utils.comparators.AdditionalDataComparator
+   robokudo.utils.comparators.RoiComparator
+   robokudo.utils.comparators.MaskComparator
+   robokudo.utils.comparators.ImageROIComparator
+   robokudo.utils.comparators.PoseComparator
+
+
+Module Contents
+---------------
+
+.. py:class:: FeatureComparator(weight: float)
+
+   Base class for feature comparators.
+
+
+   .. py:attribute:: weight
+
+      Weight of this comparator in the final similarity score.
+
+
+
+   .. py:method:: compute_similarity(query_value: typing_extensions.Any, obj_value: typing_extensions.Any) -> float
+      :abstractmethod:
+
+
+      Computes similarity between query and object values.
+
+      :param query_value: The translation to use as a baseline for comparison.
+      :param obj_value: The value to compare against query_value.
+      :returns: A similarity score between 0.0 (no similarity at all) and 1.0 (completely identical).
+
+
+
+.. py:class:: TranslationComparator(weight: float, max_distance: float = 1.0)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended FeatureComparator that computes similarity based on translation distance between query and object values.
+
+
+   .. py:attribute:: max_distance
+      :value: 1.0
+
+
+      Maximum distance between query and object values for which the similarity is 0.0.
+
+
+
+   .. py:method:: compute_similarity(query_value: typing_extensions.Union[typing_extensions.Iterable[float], robokudo.types.annotation.PositionAnnotation], obj_value: typing_extensions.Union[typing_extensions.Iterable[float], robokudo.types.annotation.PositionAnnotation]) -> float
+
+      Computes similarity based on translation distance between query and object values.
+
+      :param query_value: The translation to use as a baseline for comparison.
+      :param obj_value: The translation to compare against `query_value`.
+      :returns: A similarity score between 0.0 (distance equal to or larger than `self.max_distance`) and 1.0 (completely identical).
+
+
+
+.. py:class:: OrientationComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes orientation similarity by dot product.
+
+
+   .. py:method:: compute_similarity(query_value: typing_extensions.Union[typing_extensions.Iterable[float], numpy.typing.NDArray[numpy.float64]], obj_value: typing_extensions.Union[typing_extensions.Iterable[float], numpy.typing.NDArray[numpy.float64]]) -> float
+
+      Computes similarity of both orientation quaternions by dot product.
+
+      :param query_value: The quaternion to use as a baseline for comparison.
+      :param obj_value: The quaternion to compare against `query_value`.
+      :returns: A similarity score between 0.0 (angle=180d) and 1.0 (angle=0d).
+
+
+
+.. py:class:: BboxComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended FeatureComparator that computes similarity based on the bounding box size difference between query and object values.
+
+
+   .. py:method:: compute_similarity(query_value: robokudo.types.annotation.BoundingBox3DAnnotation, obj_value: robokudo.types.annotation.BoundingBox3DAnnotation) -> float
+
+      Computes similarity between bounding boxes based on their sizes.
+
+      :param query_value: The bounding box to use as a baseline for comparison.
+      :param obj_value: The bounding box to compare against `query_value`.
+      :returns: A similarity score between 0.0 (`obj_value` is 0% the size of `query_value`) and 1.0 (identical bounding box sizes).
+
+
+
+.. py:class:: SizeComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended FeatureComparator that computes similarity based on the sum difference between query and object values.
+
+
+   .. py:method:: compute_similarity(query_value: typing_extensions.List, obj_value: typing_extensions.List) -> float
+
+      Computes similarity of two lists based on their sum differences.
+
+      :param query_value: The list to use as a baseline for comparison.
+      :param obj_value: The list to compare against `query_value`.
+      :returns: A similarity score between 0.0 (sum of `obj_value` is 100% smaller or larger than sum of `query_value`) and 1.0 (identical sums).
+
+
+
+.. py:class:: HistogramComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended FeatureComparator that computes similarity based on the cv2.HISTCMP_CORREL comparison between query and object values.
+
+
+   .. py:method:: compute_similarity(query_value: robokudo.types.annotation.ColorHistogram, obj_value: robokudo.types.annotation.ColorHistogram) -> float
+
+      Computes similarity between ColorHistogram objects based on the cv2.HISTCMP_CORREL metric.
+
+      :param query_value: The histogram to use as a baseline for comparison.
+      :param obj_value: The histogram to compare against `query_value`.
+      :returns: A similarity score between 0.0 (completely different) and 1.0 (identical).
+
+
+
+.. py:class:: SemanticColorComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes similarity based on string similarity and color ratio difference between query and object values.
+
+
+   .. py:method:: compute_similarity(query_value: robokudo.types.annotation.SemanticColor, obj_value: robokudo.types.annotation.SemanticColor) -> float
+
+      Computes similarity between SemanticColor objects based on the cv2.HISTCMP_CORREL metric.
+
+      :param query_value: The semantic color annotation to use as a baseline for comparison.
+      :param obj_value: The semantic color annotation to compare against `query_value`.
+      :returns: A similarity score between 0.0 (completely different colors or color ratio) and 1.0 (identical color and color ratio).
+
+
+
+.. py:class:: ClassificationComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes similarity based on type, classname and confidence.
+
+
+   .. py:method:: compute_similarity(query_value: robokudo.types.annotation.Classification, obj_value: robokudo.types.annotation.Classification) -> float
+
+      Computes similarity between SemanticColor objects based on the cv2.HISTCMP_CORREL metric.
+
+      :param query_value: The semantic color annotation to use as a baseline for comparison.
+      :param obj_value: The semantic color annotation to compare against `query_value`.
+      :returns: A similarity score between 0.0 (completely different colors or color ratio) and 1.0 (identical color and color ratio).
+
+
+
+.. py:class:: AdditionalDataComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes similarity based on numerical difference or simple value comparison between query and object values.
+
+
+   .. py:method:: compute_similarity(query_value: typing_extensions.Any, obj_value: typing_extensions.Any) -> float
+
+      Computes similarity between any value or object based on numerical difference or value equality.
+
+      If `query_value` and `obj_value` are numerical this FeatureComparator will normalize their numerical difference.
+      Otherwise a simple equality check is performed, 0.0 is returned if they are not equal, 1.0 if they are equal.
+
+      :param query_value: The object or value to use as a baseline for comparison.
+      :param obj_value: The object or value to compare against `query_value`.
+      :returns: A similarity score between 0.0 (no similarity) and 1.0 (identical values).
+
+
+
+.. py:class:: RoiComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes similarity based on overlap percentage between query and object values.
+
+
+   .. py:method:: compute_similarity(query_value: robokudo.types.cv.Rect, obj_value: robokudo.types.cv.Rect) -> float
+
+      Computes the similarity of two Region of Interests by calculating their IoU.
+
+      :param query_value: The rectangle to use as a baseline for comparison.
+      :param obj_value: The rectangle to compare against `query_value`.
+      :returns: A similarity score between 0.0 (no overlap) and 1.0 (100% overlap).
+
+
+
+.. py:class:: MaskComparator(weight: float)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes the IoU of two masks.
+
+
+   .. py:method:: compute_similarity(query_value: numpy.typing.NDArray, obj_value: numpy.typing.NDArray) -> float
+
+      Computes the similarity of two masks by calculating their IoU.
+
+      :param query_value: The mask to use as a baseline for comparison.
+      :param obj_value: The mask to compare against `query_value`.
+      :returns: A similarity score between 0.0 (no overlap) and 1.0 (100% overlap).
+
+
+
+.. py:class:: ImageROIComparator(weight: float = 1.0)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes the IoU of two images ROIs.
+
+
+   .. py:attribute:: roi_comparator
+
+      Comparator to compute the IoU of two images ROIs.
+
+
+
+   .. py:attribute:: mask_comparator
+
+      Comparator to compute the IoU of two image masks.
+
+
+
+   .. py:method:: compute_similarity(query_value: robokudo.types.cv.ImageROI, obj_value: robokudo.types.cv.ImageROI) -> float
+
+      Computes the similarity of two ImageROI annotations by calculating the average IoU of both bounding boxes and masks.
+
+      :param query_value: The ImageROI to use as a baseline for comparison.
+      :param obj_value: The ImageROI to compare against `query_value`.
+      :returns: A similarity score between 0.0 (no overlap) and 1.0 (100% overlap).
+
+
+
+.. py:class:: PoseComparator(weight: float = 1.0, max_distance: float = 1.0)
+
+   Bases: :py:obj:`FeatureComparator`
+
+
+   Extended `FeatureComparator` that computes the similarity of two poses.
+
+
+   .. py:attribute:: translation_comparator
+
+      Comparator to compute the similarity of two positions.
+
+
+
+   .. py:attribute:: orientation_comparator
+
+      Comparator to compute the similarity of two orientations.
+
+
+
+   .. py:method:: compute_similarity(query_value: robokudo.types.tf.Pose, obj_value: robokudo.types.tf.Pose) -> float
+
+      Computes the similarity of two poses by comparing translation and orientation values.
+
+      :param query_value: The Pose to use as a baseline for comparison.
+      :param obj_value: The Pose to compare against `query_value`.
+      :returns: A similarity score between 0.0 (no similarity at all) and 1.0 (completely identical).
+
+
+

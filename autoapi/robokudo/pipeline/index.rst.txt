@@ -1,0 +1,146 @@
+robokudo.pipeline
+=================
+
+.. py:module:: robokudo.pipeline
+
+.. autoapi-nested-parse::
+
+   Pipeline implementation for RoboKudo.
+
+   This module provides the Pipeline class, which is a specialized version of py_trees'
+   Sequence behavior. A Pipeline manages its own Common Analysis Structure (CAS) and
+   provides visualization capabilities for its annotators.
+
+   Key features:
+
+   * Automatic CAS management for each pipeline iteration
+   * Visualization support through annotator outputs
+   * Helper methods for accessing annotators and CAS
+   * Nested pipeline support with proper scoping
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.pipeline.Pipeline
+
+
+Module Contents
+---------------
+
+.. py:class:: Pipeline(name: str = 'Sequence', children: typing_extensions.Optional[typing_extensions.List[py_trees.behaviour.Behaviour]] = None, *args: typing_extensions.Any, **kwargs: typing_extensions.Any)
+
+   Bases: :py:obj:`py_trees.composites.Sequence`
+
+
+   A RoboKudo pipeline composed of annotators with its own CAS.
+
+   A Pipeline is a specialized sequence behavior that manages a Common Analysis
+   Structure (CAS) for its annotators. It provides visualization capabilities and
+   helper methods for accessing annotators and CAS data.
+
+
+   .. py:attribute:: cas
+      :type:  robokudo.cas.CAS
+      :value: None
+
+
+      The Common Analysis Structure for this pipeline.
+
+
+
+   .. py:attribute:: _cas_counter
+      :type:  int
+      :value: 0
+
+
+      Monotonic CAS counter that is local to this pipeline instance.
+
+
+
+   .. py:attribute:: cas_start_timer
+      :type:  timeit.default_timer
+      :value: None
+
+
+      Timer for measuring pipeline execution time.
+
+
+
+   .. py:attribute:: rk_logger
+      :value: None
+
+
+      Logger instance for this pipeline.
+
+
+
+   .. py:method:: create_new_cas() -> None
+
+      Create a new Common Analysis Structure (CAS) for this pipeline.
+
+      Also resets the execution timer.
+
+
+
+   .. py:method:: setup(**kwargs: typing_extensions.Any) -> bool
+
+      Set up the pipeline and its annotator outputs.
+
+      Creates output structures for all annotators in the pipeline and marks them for
+      initial rendering.
+
+
+
+   .. py:method:: get_cas() -> robokudo.cas.CAS
+
+      Get the pipeline's Common Analysis Structure.
+
+      :return: The pipeline's CAS
+
+
+
+   .. py:method:: get_annotators() -> typing_extensions.List[robokudo.annotators.core.BaseAnnotator]
+
+      Get all annotators in this pipeline.
+
+      Returns a list of all annotators in this pipeline, including those nested in
+      other behaviors (except other pipelines).
+
+      :return: List of annotators
+
+
+
+   .. py:method:: pipeline_children() -> typing_extensions.List[py_trees.behaviour.Behaviour]
+
+      Get all children of this pipeline.
+
+      Returns a list of all children in this pipeline, stopping at nested Pipeline
+      objects. The order is given by utils.tree.behavior_iterate_except_type.
+
+      :return: List of child behaviors
+
+
+
+   .. py:method:: update() -> None
+
+      Update the pipeline's state.
+
+      Handles pipeline execution status and triggers GUI updates on failure.
+
+
+
+   .. py:method:: terminate(new_status: py_trees.common.Status) -> None
+
+      Handle pipeline termination.
+
+      Called when the pipeline switches to a non-RUNNING state. Updates GUI on success
+      and logs execution time statistics.
+
+      :param new_status: New execution status
+
+
+

@@ -1,0 +1,115 @@
+robokudo.display
+================
+
+.. py:module:: robokudo.display
+
+.. autoapi-nested-parse::
+
+   Visualization utilities for behavior trees in RoboKudo.
+
+   This module provides functionality to visualize behavior trees using dot graphs.
+   It is adapted from py_trees and enhanced with RoboKudo-specific features like
+   timing information for annotators.
+
+   The module supports:
+
+   * Generating dot graphs from behavior trees
+   * Rendering trees to various output formats (dot, png)
+   * Adding timing information for annotators
+   * Customizing node appearance based on node type and status
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.display.generate_pydot_graph
+   robokudo.display.stringify_dot_tree
+   robokudo.display.render_dot_tree
+   robokudo.display.write_timing_info_to_csv
+
+
+Module Contents
+---------------
+
+.. py:function:: generate_pydot_graph(root: py_trees.behaviour.Behaviour, visibility_level: py_trees.common.VisibilityLevel, collapse_decorators: bool = False) -> typing_extensions.Tuple[pydot.Dot, typing_extensions.Dict]
+
+   Generate a pydot graph representation of a behavior tree.
+
+   Creates a visual representation of a behavior tree using pydot. The graph includes:
+
+   * Nodes for each behavior tree component
+   * Edges showing parent-child relationships
+   * Visual attributes (shape, color) based on node type and status
+   * Timing information for annotator nodes
+
+   The graph can be customized by:
+
+   * Collapsing subtrees based on visibility level
+   * Collapsing decorator nodes
+   * Using different visual attributes for different node types
+   * Including timing information for annotators
+
+   :param root: The root node of the tree or subtree to visualize
+   :param visibility_level: Level at which to collapse subtrees
+   :param collapse_decorators: Whether to collapse decorator nodes, defaults to False
+   :return: Tuple of (pydot graph object, timing information dictionary)
+
+
+.. py:function:: stringify_dot_tree(root: py_trees.behaviour.Behaviour) -> str
+
+   Generate dot tree graphs and return a string representation of the dot graph.
+
+   :param root: The root of a tree, or subtree
+   :return: Dot graph as a string
+
+
+.. py:function:: render_dot_tree(root: py_trees.behaviour.Behaviour, visibility_level: py_trees.common.VisibilityLevel = VisibilityLevel.DETAIL, collapse_decorators: bool = False, name: typing_extensions.Optional[str] = None, threadpool_executor: typing_extensions.Optional[concurrent.futures.ThreadPoolExecutor] = None, path_prefix: typing_extensions.Optional[str] = None) -> None
+
+   Render the dot tree to .dot, .svg, .png files in the current
+   working directory. These will be named with the root behaviour name.
+
+   :param root: The root of a tree, or subtree
+   :param visibility_level: Collapse subtrees at or under this level
+   :param collapse_decorators: Only show the decorator (not the child)
+   :param name: Name to use for the created files (defaults to the root behaviour name)
+   :param threadpool_executor: ThreadPoolExecutor for file writing
+   :param path_prefix: String to be put before the filename
+
+   Example:
+
+       Render a simple tree to dot/svg/png file:
+
+       .. graphviz:: dot/sequence.dot
+
+       .. code-block:: python
+
+           root = py_trees.composites.Sequence("Sequence")
+           for job in ["Action 1", "Action 2", "Action 3"]:
+               success_after_two = py_trees.behaviours.Count(name=job,
+                                                             fail_until=0,
+                                                             running_until=1,
+                                                             success_until=10)
+               root.add_child(success_after_two)
+           py_trees.display.render_dot_tree(root)
+
+   .. tip::
+
+       A good practice is to provide a command line argument for optional rendering
+       of a program so users can quickly visualise what tree the program will execute.
+
+
+.. py:function:: write_timing_info_to_csv(filename_wo_extension: str, timing_info_dict: typing_extensions.Dict[str, float]) -> None
+
+   Write timing information for annotators to a CSV file.
+
+   Creates a CSV file containing the runtime information for each annotator in the
+   behavior tree. The CSV has two columns: AnnotatorName and Runtime.
+
+   :param filename_wo_extension: Base filename without extension to write the CSV to
+   :param timing_info_dict: Dictionary mapping annotator names to their runtime in
+       seconds
+
+

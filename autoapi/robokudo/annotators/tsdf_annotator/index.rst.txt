@@ -1,0 +1,175 @@
+robokudo.annotators.tsdf_annotator
+==================================
+
+.. py:module:: robokudo.annotators.tsdf_annotator
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.tsdf_annotator.TSDFAnnotatorVisualizationModes
+   robokudo.annotators.tsdf_annotator.TSDFAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: TSDFAnnotatorVisualizationModes
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Enumeration of supported visualization modes for TSDF volumes.
+
+
+   .. py:attribute:: NONE
+      :value: 'none'
+
+
+
+   .. py:attribute:: MESH
+      :value: 'mesh'
+
+
+
+   .. py:attribute:: POINTCLOUD
+      :value: 'pointcloud'
+
+
+
+   .. py:attribute:: VOXEL_POINTCLOUD
+      :value: 'voxel_pointcloud'
+
+
+
+.. py:class:: TSDFAnnotator(name: str = 'TSDFAnnotator', descriptor: TSDFAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Annotator for per-object TSDF volume integration.
+
+   .. note::
+       The annotator requires a camera to world transform and object poses to integrate the TSDF volumes.
+       To segment objects out of the image a mask is required too. Higher quality masks yield better results.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for the TSDF annotator.
+
+
+      .. py:class:: Parameters
+
+         Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor.Parameters`
+
+
+         Parameters for configuring the TSDF annotator.
+
+
+         .. py:attribute:: voxel_length
+            :type:  float
+            :value: 0.005
+
+
+            Voxel length for the TSDF volume of each object.
+
+
+
+         .. py:attribute:: sdf_trunc
+            :type:  float
+            :value: 0.04
+
+
+            SDF truncation distance for the TSDF volume of each object.
+
+
+
+         .. py:attribute:: depth_scale
+            :type:  float
+            :value: 1000.0
+
+
+            Depth scale for the TSDF volume integration.
+
+
+
+         .. py:attribute:: depth_trunc
+            :type:  float
+            :value: 3.0
+
+
+            Depth truncation distance for the TSDF volume integration.
+
+
+
+         .. py:attribute:: geometry_visualization_mode
+            :type:  TSDFAnnotatorVisualizationModes
+
+            Whether to visualize the TSDF as a mesh or a point cloud. 
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: translation_comparator
+
+      Translation comparator for comparing world positions between pipeline iterations.
+
+
+
+   .. py:attribute:: tracked_objects
+      :type:  typing_extensions.List[typing_extensions.Dict[str, typing_extensions.Any]]
+      :value: []
+
+
+      A list of tracked object data, including the bounding box and the TSDF volume.
+
+
+
+   .. py:method:: find_tracked_object(pose: robokudo.types.annotation.PoseAnnotation, threshold: float = 0.75) -> typing_extensions.Optional[typing_extensions.Dict[str, typing_extensions.Any]]
+
+      Check whether the given bounding box is similar to one that has been seen before.
+
+      :param pose: The pose to check
+      :param threshold: The similarity threshold between 0.0 and 1.0 for considering the bounding box similar.
+      :return: The most similar tracked object or none if no similar object was found.
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+      Generate a TSDF volume for each object hypothesis or integrate into existing volumes.
+
+      :return: Whether the TSDF integration was successful or not.
+
+
+
+   .. py:method:: get_visualization_image(image: numpy.typing.NDArray[numpy.uint8], oh_data: typing_extensions.List[typing_extensions.Tuple[robokudo.types.scene.ObjectHypothesis, robokudo.types.annotation.PoseAnnotation, typing_extensions.Tuple[int, int, int, int]]], masks: typing_extensions.List[numpy.typing.NDArray[numpy.uint8]]) -> numpy.typing.NDArray[numpy.uint8]
+
+      Get an image containing the bounding boxes and masks of objects.
+
+      :param image: The image to add the visualizations to.
+      :param oh_data: The object hypotheses to visualize.
+      :param masks: The masks to visualize.
+      :return: The image with the visualizations.
+
+
+
+   .. py:method:: get_visualization_geometries(volume: robokudo.types.cv.TSDFAnnotation) -> typing_extensions.List[open3d.geometry.Geometry]
+
+      Get visualization geometries for the TSDF volume depending on the visualization mode.
+
+      :param volume: The TSDF volume annotation to visualize.
+      :return: List of visualization geometries for the given volume annotation.
+
+
+

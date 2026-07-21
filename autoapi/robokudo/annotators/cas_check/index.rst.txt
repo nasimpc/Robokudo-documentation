@@ -1,0 +1,114 @@
+robokudo.annotators.cas_check
+=============================
+
+.. py:module:: robokudo.annotators.cas_check
+
+.. autoapi-nested-parse::
+
+   CAS condition checking utilities.
+
+   This module provides annotators for checking conditions in the Common Analysis System (CAS).
+   The annotators follow these principles:
+
+   * Return SUCCESS if condition is true
+   * Return FAILURE if condition is false
+   * Never return RUNNING status
+
+   .. note::
+      For RUNNING status checks, use CASCondition from cas_condition.py instead.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.cas_check.CASCheckFunc
+   robokudo.annotators.cas_check.CASCheckAnnotationTypeExists
+   robokudo.annotators.cas_check.CASCheckOHExists
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.annotators.cas_check.any_of_type_present
+
+
+Module Contents
+---------------
+
+.. py:class:: CASCheckFunc(name: str = 'CASCheckFunc', func: typing_extensions.Optional[typing_extensions.Callable[[robokudo.cas.CAS], bool]] = None, raise_with_str: str = '')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Function-based CAS condition checker.
+
+   Evaluates a given function that checks conditions in the CAS and returns:
+
+   * SUCCESS if function returns True
+   * FAILURE if function returns False
+
+   .. warning::
+      Will raise an exception if initialized without a function.
+
+
+   .. py:attribute:: func
+      :value: None
+
+
+
+   .. py:attribute:: raise_with_str
+      :value: ''
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check the CAS condition.
+
+      :return: SUCCESS if condition is True, FAILURE if False
+      :raises Exception: If raise_with_str is set and condition is False
+
+
+
+.. py:function:: any_of_type_present(annotation_type: typing_extensions.Type, cas: robokudo.cas.CAS) -> bool
+
+   Check if any annotations of a specific type exist in the CAS.
+
+   :param annotation_type: Type of annotation to check for
+   :param cas: Common Analysis System instance
+   :return: True if at least one annotation exists, False otherwise
+
+
+.. py:class:: CASCheckAnnotationTypeExists(name: str = 'CASCheckAnnotationTypeExists', annotation_type: typing_extensions.Optional[typing_extensions.Type] = None, raise_with_str: str = '')
+
+   Bases: :py:obj:`CASCheckFunc`
+
+
+   Check for existence of specific annotation types.
+
+   Specialized CASCheckFunc that:
+
+   * Checks for presence of specific annotation types
+   * Returns SUCCESS if at least one annotation exists
+   * Returns FAILURE if no annotations exist
+
+
+.. py:class:: CASCheckOHExists(name: str = 'CASCheckOHExists', raise_with_str: str = '')
+
+   Bases: :py:obj:`CASCheckAnnotationTypeExists`
+
+
+   Check for existence of ObjectHypothesis annotations.
+
+   Specialized CASCheckAnnotationTypeExists that:
+
+   * Specifically checks for ObjectHypothesis annotations
+   * Returns SUCCESS if any ObjectHypothesis exists
+   * Returns FAILURE if no ObjectHypothesis exists
+
+

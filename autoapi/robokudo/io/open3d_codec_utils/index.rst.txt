@@ -1,0 +1,51 @@
+robokudo.io.open3d_codec_utils
+==============================
+
+.. py:module:: robokudo.io.open3d_codec_utils
+
+.. autoapi-nested-parse::
+
+   Shared Open3D serialization helpers for CAS codecs.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.io.open3d_codec_utils.o3d
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.io.open3d_codec_utils.is_open3d_point_cloud
+   robokudo.io.open3d_codec_utils.encode_open3d_point_cloud_to_base64_pcd
+   robokudo.io.open3d_codec_utils.decode_open3d_point_cloud_from_base64_pcd
+
+
+Module Contents
+---------------
+
+.. py:data:: o3d
+   :value: None
+
+
+.. py:function:: is_open3d_point_cloud(value: typing_extensions.Any) -> bool
+
+   Return ``True`` when ``value`` is an Open3D point cloud.
+
+
+.. py:function:: encode_open3d_point_cloud_to_base64_pcd(point_cloud: typing_extensions.Any) -> str
+
+   Encode an Open3D point cloud to a base64-encoded PCD payload.
+
+
+.. py:function:: decode_open3d_point_cloud_from_base64_pcd(payload: str) -> typing_extensions.Any
+
+   Decode a base64-encoded PCD payload into an Open3D point cloud.
+
+

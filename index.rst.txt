@@ -1,0 +1,41 @@
+.. RoboKudo documentation master file, created by
+   sphinx-quickstart on Mon Sep 19 17:04:18 2022.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+.. image:: img/rk_logo_v3-1000px.png
+  :align: center
+  :width: 100pc
+
+
+Robot Perception Framework
+=====================================
+
+.. image:: img/pr2_looking_at_table.jpg
+  :align: center
+  :width: 100pc
+
+
+RoboKudo is a perception framework designed to support robot manipulation tasks. It offers broad applicability due to its flexible perception process management, which is structured around behavior trees. The framework employs a multi-expert approach to analyze unstructured sensor data. Specific regions of the data are annotated using specialized computer vision algorithms, each based on their area of expertise.
+
+In RoboKudo, perception tasks are organized as pipelines, which are customized forms of Sequences within behavior trees. These pipelines facilitate the typical execution of perception workflows and provide access to a shared analysis data structure (CAS), along with attached visualizations for debugging. This design leverages the strengths of behavior trees for managing task flow while integrating and automatically selecting the appropriate computer vision algorithms.
+
+As a knowledge-based perception system, RoboKudo can be paramaterized for the specific perception tasks a robot may encounter. The core concept is that perception tasks are expressed as queries for specific information. Based on these queries, the framework infers which computer vision algorithms are needed and generates a sequence for executing them, taking into account any dependencies between the algorithms. For instance, generating a point cloud from sensor data before running any RGBD algorithms.
+
+
+.. toctree::
+   :maxdepth: 2
+
+   introduction.md
+   installation_overview.md
+   tutorials_overview.md
+   publications.md
+   about.md
+
+
+.. Indices and tables
+.. ==================
+
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`

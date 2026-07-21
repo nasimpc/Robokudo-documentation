@@ -1,0 +1,76 @@
+robokudo.annotators.cluster_pose_pca
+====================================
+
+.. py:module:: robokudo.annotators.cluster_pose_pca
+
+.. autoapi-nested-parse::
+
+   3D pose estimation using principal component analysis.
+
+   This module provides an annotator for:
+
+   * Calculating 3D poses for object hypotheses
+   * Using PCA for orientation estimation
+   * Computing oriented bounding boxes
+   * Generating visualization markers
+
+   The module uses:
+
+   * Principal component analysis for axes
+   * Eigenvalue decomposition
+   * Coordinate frame alignment
+   * Open3D visualization tools
+
+   .. note::
+      Requires at least 10 points per object hypothesis.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.cluster_pose_pca.ClusterPosePCAAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: ClusterPosePCAAnnotator(name: str = 'ClusterPosePCAAnnotator')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   3D pose estimation using principal component analysis.
+
+   This annotator:
+
+   * Calculates 3D poses for object point clusters
+   * Uses PCA for orientation estimation
+   * Aligns coordinate frames with principal axes
+   * Creates pose annotations
+   * Generates visualization markers
+
+   .. note::
+      Requires minimum 10 points per object hypothesis.
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process object hypotheses and estimate poses.
+
+      The method:
+
+      * Loads point cloud from CAS
+      * For each object hypothesis:
+        * Computes centroid and covariance
+        * Performs eigenvalue decomposition
+        * Aligns coordinate frame with principal axes
+        * Creates pose annotations
+        * Creates visualization markers
+
+      :return: SUCCESS after processing
+
+
+

@@ -1,0 +1,137 @@
+robokudo.world_descriptor
+=========================
+
+.. py:module:: robokudo.world_descriptor
+
+.. autoapi-nested-parse::
+
+   World descriptor for RoboKudo.
+
+   This module provides classes for describing a world with predefined objects and regions.
+   It builds semantic_digital_twin entities into a shared World instance.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.world_descriptor.ObjectSpec
+   robokudo.world_descriptor.RegionSpec
+   robokudo.world_descriptor.PredefinedObject
+   robokudo.world_descriptor.BaseWorldDescriptor
+
+
+Module Contents
+---------------
+
+.. py:class:: ObjectSpec
+
+   Data structure to define typical object properties for predefined objects.
+
+   Will be consumed by BaseWorldDescriptor.build_objects to create a world and the
+   corresponding connections.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: pose
+      :type:  semantic_digital_twin.spatial_types.HomogeneousTransformationMatrix
+
+
+   .. py:attribute:: mesh_path
+      :type:  typing_extensions.Optional[pathlib.Path]
+      :value: None
+
+
+
+   .. py:attribute:: box_scale
+      :type:  typing_extensions.Optional[semantic_digital_twin.world_description.geometry.Scale]
+      :value: None
+
+
+
+   .. py:attribute:: center_mesh
+      :type:  bool
+      :value: True
+
+
+
+   .. py:attribute:: color
+      :type:  semantic_digital_twin.world_description.geometry.Color
+
+
+.. py:class:: RegionSpec
+
+   Data structure to define typical properties for predefined regions.
+
+   Will be consumed by BaseWorldDescriptor.build_regions to create regions and their
+   connections.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: pose
+      :type:  semantic_digital_twin.spatial_types.HomogeneousTransformationMatrix
+
+
+   .. py:attribute:: box_scale
+      :type:  semantic_digital_twin.world_description.geometry.Scale
+
+
+   .. py:attribute:: color
+      :type:  semantic_digital_twin.world_description.geometry.Color
+
+
+.. py:class:: PredefinedObject
+
+   Bases: :py:obj:`semantic_digital_twin.world_description.world_entity.SemanticAnnotation`
+
+
+   .. py:attribute:: body
+      :type:  semantic_digital_twin.world_description.world_entity.Body
+      :value: None
+
+
+
+.. py:class:: BaseWorldDescriptor(world: typing_extensions.Optional[semantic_digital_twin.world.World] = None, root_name: str = 'descriptor_world_root', root_prefix: typing_extensions.Optional[str] = 'world')
+
+   Base class for describing a world with predefined objects and regions.
+
+
+   .. py:attribute:: world
+      :value: None
+
+
+
+   .. py:method:: _center_mesh_origin(mesh: semantic_digital_twin.world_description.geometry.Mesh) -> None
+      :staticmethod:
+
+
+      Shift mesh origin to the center of its local bounding box.
+
+
+
+   .. py:method:: build_objects(root: semantic_digital_twin.world_description.world_entity.Body, specs: typing_extensions.List[typing_extensions.Any]) -> typing_extensions.Dict[str, semantic_digital_twin.world_description.connections.Connection6DoF]
+
+      Create bodies, connections, annotations, and poses from object specs.
+
+
+
+   .. py:method:: build_regions(root: semantic_digital_twin.world_description.world_entity.Body, specs: typing_extensions.List[RegionSpec]) -> typing_extensions.Dict[str, semantic_digital_twin.world_description.connections.Connection6DoF]
+
+      Create regions and connections from region specs.
+
+
+
+   .. py:method:: get_predefined_object_bodies() -> typing_extensions.List[semantic_digital_twin.world_description.world_entity.Body]
+
+      Get list of pre-defined objects.
+
+
+

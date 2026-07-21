@@ -1,0 +1,78 @@
+robokudo.descriptors.camera_configs.config_orbbec
+=================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_orbbec
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_orbbec.OrbbecCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: OrbbecCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig`, :py:obj:`robokudo.descriptors.camera_configs.components.RGBDComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.TfComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.StableViewpointComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.WorldDescriptorComponent`
+
+
+   Configuration class for the OrbBec Astra camera.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'orbbec'
+
+
+
+   .. py:attribute:: interface_type
+      :value: 'Kinect'
+
+
+
+   .. py:attribute:: topic_depth
+      :type:  str
+      :value: '/camera/depth/image_raw'
+
+
+
+   .. py:attribute:: topic_color
+      :type:  str
+      :value: '/camera/color/image_raw/compressed'
+
+
+
+   .. py:attribute:: topic_cam_info
+      :type:  str
+      :value: '/camera/color/camera_info'
+
+
+
+   .. py:attribute:: tf_from
+      :type:  str
+      :value: 'camera_color_optical_frame'
+
+
+
+   .. py:attribute:: tf_to
+      :type:  str
+      :value: 'map'
+
+
+
+   .. py:attribute:: depth_hints
+      :type:  str
+      :value: 'raw'
+
+
+
+   .. py:attribute:: filterBlurredImages
+      :type:  bool
+      :value: False
+
+
+

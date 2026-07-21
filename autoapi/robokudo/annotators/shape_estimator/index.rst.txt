@@ -1,0 +1,670 @@
+robokudo.annotators.shape_estimator
+===================================
+
+.. py:module:: robokudo.annotators.shape_estimator
+
+.. autoapi-nested-parse::
+
+   Shape estimation for object hypotheses.
+
+   This module provides a minimal, pure-Python annotator that fits primitive
+   shape models to segmented object point clouds.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.shape_estimator.CylinderAxisCandidate
+   robokudo.annotators.shape_estimator.ShapeEstimatorAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: CylinderAxisCandidate
+
+   Candidate axis direction together with a refitted cylinder.
+
+
+   .. py:attribute:: source
+      :type:  str
+
+
+   .. py:attribute:: axis_direction
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: fit
+      :type:  robokudo.utils.shape_fitting.CylinderFit
+
+
+.. py:class:: ShapeEstimatorAnnotator(name: str = 'ShapeEstimatorAnnotator', descriptor: ShapeEstimatorAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Estimate one primitive shape per object hypothesis point cloud.
+
+   Overview:
+   1. Validate input cloud (`minimum_point_count`) and optionally run
+      statistical outlier removal.
+   2. Fit enabled primitives (sphere/cylinder/cuboid) on the same filtered
+      points.
+   3. Apply post-fit stabilization:
+      - Cylinder: optional axis stabilization from principal/preferred axes.
+      - Cuboid: optional in-plane orientation stabilization for near-square faces.
+   4. Rank accepted candidates with `select_best_shape(...)`.
+   5. Convert the winning fit to a RoboKudo annotation (`Sphere`, `Cylinder`,
+      or `Cuboid`), keep inlier indices mapped to the original object cloud,
+      and publish visualization geometries.
+
+   Parameter groups:
+   - Global data quality: `minimum_point_count`, outlier removal settings.
+   - Shared fit behavior: `distance_threshold`, `robust_loss`.
+   - Shape gates:
+     sphere/cylinder/cuboid enable flags plus per-shape size and ratio limits.
+   - Candidate selection: `selection_score_tolerance` and cuboid preference
+     settings for close scores.
+   - Stabilization controls: cylinder axis and cuboid orientation stabilization.
+
+   Practical tuning order:
+   1. Set hard physical limits (max radii/heights/extents) for your scene.
+   2. Tune inlier thresholds (`distance_threshold`, per-shape min inlier ratio).
+   3. Tune selection preference parameters.
+   4. Only then tune stabilization triggers/tolerances.
+
+   This annotator intentionally favors robust, bounded fits for household-scale
+   objects.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for shape estimation.
+
+
+      .. py:class:: Parameters
+
+         Parameter container for shape estimation.
+
+
+         .. py:attribute:: minimum_point_count
+            :type:  int
+            :value: 80
+
+
+            Minimum number of points required for fitting.
+
+
+
+         .. py:attribute:: distance_threshold
+            :type:  float
+            :value: 0.01
+
+
+            Inlier threshold used for all shape residuals.
+
+
+
+         .. py:attribute:: robust_loss
+            :type:  str
+            :value: 'soft_l1'
+
+
+            Robust loss used for non-linear least squares.
+
+
+
+         .. py:attribute:: minimum_inlier_ratio
+            :type:  float
+            :value: 0.5
+
+
+            Minimum inlier ratio required for publishing a shape.
+
+
+
+         .. py:attribute:: remove_statistical_outliers
+            :type:  bool
+            :value: False
+
+
+            Whether statistical outlier removal is applied before fitting.
+
+
+
+         .. py:attribute:: outlier_neighbor_count
+            :type:  int
+            :value: 30
+
+
+            Neighbor count for statistical outlier removal.
+
+
+
+         .. py:attribute:: outlier_standard_deviation_ratio
+            :type:  float
+            :value: 2.0
+
+
+            Standard deviation ratio for statistical outlier removal.
+
+
+
+         .. py:attribute:: fit_sphere
+            :type:  bool
+            :value: False
+
+
+            Whether sphere fitting is enabled.
+
+
+
+         .. py:attribute:: max_sphere_radius_meters
+            :type:  float
+            :value: 0.4
+
+
+            Maximum allowed sphere radius.
+
+
+
+         .. py:attribute:: max_sphere_radius_to_bbox_diagonal_ratio
+            :type:  float
+            :value: 1.0
+
+
+            Maximum allowed ratio between sphere radius and point cloud diagonal.
+
+
+
+         .. py:attribute:: max_sphere_radius_to_observed_extent_ratio
+            :type:  float
+            :value: 0.8
+
+
+            Maximum allowed ratio between sphere radius and observed cloud extent.
+
+
+
+         .. py:attribute:: max_sphere_center_distance_to_bbox_diagonal_ratio
+            :type:  float
+            :value: 0.9
+
+
+            Maximum allowed ratio between center offset and point cloud diagonal.
+
+
+
+         .. py:attribute:: fit_cylinder
+            :type:  bool
+            :value: True
+
+
+            Whether cylinder fitting is enabled.
+
+
+
+         .. py:attribute:: cylinder_minimum_inlier_ratio
+            :type:  float
+            :value: 0.87
+
+
+            Minimum inlier ratio required for cylinder candidates.
+
+
+
+         .. py:attribute:: max_cylinder_radius_meters
+            :type:  float
+            :value: 0.4
+
+
+            Maximum allowed cylinder radius.
+
+
+
+         .. py:attribute:: max_cylinder_height_meters
+            :type:  float
+            :value: 1.0
+
+
+            Maximum allowed cylinder height.
+
+
+
+         .. py:attribute:: max_cylinder_radius_to_bbox_diagonal_ratio
+            :type:  float
+            :value: 1.0
+
+
+            Maximum allowed ratio between cylinder radius and cloud diagonal.
+
+
+
+         .. py:attribute:: max_cylinder_radius_to_cross_section_extent_ratio
+            :type:  float
+            :value: 0.95
+
+
+            Maximum allowed ratio between cylinder radius and observed cross-section extent.
+
+
+
+         .. py:attribute:: max_cylinder_center_distance_to_bbox_diagonal_ratio
+            :type:  float
+            :value: 0.8
+
+
+            Maximum allowed ratio between axis center offset and cloud diagonal.
+
+
+
+         .. py:attribute:: cylinder_max_initializations
+            :type:  int
+            :value: 12
+
+
+            Maximum number of cylinder initialization hypotheses for multi-start optimization.
+
+
+
+         .. py:attribute:: cylinder_consensus_trials
+            :type:  int
+            :value: 30
+
+
+            Number of random axis hypotheses used to seed cylinder multi-start optimization.
+
+
+
+         .. py:attribute:: cylinder_inlier_polishing_iterations
+            :type:  int
+            :value: 0
+
+
+            Number of post-optimization inlier-only polishing iterations for cylinder fitting.
+
+
+
+         .. py:attribute:: stabilize_cylinder_axis_with_principal_axis
+            :type:  bool
+            :value: True
+
+
+            Whether cylinder axis should be stabilized using point principal axis.
+
+
+
+         .. py:attribute:: cylinder_axis_stabilization_trigger_degrees
+            :type:  float
+            :value: 8.0
+
+
+            Minimum axis deviation angle required to trigger cylinder stabilization.
+
+
+
+         .. py:attribute:: cylinder_axis_stabilization_max_score_drop
+            :type:  float
+            :value: 0.08
+
+
+            Maximum tolerated score drop for accepting stabilized cylinder.
+
+
+
+         .. py:attribute:: prefer_upright_cylinder_axis
+            :type:  bool
+            :value: True
+
+
+            Whether an upright preferred axis should be favored when scores are close.
+
+
+
+         .. py:attribute:: preferred_cylinder_axis_direction
+            :type:  typing_extensions.Tuple[float, float, float]
+            :value: (0.0, 0.0, 1.0)
+
+
+            Preferred global cylinder axis direction used as stabilization prior.
+
+
+
+         .. py:attribute:: upright_cylinder_axis_score_tolerance
+            :type:  float
+            :value: 0.05
+
+
+            Maximum score gap for preferring a more upright cylinder axis.
+
+
+
+         .. py:attribute:: fit_cuboid
+            :type:  bool
+            :value: True
+
+
+            Whether cuboid fitting is enabled.
+
+
+
+         .. py:attribute:: max_cuboid_extent_meters
+            :type:  float
+            :value: 0.6
+
+
+            Maximum allowed cuboid edge length for any axis.
+
+
+
+         .. py:attribute:: cuboid_distance_threshold
+            :type:  float
+            :value: 0.015
+
+
+            Inlier threshold used specifically for cuboid fitting.
+
+
+
+         .. py:attribute:: cuboid_minimum_inlier_ratio
+            :type:  float
+            :value: 0.35
+
+
+            Minimum inlier ratio required for cuboid candidates.
+
+
+
+         .. py:attribute:: selection_score_tolerance
+            :type:  float
+            :value: 0.05
+
+
+            Maximum score gap for considering two fits equivalent.
+
+
+
+         .. py:attribute:: prefer_cuboid_when_score_close
+            :type:  bool
+            :value: True
+
+
+            Whether cuboids should be preferred when scores are close.
+
+
+
+         .. py:attribute:: cuboid_preference_score_margin
+            :type:  float
+            :value: 0.06
+
+
+            Maximum score gap to still prefer a box-like cuboid candidate.
+
+
+
+         .. py:attribute:: cuboid_preference_inlier_ratio_tolerance
+            :type:  float
+            :value: 0.05
+
+
+            Maximum inlier-ratio gap to still prefer a cuboid.
+
+
+
+         .. py:attribute:: cuboid_box_like_cross_section_asymmetry_threshold
+            :type:  float
+            :value: 0.12
+
+
+            Minimum cross-section asymmetry to classify a cuboid as box-like.
+
+
+
+         .. py:attribute:: cuboid_box_like_cube_axis_similarity_tolerance
+            :type:  float
+            :value: 0.12
+
+
+            Maximum axis spread ratio to classify a cuboid as cube-like.
+
+
+
+         .. py:attribute:: stabilize_ambiguous_cuboid_orientation
+            :type:  bool
+            :value: True
+
+
+            Whether ambiguous cuboid in-plane orientation should be stabilized.
+
+
+
+         .. py:attribute:: cuboid_ambiguous_in_plane_extent_relative_difference
+            :type:  float
+            :value: 0.3
+
+
+            Maximum relative in-plane extent difference treated as orientation-ambiguous.
+
+
+
+         .. py:attribute:: log_candidate_metrics
+            :type:  bool
+            :value: True
+
+
+            Whether candidate metrics are logged on debug level.
+
+
+
+         .. py:attribute:: log_rejection_reasons
+            :type:  bool
+            :value: True
+
+
+            Whether shape rejection reasons are logged when metrics logging is enabled.
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+      Estimate shapes and publish annotations and 3D visualizations.
+
+
+
+   .. py:method:: _estimate_shape_for_object_hypothesis(object_hypothesis: robokudo.types.scene.ObjectHypothesis) -> typing_extensions.Optional[typing_extensions.Tuple[robokudo.types.annotation.Shape, typing_extensions.List[typing_extensions.Dict[str, typing_extensions.Any]]]]
+
+      Estimate one shape candidate for a single object hypothesis.
+
+
+
+   .. py:method:: _prepare_point_cloud(point_cloud: open3d.geometry.PointCloud) -> tuple[open3d.geometry.PointCloud, numpy.ndarray]
+
+      Return a filtered point cloud and retained index mapping.
+
+
+
+   .. py:method:: _stabilize_cylinder_axis_if_tilted(cylinder_fit: robokudo.utils.shape_fitting.CylinderFit, points: numpy.ndarray) -> robokudo.utils.shape_fitting.CylinderFit
+
+      Stabilize cylinder axis using principal axes and optional upright prior.
+
+
+
+   .. py:method:: _collect_cylinder_axis_candidates(points: numpy.ndarray) -> typing_extensions.List[typing_extensions.Tuple[str, numpy.ndarray]]
+
+      Return candidate cylinder axis directions for stabilization.
+
+
+
+   .. py:method:: _contains_similar_axis_direction(existing_axis_candidates: typing_extensions.List[typing_extensions.Tuple[str, numpy.ndarray]], candidate_axis_direction: numpy.ndarray, similarity_threshold_degrees: float = 8.0) -> bool
+
+      Return whether candidate axis is similar to one axis already in the list.
+
+
+
+   .. py:method:: _preferred_cylinder_axis_direction() -> typing_extensions.Optional[numpy.ndarray]
+
+      Return configured preferred cylinder axis direction if valid.
+
+
+
+   .. py:method:: _select_cylinder_axis_candidate(candidate_fits: typing_extensions.List[CylinderAxisCandidate]) -> CylinderAxisCandidate
+
+      Select one cylinder axis candidate by score and optional upright preference.
+
+
+
+   .. py:method:: _refit_cylinder_with_fixed_axis(points: numpy.ndarray, fixed_axis_direction: numpy.ndarray) -> typing_extensions.Optional[robokudo.utils.shape_fitting.CylinderFit]
+
+      Refit cylinder radius and finite height while keeping axis direction fixed.
+
+
+
+   .. py:method:: _point_cloud_principal_axes(points: numpy.ndarray) -> typing_extensions.List[numpy.ndarray]
+
+      Return principal point-cloud axes sorted by descending variance.
+
+
+
+   .. py:method:: _axis_angle_degrees(first_axis: numpy.ndarray, second_axis: numpy.ndarray) -> float
+
+      Return unsigned angle in degrees between two axis directions.
+
+
+
+   .. py:method:: _normalized_vector(vector: numpy.ndarray) -> numpy.ndarray
+
+      Return normalized vector with safe fallback for near-zero norm.
+
+
+
+   .. py:method:: _cross_section_max_extent_for_axis(points: numpy.ndarray, axis_center: numpy.ndarray, axis_direction: numpy.ndarray) -> float
+
+      Return largest observed cross-section extent orthogonal to the cylinder axis.
+
+
+
+   .. py:method:: _orthogonal_axes_for_plane_normal(plane_normal: numpy.ndarray) -> typing_extensions.Tuple[numpy.ndarray, numpy.ndarray]
+
+      Return two orthonormal basis axes orthogonal to the given plane normal.
+
+
+
+   .. py:method:: _stabilize_cuboid_orientation_if_ambiguous(cuboid_fit: robokudo.utils.shape_fitting.CuboidFit, points: numpy.ndarray) -> robokudo.utils.shape_fitting.CuboidFit
+
+      Stabilize in-plane cuboid orientation for near-square visible faces.
+
+
+
+   .. py:method:: _project_axis_onto_plane(axis: numpy.ndarray, plane_normal: numpy.ndarray) -> numpy.ndarray
+
+      Project axis onto the plane orthogonal to the given plane normal.
+
+
+
+   .. py:method:: _refit_cuboid_with_fixed_orientation(points: numpy.ndarray, fixed_rotation_matrix: numpy.ndarray, extent_support_indices: numpy.ndarray) -> typing_extensions.Optional[robokudo.utils.shape_fitting.CuboidFit]
+
+      Refit cuboid center and extents while keeping rotation fixed.
+
+
+
+   .. py:method:: _map_to_object_indices(object_hypothesis: robokudo.types.scene.ObjectHypothesis, local_indices: numpy.ndarray) -> typing_extensions.List[int]
+
+      Map local point indices back to object hypothesis index space.
+
+
+
+   .. py:method:: _fit_to_annotation(fit_result: robokudo.utils.shape_fitting.FittedShape) -> robokudo.types.annotation.Shape
+
+      Convert a fit result into a RoboKudo shape annotation.
+
+
+
+   .. py:method:: _sphere_fit_to_annotation(fit_result: robokudo.utils.shape_fitting.SphereFit) -> robokudo.types.annotation.Sphere
+
+      Create a sphere annotation from a sphere fit.
+
+
+
+   .. py:method:: _cylinder_fit_to_annotation(fit_result: robokudo.utils.shape_fitting.CylinderFit) -> robokudo.types.annotation.Cylinder
+
+      Create a cylinder annotation from a cylinder fit.
+
+
+
+   .. py:method:: _cuboid_fit_to_annotation(fit_result: robokudo.utils.shape_fitting.CuboidFit) -> robokudo.types.annotation.Cuboid
+
+      Create a cuboid annotation from a cuboid fit.
+
+
+
+   .. py:method:: _rotation_matrix_from_axis(axis_direction: numpy.ndarray) -> numpy.ndarray
+
+      Create an orthonormal rotation matrix with z aligned to the axis.
+
+
+
+   .. py:method:: _create_visualization_geometries(object_hypothesis: robokudo.types.scene.ObjectHypothesis, filtered_cloud: open3d.geometry.PointCloud, best_fit: robokudo.utils.shape_fitting.FittedShape) -> typing_extensions.List[typing_extensions.Dict[str, typing_extensions.Any]]
+
+      Create visualization geometries for one fitted object.
+
+
+
+   .. py:method:: _create_inlier_colored_cloud(cloud: open3d.geometry.PointCloud, inlier_indices: numpy.ndarray) -> open3d.geometry.PointCloud
+
+      Return a copy of the cloud with inliers and outliers color coded.
+
+
+
+   .. py:method:: _fit_to_o3d_geometry(fit_result: robokudo.utils.shape_fitting.FittedShape) -> open3d.geometry.Geometry
+
+      Convert a fitted primitive into an Open3D geometry.
+
+
+
+   .. py:method:: _fit_to_coordinate_frame(fit_result: robokudo.utils.shape_fitting.FittedShape) -> open3d.geometry.TriangleMesh
+
+      Create a coordinate frame located at the fitted primitive center.
+
+
+
+   .. py:method:: _minimum_inlier_ratio_for_fit(fit_result: robokudo.utils.shape_fitting.FittedShape) -> float
+
+      Return the configured minimum inlier ratio for one fitted shape type.
+
+
+
+   .. py:method:: _log_rejected_candidate(object_hypothesis: robokudo.types.scene.ObjectHypothesis, shape_name: str) -> None
+
+      Log one rejected shape candidate.
+
+
+
+   .. py:method:: _log_candidate_metrics(object_hypothesis: robokudo.types.scene.ObjectHypothesis, fit_result: robokudo.utils.shape_fitting.FittedShape) -> None
+
+      Log shape candidate metrics for debugging.
+
+
+
+   .. py:method:: _log_selected_candidate(object_hypothesis: robokudo.types.scene.ObjectHypothesis, fit_result: robokudo.utils.shape_fitting.FittedShape) -> None
+
+      Log selected candidate metrics for debugging.
+
+
+
+   .. py:method:: _fit_summary(fit_result: robokudo.utils.shape_fitting.FittedShape) -> str
+
+      Return a compact summary string for one fitted candidate.
+
+
+

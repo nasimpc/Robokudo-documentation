@@ -1,0 +1,67 @@
+robokudo.annotators.semantic_world_connector
+============================================
+
+.. py:module:: robokudo.annotators.semantic_world_connector
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.semantic_world_connector.SemanticDigitalTwinConnector
+
+
+Module Contents
+---------------
+
+.. py:class:: SemanticDigitalTwinConnector(name: str = 'WorldValidator', descriptor: SemanticDigitalTwinConnector = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   An annotator that synchronizes the current state of the world with the semdt.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      .. py:class:: Parameters
+
+         .. py:attribute:: urdf_path
+            :type:  typing_extensions.Optional[str]
+            :value: None
+
+
+            Optional Path to the URDF file of the world
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: semdt_adapter
+
+      An instance of SemanticDigitalTwinConnector used to connect to the semdt.
+
+
+
+   .. py:method:: extract_data(oh: robokudo.types.scene.ObjectHypothesis) -> typing_extensions.Dict[str, typing_extensions.Any]
+
+      Extracts data from an object hypothesis to a simple dictionary.
+
+      :param oh: Object hypothesis to extract data from.
+      :return: A dictionary containing the object hypothesis data in form of a dictionary.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Synchronise the current RoboKudo state with the current semdt state.
+
+
+

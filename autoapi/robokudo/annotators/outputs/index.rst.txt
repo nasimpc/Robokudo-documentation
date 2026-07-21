@@ -1,0 +1,159 @@
+robokudo.annotators.outputs
+===========================
+
+.. py:module:: robokudo.annotators.outputs
+
+.. autoapi-nested-parse::
+
+   Output management for RoboKudo annotators.
+
+   This module provides classes for managing annotator outputs across pipelines.
+   It supports:
+
+   * Per-pipeline output organization
+   * Structured output storage
+   * Output type management
+   * Pipeline-specific output mapping
+   * Dynamic output initialization
+
+   The module is used for:
+
+   * Output data organization
+   * Pipeline result management
+   * Cross-pipeline data handling
+   * Output type safety
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.outputs.AnnotatorOutputStruct
+   robokudo.annotators.outputs.AnnotatorOutputs
+   robokudo.annotators.outputs.AnnotatorOutputPerPipelineMap
+   robokudo.annotators.outputs.ClearAnnotatorOutputs
+
+
+Module Contents
+---------------
+
+.. py:class:: AnnotatorOutputStruct
+
+   Container for annotator-specific outputs. These will get consumed by the GUI after the pipeline is run,
+   or you have used the SetPipelineRedraw Behaviour. Check out the GUI-related classes for more details.
+
+   This class stores and manages different types of outputs
+   (e.g., images, point clouds) for a single annotator.
+
+
+   .. py:attribute:: image
+      :type:  numpy.typing.NDArray[numpy.uint8]
+
+      Image output data
+
+
+
+   .. py:attribute:: geometries
+      :type:  typing_extensions.List[typing_extensions.Dict[str, open3d.geometry.Geometry3D]]
+      :value: []
+
+
+      Open3D Geometries data. Will be passed to o3d.visualization.O3DVisualizer.add_geometry.
+
+
+
+   .. py:attribute:: render_next_time
+      :value: True
+
+
+      Whether the outputs should be rendered on the next GUI update. Defaults to True for the first run.
+
+
+
+   .. py:method:: set_image(img: numpy.typing.NDArray[numpy.uint8]) -> None
+
+      Set the image in this AnnotatorOutputStruct and instruct the GUI to render it next time.
+
+      :param img: The image to be displayed on the next GUI update.
+
+
+
+   .. py:method:: set_geometries(geometries: typing_extensions.List[typing_extensions.Dict[str, typing_extensions.Any]]) -> None
+
+      Set the geometries in this AnnotatorOutputStruct and instruct the GUI to render it next time.
+
+      :param geometries: This parameter holds the geometries to be drawn. It should behave like o3d.visualization.draw,
+      which means that you can either pass a drawable geometry, a dict with a drawable geometry
+      (see
+      https://github.com/isl-org/Open3D/blob/73bbddc8851b1670b7e74b7cf7af969360f48317/examples/python/visualization/draw.py#L123
+      for an example) or a list of both.
+
+
+
+.. py:class:: AnnotatorOutputs
+
+   Container for all annotator outputs in a pipeline.
+
+   This class manages output structures for multiple annotators
+   within a single pipeline.
+
+
+   .. py:attribute:: outputs
+      :type:  typing_extensions.Dict[str, AnnotatorOutputStruct]
+
+      Dictionary mapping annotator names to their outputs
+
+
+
+   .. py:attribute:: redraw
+      :value: True
+
+
+      Whether the outputs should be redrawn on the next GUI update. Defaults to True for the first run.
+
+
+
+   .. py:method:: init_annotator(annotator_name: str) -> None
+
+      Initialize the output structure for an annotator.
+
+      :param annotator_name: Name of the annotator
+
+
+
+   .. py:method:: clear_outputs() -> None
+
+
+.. py:class:: AnnotatorOutputPerPipelineMap
+
+   Container for annotator outputs across multiple pipelines.
+
+   This class manages output structures for all annotators across
+   all pipelines in the system.
+
+
+   .. py:attribute:: map
+      :type:  typing_extensions.Dict[str, AnnotatorOutputs]
+
+      Dictionary mapping pipeline names to their annotator outputs
+
+
+
+.. py:class:: ClearAnnotatorOutputs(name: str = 'ClearAnnotatorOutputs')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   Put directly in the corresponding RK Pipeline
+
+
+   .. py:attribute:: rk_logger
+      :value: None
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+

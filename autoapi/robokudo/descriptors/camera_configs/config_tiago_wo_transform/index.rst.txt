@@ -1,0 +1,45 @@
+robokudo.descriptors.camera_configs.config_tiago_wo_transform
+=============================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_tiago_wo_transform
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_tiago_wo_transform.TiagoWoTfCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: TiagoWoTfCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.config_tiago.TiagoCameraConfig`
+
+
+   Configuration class for the TIAGo robot's Xtion camera without transform lookup.
+
+   This class defines the configuration parameters for the Xtion RGB-D camera
+   mounted on the TIAGo robot, similar to config_tiago.py but with viewpoint
+   lookup disabled. It includes settings for camera interface and topic names.
+
+   .. note::
+       This configuration is identical to config_tiago.py except that
+       lookup_viewpoint is set to False by default.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'tiago_wo_tf'
+
+
+
+   .. py:attribute:: lookup_viewpoint
+      :type:  bool
+      :value: False
+
+
+

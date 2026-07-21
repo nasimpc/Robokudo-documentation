@@ -1,0 +1,93 @@
+robokudo.utils.logging_configuration
+====================================
+
+.. py:module:: robokudo.utils.logging_configuration
+
+.. autoapi-nested-parse::
+
+   Logging configuration utilities for Robokudo.
+
+   This module provides functionality for configuring Python logging in a ROS environment.
+   It handles:
+
+   * Logger configuration from YAML files
+   * ROS-Python logging integration
+   * Custom log formatting
+   * Per-module log level control
+
+   .. note::
+      ROS normally disables Python's default logging system. This module provides
+      a workaround to enable proper Python logging alongside ROS logging.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.utils.logging_configuration.DynamicCompactFormatter
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.logging_configuration.configure_logging
+
+
+Module Contents
+---------------
+
+.. py:class:: DynamicCompactFormatter(fmt: str = None, datefmt: str = None, style: str = '%')
+
+   Bases: :py:obj:`logging.Formatter`
+
+
+   Extended `logging.Formatter` that supports dynamic truncation of filenames.
+
+
+   .. py:method:: _parse_field_width() -> None
+
+      Parse format string to find filename_line width.
+
+
+
+   .. py:method:: format(record: logging.LogRecord) -> str
+
+      Format the given log record according to the formatter's format string.
+
+      :param record: Log record to format
+      :return: Formatted log message as a string
+
+
+
+.. py:function:: configure_logging(logging_config_file_name: str) -> None
+
+   Configure Python logging system with ROS integration.
+
+   Sets up Python logging with:
+
+   * Console output to stdout
+   * Custom formatter for detailed log messages
+   * Per-module log levels from YAML config
+   * ROS logging integration
+
+   The YAML config file should map logger names to logging levels:
+
+   .. code-block:: yaml
+
+       logger_name1: INFO
+       logger_name2: DEBUG
+       ...
+
+   :param logging_config_file_name: Path to YAML config file
+   :raises FileNotFoundError: If config file not found
+   :raises yaml.YAMLError: If config file has invalid format
+
+   .. note::
+      This is needed because ROS disables standard Python logging.
+      See: https://github.com/ros/ros_comm/issues/1384
+
+

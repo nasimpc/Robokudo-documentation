@@ -1,0 +1,195 @@
+robokudo.io.ros_camera_without_depth_interface
+==============================================
+
+.. py:module:: robokudo.io.ros_camera_without_depth_interface
+
+.. autoapi-nested-parse::
+
+   ROS camera interface for RGB-only cameras in RoboKudo.
+
+   This module provides an interface for ROS cameras that only provide RGB images
+   without depth information. It supports:
+
+   * Synchronized RGB image and camera info subscription
+   * Image rotation with intrinsics adjustment
+   * Transform lookup between camera and world frames
+   * Thread-safe data handling
+
+   The module is used for cameras like:
+
+   * Hand cameras on robotic arms
+   * Standard USB cameras with ROS drivers
+   * Network cameras with ROS interfaces
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.ros_camera_without_depth_interface.ROSCameraWithoutDepthInterface
+
+
+Module Contents
+---------------
+
+.. py:class:: ROSCameraWithoutDepthInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.io.camera_interface.ROSCameraInterface`
+
+
+   A ROS camera interface for RGB-only cameras.
+
+   This class handles cameras that provide only RGB images without depth data. It
+   synchronizes RGB images with camera calibration information and supports image
+   rotation with proper intrinsics adjustment.
+
+
+   .. py:attribute:: color_subscriber
+      :type:  message_filters.Subscriber
+
+      Subscriber for RGB image topic.
+
+
+
+   .. py:attribute:: cam_info_subscriber
+      :type:  message_filters.Subscriber
+
+      Subscriber for camera info topic.
+
+
+
+   .. py:attribute:: color
+      :type:  typing_extensions.Optional[typing_extensions.Tuple[numpy.typing.NDArray]]
+      :value: None
+
+
+      Latest RGB image data.
+
+
+
+   .. py:attribute:: cam_info
+      :type:  typing_extensions.Optional[sensor_msgs.msg.CameraInfo]
+      :value: None
+
+
+      Latest camera calibration info.
+
+
+
+   .. py:attribute:: cam_intrinsic
+      :type:  typing_extensions.Optional[open3d.camera.PinholeCameraIntrinsic]
+      :value: None
+
+
+      Camera intrinsic parameters in Open3D format.
+
+
+
+   .. py:attribute:: color2depth_ratio
+      :type:  typing_extensions.Optional[typing_extensions.Tuple[float, float]]
+      :value: (1.0, 1.0)
+
+
+      Always (1.0, 1.0) since no depth data.
+
+
+
+   .. py:attribute:: cam_translation
+      :type:  typing_extensions.Optional[typing_extensions.List[float]]
+      :value: None
+
+
+      Camera translation from TF.
+
+
+
+   .. py:attribute:: cam_quaternion
+      :type:  typing_extensions.Optional[typing_extensions.List[float]]
+      :value: None
+
+
+      Camera rotation as quaternion from TF.
+
+
+
+   .. py:attribute:: timestamp
+      :type:  typing_extensions.Optional[float]
+      :value: None
+
+
+      Timestamp of latest data.
+
+
+
+   .. py:attribute:: lock
+      :type:  threading.Lock
+
+      Thread synchronization lock.
+
+
+
+   .. py:attribute:: bridge
+      :type:  cv_bridge.CvBridge
+
+      Bridge for converting between ROS and OpenCV images.
+
+
+
+   .. py:method:: rotate_camera_intrinsics(K: numpy.typing.NDArray, image_size: typing_extensions.Tuple[int, int], rotation: str = '90_ccw') -> typing_extensions.Tuple[numpy.typing.NDArray, typing_extensions.Tuple[int, int]]
+
+      Adjust camera intrinsics matrix for image rotation.
+
+      Computes the new camera intrinsics matrix and image dimensions after applying a
+      rotation to the image. Supports 90° counter-clockwise, 90° clockwise, and 180°
+      rotations.
+
+      :param K: Original camera intrinsic matrix of shape (3, 3)
+      :param image_size: Original image dimensions as (width, height)
+      :param rotation: '90_ccw', '90_cw', '180' (default is 90° counter-clockwise)
+      :return: Tuple of (new intrinsics matrix, new image dimensions)
+      :raises ValueError: If rotation type is not supported
+
+
+
+   .. py:method:: rotate_image_and_intrinsics(img: numpy.typing.NDArray, K: numpy.typing.NDArray, rotation: str = '90_ccw') -> typing_extensions.Tuple[numpy.typing.NDArray, numpy.typing.NDArray, typing_extensions.Tuple[int, int]]
+
+      Rotate an image and adjust its camera intrinsics accordingly.
+
+      :param img: Input image to rotate
+      :param K: Camera intrinsics matrix
+      :param rotation: Type of rotation to apply, defaults to '90_ccw'
+      :return: Tuple of (rotated image, new intrinsics matrix, new dimensions)
+      :raises ValueError: If rotation type is not supported
+
+
+
+   .. py:method:: callback(color_data: sensor_msgs.msg.Image, cam_info: typing_extensions.Optional[sensor_msgs.msg.CameraInfo] = None) -> None
+
+      Process synchronized RGB image and camera info messages.
+
+      TODO make this generic. handle the encoding and order properly. For standard and
+      compressed images. this might also depend on the fix of image_transport_plugins
+      being published as a package. Startpoint can be found at the bottom of this
+      method.
+
+      :param color_data: RGB image message
+      :param cam_info: Camera calibration info message, defaults to None
+
+
+
+   .. py:method:: set_data(cas: CAS) -> None
+
+      Update the Common Analysis Structure with latest camera data.
+
+      This method:
+      * Applies any configured image rotation
+      * Updates camera intrinsics accordingly
+      * Sets RGB image, camera info, and transform data in the CAS
+      * Handles thread synchronization
+
+      :param cas: Common Analysis Structure to update
+
+
+

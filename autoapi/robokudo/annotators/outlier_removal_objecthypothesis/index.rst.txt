@@ -1,0 +1,156 @@
+robokudo.annotators.outlier_removal_objecthypothesis
+====================================================
+
+.. py:module:: robokudo.annotators.outlier_removal_objecthypothesis
+
+.. autoapi-nested-parse::
+
+   Statistical outlier removal and clustering for object hypotheses.
+
+   This module implements statistical outlier removal based on standard deviation and
+   number of neighbors in point clouds, followed by clustering to refine object hypotheses.
+   The implementation works in-place to minimize memory usage.
+
+   Key features:
+
+   * Statistical outlier removal using point neighborhoods
+   * DBSCAN clustering for object refinement
+   * In-place point cloud modification
+   * Configurable parameters per object class
+   * Visualization of processed clusters
+
+   Authors:
+   * Sorin Arion
+   * Naser Azizi
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.annotators.outlier_removal_objecthypothesis._PYTYPE_TO_ROS_FIELD
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.outlier_removal_objecthypothesis.OutlierRemovalOnObjectHypothesisAnnotator
+
+
+Module Contents
+---------------
+
+.. py:data:: _PYTYPE_TO_ROS_FIELD
+   :type:  typing_extensions.Dict[typing_extensions.Type, str]
+
+.. py:class:: OutlierRemovalOnObjectHypothesisAnnotator(name: str = 'OutlierRemovalOnObjectHypothesis', descriptor: OutlierRemovalOnObjectHypothesisAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for statistical outlier removal and clustering refinement.
+
+   This annotator processes object hypotheses by:
+
+   * Removing statistical outliers from point clouds
+   * Clustering remaining points using DBSCAN
+   * Selecting largest cluster as refined object
+   * Updating object hypothesis point clouds in-place
+   * Providing visualization of processed clusters
+
+   The processing can be selectively disabled for specific object classes.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for outlier removal and clustering.
+
+
+      .. py:class:: Parameters
+
+         Parameter container for outlier removal configuration.
+
+
+         .. py:attribute:: dbscan_neighbors
+            :type:  int
+            :value: 90
+
+
+            Minimum points to form a cluster (DBSCAN min_samples)
+
+
+
+         .. py:attribute:: dbscan_epsilon
+            :type:  float
+            :value: 0.02
+
+
+            DBSCAN neighborhood size
+
+
+
+         .. py:attribute:: stat_neighbors
+            :type:  int
+            :value: 200
+
+
+            Number of neighbors for statistical analysis
+
+
+
+         .. py:attribute:: stat_std
+            :type:  float
+            :value: 0.5
+
+
+            Standard deviation threshold for outlier removal
+
+
+
+         .. py:attribute:: skip_removal_on_classes
+            :type:  typing_extensions.List[str]
+            :value: []
+
+
+            List of class names to skip processing
+
+            If you want to skip the complete outlier removal process on certain classes, you can add a list of
+            strings here. The values are case-sensitive!
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: node
+
+
+   .. py:method:: parameters_callback(params: typing_extensions.List[rclpy.parameter.Parameter]) -> rcl_interfaces.msg.SetParametersResult
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process object hypotheses to remove outliers and refine clusters.
+
+      :return: SUCCESS if processing completed, raises Exception if no clusters found
+      :raises Exception: If no clusters are found after processing
+
+
+
+   .. py:method:: cluster_statistical_outlierremoval_pcd() -> bool
+
+      Perform outlier removal and clustering on each object hypothesis.
+
+      :return: True, if at least one of the object hypotheses could be optimized. False otherwise.
+
+
+

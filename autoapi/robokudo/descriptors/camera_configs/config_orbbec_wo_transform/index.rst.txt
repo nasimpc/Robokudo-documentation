@@ -1,0 +1,42 @@
+robokudo.descriptors.camera_configs.config_orbbec_wo_transform
+==============================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_orbbec_wo_transform
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_orbbec_wo_transform.OrbbecCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: OrbbecCameraConfig
+
+   Bases: :py:obj:`OrbbecCameraConfig`
+
+
+   Configuration class for the OrbBec Astra camera without transform lookup.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'orbbec_wo_tf'
+
+
+      Name of the camera configuration in the registry.
+
+      Must be unique.
+
+
+
+   .. py:attribute:: lookup_viewpoint
+      :type:  bool
+      :value: False
+
+
+

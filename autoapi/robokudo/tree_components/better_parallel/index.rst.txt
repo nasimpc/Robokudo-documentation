@@ -1,0 +1,138 @@
+robokudo.tree_components.better_parallel
+========================================
+
+.. py:module:: robokudo.tree_components.better_parallel
+
+.. autoapi-nested-parse::
+
+   Enhanced parallel behavior tree components.
+
+   This module provides enhanced parallel behavior tree components that improve upon
+   the standard py_trees parallel implementation. It supports:
+
+   * Configurable success policies
+   * Synchronization options
+   * Child status management
+   * Improved interrupt handling
+
+   The module is primarily used for:
+
+   * Complex parallel task execution
+   * Synchronized behavior coordination
+   * Robust failure handling
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.tree_components.better_parallel.ParallelPolicy
+   robokudo.tree_components.better_parallel.Parallel
+
+
+Module Contents
+---------------
+
+.. py:class:: ParallelPolicy
+
+   Bases: :py:obj:`object`
+
+
+   Configurable policies for parallel behavior execution.
+
+   This class provides policy configurations that determine how parallel behaviors
+   complete based on their children's status.
+
+
+   .. py:class:: Base(synchronise: bool = False)
+
+      Bases: :py:obj:`object`
+
+
+      Base class for parallel policies.
+
+      .. warning::
+         Should never be used directly. Use derived policy classes instead.
+
+
+      .. py:attribute:: synchronise
+         :type:  bool
+         :value: False
+
+
+         Stop ticking successful children until policy met.
+
+
+
+
+   .. py:class:: SuccessOnAll(synchronise: bool = True)
+
+      Bases: :py:obj:`Base`
+
+
+      Policy requiring all children to succeed.
+
+      Returns SUCCESS only when each child returns SUCCESS. With synchronization,
+      successful children are skipped until all succeed or one fails.
+
+
+
+   .. py:class:: SuccessOnOne
+
+      Bases: :py:obj:`Base`
+
+
+      Policy requiring only one child to succeed.
+
+      Returns SUCCESS when at least one child succeeds and others are RUNNING.
+
+
+
+   .. py:class:: SuccessOnSelected(children: typing_extensions.List[py_trees.behaviour.Behaviour], synchronise: bool = True)
+
+      Bases: :py:obj:`Base`
+
+
+      Policy requiring specific children to succeed.
+
+      Returns SUCCESS when all specified children succeed. With synchronization,
+      successful children are skipped until all specified succeed or one fails.
+
+
+      .. py:attribute:: children
+
+
+
+.. py:class:: Parallel
+
+   Bases: :py:obj:`py_trees.composites.Parallel`
+
+
+   Enhanced parallel behavior tree node.
+
+   This class extends py_trees.composites.Parallel with:
+
+   * Improved policy handling
+   * Better child status management
+   * Proper interrupt propagation
+
+   .. note::
+      Children are ticked in sequence but may run concurrently.
+
+
+   .. py:method:: tick() -> typing_extensions.Iterator[typing_extensions.Union[py_trees.composites.Parallel, typing_extensions.Any]]
+
+      Tick all children according to policy.
+
+      This method:
+      * Initializes if not running
+      * Ticks each child according to policy
+      * Updates status based on children and policy
+      * Handles interrupts for running children
+
+      :yield: Reference to self or children during traversal
+
+
+

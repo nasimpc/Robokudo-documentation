@@ -1,0 +1,101 @@
+robokudo.utils.hypothesis_comparators
+=====================================
+
+.. py:module:: robokudo.utils.hypothesis_comparators
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.utils.hypothesis_comparators.THyothesis
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.utils.hypothesis_comparators.HypothesisComparator
+   robokudo.utils.hypothesis_comparators.ObjectHypothesisComparator
+
+
+Module Contents
+---------------
+
+.. py:data:: THyothesis
+
+.. py:class:: HypothesisComparator(cas_fn: typing_extensions.Callable[[], robokudo.cas.CAS])
+
+   Bases: :py:obj:`typing_extensions.Generic`\ [\ :py:obj:`THyothesis`\ ]
+
+
+   A comparator that can compare two hypotheses.
+
+
+   .. py:attribute:: cas_fn
+
+      Function to get a CAS instance, to be used for annotation filtering.
+
+
+
+   .. py:attribute:: annotation_comparators
+      :type:  typing_extensions.Dict[typing_extensions.Type[robokudo.types.core.Annotation], robokudo.utils.comparators.FeatureComparator]
+
+      Feature comparators used by this hypothesis comparator to compare annotations.
+
+
+
+   .. py:attribute:: type_comparators
+      :type:  typing_extensions.Dict[typing_extensions.Type[robokudo.types.core.Type], robokudo.utils.comparators.FeatureComparator]
+
+      Feature comparators used by this hypothesis comparator to compare other robokudo
+      types.
+
+
+
+   .. py:method:: compute_similarity(hypothesis1: THyothesis, hypothesis2: THyothesis) -> float
+      :abstractmethod:
+
+
+      Compute the similarity between two hypotheses.
+
+      :param hypothesis1: The first hypothesis to compare.
+      :param hypothesis2: The second hypothesis to compare.
+      :return: The similarity of the two hypotheses between 0.0 (no similarity) and
+          1.0 (identical).
+
+
+
+   .. py:method:: with_comparator_for(compared_type: typing_extensions.Type[typing_extensions.Union[robokudo.types.core.Annotation, robokudo.types.core.Type]], weight: float, **kwargs) -> HypothesisComparator
+
+      Add a feature comparator for the given annotation using the given weight to the
+      comparator.
+
+      :param compared_type: The type that should be compared by the hypothesis
+          comparator.
+      :param weight: The weight the hypothesis comparator should use for the compared
+          type.
+      :return: The hypothesis comparator with the added comparator.
+      :raises KeyError: If no comparator can be found for the given type.
+      :raises ValueError: If the given type cannot be compared.
+
+
+
+.. py:class:: ObjectHypothesisComparator
+
+   Bases: :py:obj:`HypothesisComparator`\ [\ :py:obj:`robokudo.types.scene.ObjectHypothesis`\ ]
+
+
+   .. py:method:: compute_similarity(hypothesis1: robokudo.types.scene.ObjectHypothesis, hypothesis2: robokudo.types.scene.ObjectHypothesis) -> float
+
+      Compute the similarity between two hypotheses.
+
+      :param hypothesis1: The first hypothesis to compare.
+      :param hypothesis2: The second hypothesis to compare.
+      :return: The similarity of the two hypotheses between 0.0 (no similarity) and
+          1.0 (identical).
+
+
+

@@ -1,0 +1,89 @@
+robokudo.io.storage_reader_interface
+====================================
+
+.. py:module:: robokudo.io.storage_reader_interface
+
+.. autoapi-nested-parse::
+
+   MongoDB storage reader interface for RoboKudo.
+
+   This module provides an interface for reading stored sensor data and annotations
+   from a MongoDB database. It supports:
+
+   * Reading stored RGB-D camera data
+   * Loading camera calibration information
+   * Restoring annotations and views
+   * Automatic cursor management
+   * Optional looping through stored data
+
+   The module is primarily used for:
+
+   * Replaying recorded data
+   * Testing and debugging pipelines
+   * Offline data analysis
+   * Visualization of stored data
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.storage_reader_interface.StorageReaderInterface
+
+
+Module Contents
+---------------
+
+.. py:class:: StorageReaderInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.io.camera_interface.CameraInterface`
+
+
+   A camera interface for reading data from MongoDB storage.
+
+   This interface reads sensor data and annotations that were previously stored using
+   the StorageWriter annotator. It handles data deserialization and restoration of the
+   Common Analysis Structure (CAS) views.
+
+
+   .. py:attribute:: storage
+      :type:  robokudo.io.storage.Storage
+
+      MongoDB storage interface.
+
+
+
+   .. py:attribute:: reader
+      :type:  robokudo.io.storage.Storage.ListReader
+
+      List-based reader for MongoDB data.
+
+
+
+   .. py:method:: has_new_data() -> bool
+
+      Check if more data is available to read.
+
+      Handles looping behavior based on camera configuration and maintains cursor
+      position in the data sequence.
+
+      :return: True if more data is available, False otherwise
+
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      Update the Common Analysis Structure with data from storage.
+
+      This method:
+      * Retrieves the next frame from storage
+      * Restores views and annotations
+      * Updates camera intrinsics
+      * Sets depth availability flag
+
+      :param cas: Common Analysis Structure to update
+
+
+

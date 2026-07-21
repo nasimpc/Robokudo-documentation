@@ -1,0 +1,211 @@
+robokudo.behaviours.action_server_checks
+========================================
+
+.. py:module:: robokudo.behaviours.action_server_checks
+
+.. autoapi-nested-parse::
+
+   Action server monitoring behaviors for RoboKudo behavior trees.
+
+   This module provides behaviors for monitoring and controlling ROS action servers
+   in RoboKudo. It includes behaviors for:
+
+   * Checking action server activity state
+   * Handling preemption requests
+   * Managing goal abortion
+   * Exception handling
+
+   These behaviors are typically used in pipelines that interact with ROS action
+   servers to ensure proper state management and error handling.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.behaviours.action_server_checks.ActionServerActive
+   robokudo.behaviours.action_server_checks.ActionServerCheck
+   robokudo.behaviours.action_server_checks.ActionServerNoPreemptRequest
+   robokudo.behaviours.action_server_checks.AbortGoal
+   robokudo.behaviours.action_server_checks.RunningUntilExceptionHandled
+   robokudo.behaviours.action_server_checks.ActionServerPresentAndDone
+
+
+Module Contents
+---------------
+
+.. py:class:: ActionServerActive(name: str = 'ActionServerActive')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   A behavior that checks if an action server is active.
+
+   This behavior monitors the action server's state and returns:
+   * SUCCESS if the server is active and processing a goal
+   * FAILURE if the server is not found or not active
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check if the action server is active.
+
+      This method:
+      * Retrieves the action server from the blackboard
+      * Checks if it exists and is active
+      * Returns appropriate status based on server state
+
+      :return: SUCCESS if server is active, FAILURE otherwise
+
+
+
+.. py:class:: ActionServerCheck(name: str = 'ActionServerCheck')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   A behavior that monitors action server state transitions.
+
+   This behavior is used to ensure proper pipeline synchronization with
+   action server state. It returns:
+   * RUNNING if the server is active (processing a goal)
+   * FAILURE if the server is not found
+   * SUCCESS if the server is no longer active
+
+   This prevents pipelines from proceeding until action server processing
+   is complete.
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check action server state.
+
+      This method:
+      * Retrieves the action server from the blackboard
+      * Returns RUNNING if server is active
+      * Returns FAILURE if server not found
+      * Returns SUCCESS if server is no longer active
+
+      :return: Status based on server state
+
+
+
+.. py:class:: ActionServerNoPreemptRequest(name: str = 'ActionServerNoPreemptRequest')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   A behavior that handles action server preemption requests.
+
+   This behavior monitors for preemption requests and handles them by:
+   * Checking if a preempt request exists on the blackboard
+   * Acknowledging the request if found
+   * Returning appropriate status to trigger preemption
+
+   :ivar name: Name of the behavior node
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check for and handle preemption requests.
+
+      This method:
+      * Checks the blackboard for preemption requests
+      * Acknowledges requests if found
+      * Returns FAILURE to trigger preemption on request
+      * Returns SUCCESS if no preemption requested
+
+      :return: FAILURE if preemption requested, SUCCESS otherwise
+
+
+
+.. py:class:: AbortGoal(name: str = 'AbortGoal', msg: str = 'Goal has been aborted')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   A behavior that aborts the current goal with an error message.
+
+   This behavior raises an exception that is caught and stored on the blackboard to
+   trigger goal abortion. It is used to explicitly terminate goals with a specified
+   error message.
+
+
+   .. py:attribute:: msg
+      :type:  str
+      :value: 'Goal has been aborted'
+
+
+      Error message for goal abortion.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Abort the current goal.
+
+      This method raises an exception with the specified message. The exception is
+      caught by the decorator and stored on the blackboard.
+
+      :raises Exception: Always raises an exception with the abort message
+      :return: Never returns due to exception
+
+
+
+.. py:class:: RunningUntilExceptionHandled(name: str = 'RunningUntilExceptionHandled', msg: str = 'Running Until Exception Handled')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   A behavior that waits for exception handling to complete.
+
+   This behavior monitors the blackboard for active exceptions and returns RUNNING
+   until they are cleared. It is used to prevent further processing until error
+   conditions are resolved.
+
+
+   .. py:attribute:: msg
+      :type:  str
+      :value: 'Running Until Exception Handled'
+
+
+      Status message for waiting state.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check if exception handling is complete.
+
+      This method:
+      * Checks for active exceptions on the blackboard
+      * Returns SUCCESS if no exceptions are present
+      * Returns RUNNING if exceptions still need handling
+
+      :return: SUCCESS if no exceptions, RUNNING otherwise
+
+
+
+.. py:class:: ActionServerPresentAndDone(name: str = 'ActionServerPresentAndDone')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   A behaviour that checks whether an action server is present and represents its
+   state.
+
+
+   .. py:attribute:: rk_logger
+      :type:  logging.Logger
+      :value: None
+
+
+      Logger for this behaviour.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+

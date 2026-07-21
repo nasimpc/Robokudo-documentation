@@ -1,0 +1,142 @@
+robokudo.vis.visualizer_manager
+===============================
+
+.. py:module:: robokudo.vis.visualizer_manager
+
+.. autoapi-nested-parse::
+
+   Visualization management for RoboKudo pipelines.
+
+   This module provides a behavior tree node that manages visualization of pipeline data
+   using different visualization backends. It coordinates:
+
+   * OpenCV-based visualization
+   * Open3D visualization
+   * ROS visualization
+   * Shared visualization state
+   * Pipeline data synchronization
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.vis.visualizer_manager.VisualizationManager
+
+
+Module Contents
+---------------
+
+.. py:class:: VisualizationManager(name: str)
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   Behavior tree node for managing pipeline visualizations.
+
+   This class coordinates visualization of pipeline data across multiple
+   visualization backends. It handles:
+
+   * Pipeline data buffering and synchronization
+   * Visualizer creation and lifecycle management
+   * Shared visualization state
+   * Visualization timing and performance monitoring
+
+   .. note::
+       The manager operates in three phases:
+
+       1. Pre-tick: Prepare visualizers for new data
+       2. Tick: Update visualizations
+       3. Post-tick: Cleanup and synchronization
+
+
+   .. py:attribute:: pipelines
+      :type:  typing_extensions.Dict[str, robokudo.pipeline.Pipeline]
+
+      Mapping of pipeline names to Pipeline objects
+
+
+
+   .. py:attribute:: rk_logger
+      :type:  logging.Logger
+      :value: None
+
+
+      Logger instance for this class
+
+
+
+   .. py:attribute:: visualizer_types
+      :type:  typing_extensions.List[typing_extensions.Type]
+
+      List of available visualizer classes
+
+
+
+   .. py:attribute:: visualizers
+      :type:  typing_extensions.Dict[str, typing_extensions.List[robokudo.vis.visualizer.Visualizer]]
+
+      Mapping of pipeline name to list of Visualizers
+
+
+
+   .. py:method:: create_visualizers_for_pipeline(pipeline: robokudo.pipeline.Pipeline) -> None
+
+      Create visualizer instances for a pipeline.
+
+      :param pipeline: Pipeline to create visualizers for
+
+      .. note::
+          Creates one instance of each visualizer type and associates them
+          with the pipeline. All visualizers share a common visualization state.
+
+
+
+   .. py:method:: visualizer_instances() -> typing_extensions.List[robokudo.vis.visualizer.Visualizer]
+      :staticmethod:
+
+
+      Get all active visualizer instances.
+
+      :returns: List of all active Visualizer instances
+
+
+
+   .. py:method:: initialise() -> None
+
+      Initialize the behavior tree node.
+
+      This method:
+
+      * Clears existing pipeline references
+      * Finds all Pipeline nodes in the behavior tree
+      * Stores references to found pipelines
+
+      .. note::
+          The VisualizationManager should be placed one level below the top node
+          (Parallel) in the behavior tree.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update visualizations for all pipelines.
+
+      This method:
+
+      1. Copies new data from buffer to visualization map
+      2. Creates visualizers for new pipelines
+      3. Notifies visualizers of new data
+      4. Executes pre-tick, tick, and post-tick phases
+      5. Checks for termination signals
+
+      :returns: FAILURE if any visualizer indicates termination, RUNNING otherwise
+
+      .. note::
+          The update cycle ensures synchronized visualization across all backends
+          while maintaining separation between data buffers and visualization state.
+
+
+

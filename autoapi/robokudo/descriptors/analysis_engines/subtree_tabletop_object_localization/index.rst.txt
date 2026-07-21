@@ -1,0 +1,37 @@
+robokudo.descriptors.analysis_engines.subtree_tabletop_object_localization
+==========================================================================
+
+.. py:module:: robokudo.descriptors.analysis_engines.subtree_tabletop_object_localization
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.analysis_engines.subtree_tabletop_object_localization.Subtree
+
+
+Module Contents
+---------------
+
+.. py:class:: Subtree
+
+   Bases: :py:obj:`robokudo.analysis_engine.SubtreeInterface`
+
+
+   Analysis Engines often contain reusable components which are used across different
+   use cases. To represent these parts, use the SubtreeInterface and create a subclass.
+   Similarly to an AnalysisEngine, return the py_trees.Behaviour in the implementation
+   method.
+
+   To provide semantic difference,
+
+
+   .. py:method:: implementation() -> py_trees.composites.Sequence
+
+      Returns a sequence which will find objects on the biggest plane in available 3d
+      data.
+
+
+

@@ -1,0 +1,111 @@
+robokudo.annotators.region_filter
+=================================
+
+.. py:module:: robokudo.annotators.region_filter
+
+.. autoapi-nested-parse::
+
+   Point cloud filtering based on semantic regions.
+
+   This module provides an annotator for:
+
+   * Filtering point clouds using regions from world descriptors
+   * Creating region hypotheses with poses
+   * Visualizing filtered regions and clouds
+
+   .. note::
+      Regions are defined in a shared semantic_digital_twin World.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.region_filter.RegionFilter
+
+
+Module Contents
+---------------
+
+.. py:class:: RegionFilter(name: str = 'RegionFilter', descriptor: RegionFilter = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Point cloud filtering using world regions.
+
+   The RegionFilter can be used to filter point clouds based on an environment model
+   that provides semantic_digital_twin Regions via a shared World.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for region filtering.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring region filtering.
+
+
+         .. py:attribute:: world_frame_name
+            :type:  str
+            :value: 'map'
+
+
+            Name of the world coordinate frame
+
+
+
+         .. py:attribute:: active_region
+            :type:  str
+            :value: ''
+
+
+            Name of active region to filter. Does not define a specific region but can be used to check the active regions.
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: world_frame_name
+      :type:  str
+
+      Name of the world coordinate frame read from parameters
+
+
+
+   .. py:attribute:: active_region
+
+      Name of the active region to filter read from parameters
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+      Filter point cloud using semantic map regions.
+
+      The method:
+
+      * Loads point cloud and query from CAS
+      * Loads world descriptor and active regions
+      * For each active region:
+        * Transforms region to camera frame
+        * Creates oriented bounding box
+        * Filters points within box
+        * Creates region hypothesis with pose
+      * Updates CAS with filtered cloud
+
+      :return: SUCCESS after processing
+      :raises Exception: If queried region not found in map
+
+
+

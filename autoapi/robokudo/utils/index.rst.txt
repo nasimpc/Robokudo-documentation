@@ -1,0 +1,52 @@
+robokudo.utils
+==============
+
+.. py:module:: robokudo.utils
+
+.. autoapi-nested-parse::
+
+   RoboKudo utility functions and helpers.
+
+   This module provides a collection of utility functions and helper classes used throughout
+   the RoboKudo framework. It includes:
+
+   * Tree manipulation and execution utilities
+   * Decorator functions for timing and logging
+   * Error handling utilities
+   * File and path management
+   * Mathematical operations for 3D geometry
+   * Non-maxima suppression for object detection
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/robokudo/utils/annotation_conversion/index
+   /autoapi/robokudo/utils/annotator_helper/index
+   /autoapi/robokudo/utils/comparator_factories/index
+   /autoapi/robokudo/utils/comparators/index
+   /autoapi/robokudo/utils/cv_helper/index
+   /autoapi/robokudo/utils/data_downloader/index
+   /autoapi/robokudo/utils/decorators/index
+   /autoapi/robokudo/utils/error_handling/index
+   /autoapi/robokudo/utils/file_loader/index
+   /autoapi/robokudo/utils/hypothesis_comparators/index
+   /autoapi/robokudo/utils/logging_configuration/index
+   /autoapi/robokudo/utils/math_helper/index
+   /autoapi/robokudo/utils/module_loader/index
+   /autoapi/robokudo/utils/non_maxima_suppression/index
+   /autoapi/robokudo/utils/o3d_helper/index
+   /autoapi/robokudo/utils/query/index
+   /autoapi/robokudo/utils/region/index
+   /autoapi/robokudo/utils/shape_fitting/index
+   /autoapi/robokudo/utils/transform/index
+   /autoapi/robokudo/utils/tree/index
+   /autoapi/robokudo/utils/tree_execution/index
+   /autoapi/robokudo/utils/type_conversion/index
+   /autoapi/robokudo/utils/world_descriptor/index
+
+

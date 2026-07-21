@@ -1,0 +1,61 @@
+robokudo.annotators.pipeline_trigger
+====================================
+
+.. py:module:: robokudo.annotators.pipeline_trigger
+
+.. autoapi-nested-parse::
+
+   Pipeline execution control through triggers.
+
+   This module provides an annotator for:
+
+   * Controlling pipeline execution with triggers
+   * Waiting for external signals via blackboard
+   * Resetting trigger state after activation
+
+   .. note::
+      The pipeline will remain in RUNNING state until triggered.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.pipeline_trigger.PipelineTrigger
+
+
+Module Contents
+---------------
+
+.. py:class:: PipelineTrigger(name: str = 'PipelineTrigger')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Pipeline execution controller using triggers.
+
+   This annotator basically gives you a way to wait for a 'trigger'
+   before a pipeline should start.
+   It basically just returns RUNNING until it received the trigger from the blackboard.
+
+   .. note::
+      The trigger is accessed via "pipeline_trigger" on the blackboard.
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check trigger state and control pipeline execution.
+
+      The method:
+
+      * Reads trigger state from blackboard
+      * Returns SUCCESS if triggered
+      * Resets trigger to False
+      * Returns RUNNING if not triggered
+
+      :return: SUCCESS if triggered, RUNNING otherwise
+
+
+

@@ -1,0 +1,179 @@
+robokudo.utils.tree
+===================
+
+.. py:module:: robokudo.utils.tree
+
+.. autoapi-nested-parse::
+
+   Behavior tree utilities for RoboKudo.
+
+   This module provides helper functions for working with py_trees behavior trees.
+   It supports:
+
+   * Traversing trees while excluding certain node types
+   * Finding nodes by type or name
+   * Setting up trees and their descendants
+   * Managing parent-child relationships
+   * Generating scoped names for behaviors
+
+   Dependencies:
+
+   * py_trees for behavior tree functionality
+   * py_trees_ros for ROS integration
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.tree.behavior_iterate_except_type
+   robokudo.utils.tree.find_parent_of_type
+   robokudo.utils.tree.find_children_with_name
+   robokudo.utils.tree.get_scoped_list_of_names
+   robokudo.utils.tree.get_scoped_name
+   robokudo.utils.tree.setup_with_descendants_rk
+   robokudo.utils.tree.setup_with_descendants_on_behavior
+   robokudo.utils.tree.fix_parent_relationship_of_childs
+   robokudo.utils.tree.find_root
+   robokudo.utils.tree.add_child_to_parent
+   robokudo.utils.tree.add_children_to_parent
+
+
+Module Contents
+---------------
+
+.. py:function:: behavior_iterate_except_type(tree: py_trees.behaviour.Behaviour, child_type: typing_extensions.Type, direct_descendants: bool = False, include_tree: bool = False) -> typing_extensions.Generator[py_trees.behaviour.Behaviour, None, None]
+
+   Generator similar to Behavior.iterate().
+
+   But this one doesn't traverse nodes of a specific type. It also traverses in a post-order manner like Behavior.iterate().
+   @param include_tree will control if you want to include 'tree' itself in the enumeration,
+   like it is done in Behavior.iterate()
+
+   :param tree: Root behavior to start iteration from
+   :param child_type: Node type to exclude from iteration
+   :param direct_descendants: Only iterate over direct children, defaults to False
+   :param include_tree: Include root node in iteration, defaults to False
+   :return: Generator yielding behavior nodes
+
+
+.. py:function:: find_parent_of_type(behaviour: py_trees.behaviour.Behaviour, parent_type: typing_extensions.Type) -> typing_extensions.Optional[py_trees.behaviour.Behaviour]
+
+   Traverse the given behaviour up until we either hit the top of the tree or find a
+   node of type parent_type.
+
+   :param behaviour: Starting behavior node
+   :param parent_type: Type of parent to find
+   :return: First parent of specified type, or None if not found
+
+
+.. py:function:: find_children_with_name(composite: py_trees.composites.Composite, name: str, direct_descendants: bool = False) -> typing_extensions.Optional[py_trees.behaviour.Behaviour]
+
+   Iterate() the given composite over its children and return the first child with
+   child.name == name.
+
+   :param composite: Parent node to search in
+   :param name: Name to search for
+   :param direct_descendants: Only search direct children, defaults to False
+   :return: First child with matching name, or None if not found
+
+
+.. py:function:: get_scoped_list_of_names(behaviour: py_trees.behaviour.Behaviour, scoping_behaviour_type: typing_extensions.Type) -> typing_extensions.List[str]
+
+   This method can generate behaviour names which represent the structure of the tree.
+   For that, we can prefix (or scope) the name of the input behaviour with a scoping behaviour parent.
+   Imagine a tree like this:
+     Sequence ("Z")
+      |
+     Sequence ("Y")
+      |
+     Behaviour ("B")
+
+   Then get_scoped_list(b,Sequence) would return a list of the instances [B,Y,Z]
+
+   :param behaviour: Starting behavior node
+   :param scoping_behaviour_type: Type of ancestors to include
+   :return: List of behavior names from root to leaf
+
+
+.. py:function:: get_scoped_name(behaviour: py_trees.behaviour.Behaviour, scoping_behaviour_type: typing_extensions.Type, delimiter: str = '/') -> str
+
+   Get scoped name string for behavior.
+
+   Joins ancestor names with delimiter to create a scoped name.
+
+   :param behaviour: Starting behavior node
+   :param scoping_behaviour_type: Type of ancestors to include
+   :param delimiter: String to join names with, defaults to "/"
+   :return: Delimited string of ancestor names
+
+
+.. py:function:: setup_with_descendants_rk(tree: py_trees_ros.trees.BehaviourTree, setup_timeout: float = 0) -> None
+
+   Set up ROS behavior tree and all descendants.
+
+   Call setup(0) on all children of tree.root
+
+   :param tree: A BehaviourTree which already constains all trees that should be
+       setup'ed during startup.
+   :param setup_timeout: Timeout value that is passed to the setup of each child.
+   :return: Result of setup operation
+
+
+.. py:function:: setup_with_descendants_on_behavior(tree: py_trees.behaviour.Behaviour, setup_timeout: float = 0) -> None
+
+   Set up behavior tree node and all descendants.
+
+   Call setup(0) on all children of tree
+
+   :param tree: A Behaviour, which might also be a composition
+   :param setup_timeout: Timeout value that is passed to the setup of each child.
+
+
+.. py:function:: fix_parent_relationship_of_childs(behavior: py_trees.behaviour.Behaviour) -> None
+
+   Fix parent references in behavior tree.
+
+   Iterate top-down over this tree and reset the parent relationship for all childs.
+   This may be required if you dynamically assign the same instance of a Behavior Tree
+   node into different parts of the BT or also have the same instance in multiple
+   individual Behavior Trees.
+
+   :param behavior: The behavior to start with. This is typically the root node of the
+       tree you need to "repair"
+
+
+.. py:function:: find_root(behavior: py_trees.behaviour.Behaviour) -> py_trees.behaviour.Behaviour
+
+   Find the root of this behavior tree.
+
+   :param behavior: The behaviour to start searching from.
+   :return: The root node of the tree
+
+
+.. py:function:: add_child_to_parent(parent: py_trees.composites.Composite, child: py_trees.behaviour.Behaviour) -> uuid.UUID
+
+   Adds the given child to the parent composite node.
+
+   Add a child. In contrast to the standard add_child method of py_trees, this version
+   does not check if the parent is already set. This is currently required in dynamic
+   PPT selection during runtime, where subtrees are (re-)introduces based on runtime
+   queries.
+
+   :param parent: the composite node to add child to
+   :param child: child to add
+   :raises TypeError: if the child is not an instance of `Behaviour`
+   :return: unique id of the child
+
+
+.. py:function:: add_children_to_parent(parent: py_trees.composites.Composite, children: typing_extensions.List[py_trees.behaviour.Behaviour]) -> py_trees.behaviour.Behaviour
+
+   Append a list of children to the current list.
+
+   :param parent: the composite node to add child to
+   :param children: list of children to add
+   :return: parent node
+
+

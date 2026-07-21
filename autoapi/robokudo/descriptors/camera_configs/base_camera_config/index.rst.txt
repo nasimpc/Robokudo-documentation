@@ -1,0 +1,35 @@
+robokudo.descriptors.camera_configs.base_camera_config
+======================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.base_camera_config
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: BaseCameraConfig
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+
+      Name of the camera configuration in the registry.
+
+      Must be unique.
+
+
+
+   .. py:attribute:: interface_type
+      :type:  str
+
+      Type of camera interface.
+
+
+

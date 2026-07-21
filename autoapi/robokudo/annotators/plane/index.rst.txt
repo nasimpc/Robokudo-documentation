@@ -1,0 +1,117 @@
+robokudo.annotators.plane
+=========================
+
+.. py:module:: robokudo.annotators.plane
+
+.. autoapi-nested-parse::
+
+   Plane detection and visualization in point clouds.
+
+   This module provides an annotator for:
+
+   * Detecting dominant planes using RANSAC
+   * Creating plane model annotations
+   * Visualizing detected planes and inliers
+   * Supporting threaded execution
+
+   The plane detection uses:
+
+   * RANSAC for robust model fitting
+   * Distance threshold for inlier selection
+   * Plane equation in ax + by + cz + d = 0 form
+
+   .. note::
+      Plane visualization includes both inlier points and a mesh model.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.plane.PlaneAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: PlaneAnnotator(name: str = 'PlaneAnnotator', descriptor: PlaneAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Plane detector and visualizer for point clouds.
+
+   This annotator:
+
+   * Detects largest plane using RANSAC
+   * Creates plane model annotations
+   * Visualizes plane inliers and model
+   * Runs in a separate thread
+
+   .. note::
+      Uses Open3D's plane segmentation with configurable parameters.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for plane detection.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring plane detection.
+
+
+         .. py:attribute:: visualize_plane_model
+            :type:  bool
+            :value: True
+
+
+            Show plane model mesh
+
+
+
+         .. py:attribute:: distance_threshold
+            :type:  float
+            :value: 0.02
+
+
+
+         .. py:attribute:: num_iterations
+            :type:  int
+            :value: 50
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+      Detect and annotate dominant plane in point cloud.
+
+      The method:
+
+      * Loads point cloud from CAS
+      * Detects plane using RANSAC:
+        * Distance threshold: 0.02
+        * Sample size: 3 points
+        * Iterations: 50
+      * Creates plane annotation with:
+        * Model parameters (a, b, c, d)
+        * Inlier point indices
+      * Visualizes results:
+        * Inlier points in original cloud
+        * Optional plane model mesh
+
+      :return: SUCCESS after processing
+
+
+

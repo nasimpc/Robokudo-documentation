@@ -1,0 +1,377 @@
+robokudo.annotators.query
+=========================
+
+.. py:module:: robokudo.annotators.query
+
+.. autoapi-nested-parse::
+
+   Query handling annotator for RoboKudo.
+
+   This module provides an annotator that handles queries from external ROS nodes.
+   It supports:
+
+   * Spawning an action server for query handling
+   * Type-agnostic query processing
+   * Asynchronous query response
+   * Integration with ROS action system
+   * CAS annotation with query data
+
+   The module is used for:
+
+   * External system integration
+   * Query-based perception
+   * Interactive perception tasks
+   * Asynchronous data exchange
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.query.QueryAnnotator
+   robokudo.annotators.query.QueryFeedback
+   robokudo.annotators.query.QueryFeedbackAndCount
+   robokudo.annotators.query.QueryReply
+   robokudo.annotators.query.GenerateQueryResult
+   robokudo.annotators.query.QueryActionServer
+
+
+Module Contents
+---------------
+
+.. py:class:: QueryAnnotator(name: str = 'QueryAnnotator')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Handle external queries through ROS action server.
+
+   This Annotator spawns an Action Server that listens for Queries from external ROS
+   nodes. It will then annotate the CAS and put the Query into CASViews.QUERY. The
+   Annotator and the Actionserver are type-agnostic, which means that you are not bound
+   to a specific type of query. You can pass these from your AE to this QueryAnnotator.
+
+
+   .. py:attribute:: feedback_instance
+
+
+   .. py:attribute:: result_instance
+
+
+   .. py:attribute:: action_server
+      :value: None
+
+
+      Action server placeholder.
+
+
+
+   .. py:method:: setup(**kwargs: typing_extensions.Any) -> None
+
+      Ensure that the Query Server is spawned early on, directly after PPT creation.
+
+
+
+   .. py:method:: initialise() -> None
+
+      Initialize query handling.
+
+      Sets up the action server if not already initialized. Stores server instance on
+      blackboard for access by other nodes.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process new queries and update CAS.
+
+      Checks for new queries from action server and updates CAS if found. Provides
+      feedback about query status.
+
+      :return: SUCCESS if query processed, RUNNING if waiting
+
+
+
+.. py:class:: QueryFeedback(name: str = 'QueryFeedback', feedback_str: str = '')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   A test class which simply generates a fixed-string feedback.
+
+
+   .. py:attribute:: feedback_str
+      :value: ''
+
+
+      Feedback string to send to the client.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the annotator state.
+
+      Called every time the behavior is ticked.
+
+      :return: Status of the behavior after update
+
+
+
+.. py:class:: QueryFeedbackAndCount(name: str = 'QueryFeedback', count_until: int = 20, return_code: py_trees.common.Status = Status.RUNNING)
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   A test class which simply counts up until a fixed number.
+
+   Until this number is reached, a pre-defined status is returned.
+
+
+   .. py:attribute:: i
+      :value: 0
+
+
+      The current count.
+
+
+
+   .. py:attribute:: count_until
+      :value: 20
+
+
+      The number until which to count.
+
+
+
+   .. py:attribute:: return_code
+
+      The return code to return while still counting.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the annotator state.
+
+      Called every time the behavior is ticked.
+
+      :return: Status of the behavior after update
+
+
+
+.. py:class:: QueryReply(name: str = 'QueryReply')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   A test class which simply generates an empty Query Answer to check if the Action
+   server can reply properly.
+
+   Create a single, empty Object Designator that will be sent to the caller.
+
+
+   .. py:method:: initialise() -> None
+
+      Initialize reply generator.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Generate test query response.
+
+      Creates an empty ObjectDesignator with a test pose and adds it to blackboard.
+
+      :return: SUCCESS after generating response
+
+
+
+.. py:class:: GenerateQueryResult(name: str = 'GenerateQueryResult')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   This class reads in the annotations done by the previous Annotators and generates
+   Object Designators from them.
+
+   These will be placed into the Blackboard so that a running Query Action Server can
+   pick the information up and send it as a query reply.
+
+
+   .. py:attribute:: rk_logger
+      :value: None
+
+
+
+   .. py:attribute:: color_converter
+
+
+   .. py:attribute:: class_converter
+
+
+   .. py:attribute:: position_converter
+
+
+   .. py:attribute:: stamped_position_converter
+
+
+   .. py:attribute:: pose_converter
+
+
+   .. py:attribute:: stamped_pose_converter
+
+
+   .. py:attribute:: shape_converter
+
+
+   .. py:attribute:: cuboid_converter
+
+
+   .. py:attribute:: cylinder_converter
+
+
+   .. py:attribute:: sphere_converter
+
+
+   .. py:attribute:: location_converter
+
+
+   .. py:attribute:: bb_size_converter
+
+
+   .. py:attribute:: type_converter
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Generate query result from current CAS annotations.
+
+      For each ObjectHypothesis in CAS:
+      * Creates ObjectDesignator
+      * Adds color information if available
+      * Adds classification if available
+      * Adds pose information if available
+      * Packages into query result
+
+      :return: SUCCESS after generating result
+
+
+
+.. py:class:: QueryActionServer(name: str, feedback_instance: robokudo_msgs.action.Query.Feedback = Query.Feedback(), result_instance: robokudo_msgs.action.Query.Result = Query.Result(), action_type: typing_extensions.Type = Query)
+
+   Bases: :py:obj:`rclpy.node.Node`
+
+
+   ROS action server for handling perception queries.
+
+   Action server that listens for queries and executes them by checking blackboard for
+   results generated by QueryAnnotator and QueryReply.
+
+
+   .. py:attribute:: _action_name
+
+      Name of the ROS action.
+
+
+
+   .. py:attribute:: _as
+
+      Action server instance.
+
+
+
+   .. py:attribute:: feedback_instance
+      :type:  robokudo_msgs.action.Query.Feedback
+
+      Latest feedback message.
+
+
+
+   .. py:attribute:: result_instance
+      :type:  robokudo_msgs.action.Query.Result
+
+      Latest result message.
+
+
+
+   .. py:attribute:: new_query
+      :type:  typing_extensions.Optional[robokudo_msgs.action.Query.Goal]
+      :value: None
+
+
+      Latest received query.
+
+
+
+   .. py:attribute:: query
+      :type:  typing_extensions.Optional[robokudo_msgs.action.Query.Goal]
+      :value: None
+
+
+      Currently processing query.
+
+
+
+   .. py:attribute:: query_processed_event
+      :type:  threading.Event
+
+      Event to signal query processing completion.
+
+
+
+   .. py:attribute:: logger
+      :value: None
+
+
+
+   .. py:method:: reset_bookkeeping_vars() -> None
+
+      Reset internal state variables.
+
+      Clears query state and blackboard variables.
+
+
+
+   .. py:method:: goal_cb(goal_request: robokudo_msgs.action.Query.Goal) -> rclpy.action.GoalResponse
+
+
+   .. py:method:: cancel_cb(goal_handle: rclpy.action.server.ServerGoalHandle) -> rclpy.action.CancelResponse
+
+
+   .. py:method:: start_processing() -> None
+
+      Start processing new query.
+
+      Tell the ActionServer that we are now starting the execution and it can start
+      the monitoring/response process.
+
+
+
+   .. py:method:: is_active() -> bool
+
+      Check if query is being processed.
+
+      :return: True if query active, False otherwise
+
+
+
+   .. py:method:: execute_cb(goal_handle: rclpy.action.server.ServerGoalHandle) -> typing_extensions.Optional[robokudo_msgs.action.Query.Result]
+      :async:
+
+
+      Action server execution callback.
+
+      Handles:
+      * Query reception and validation
+      * Processing status monitoring
+      * Preemption requests
+      * Error handling
+      * Result generation and sending
+
+      :param goal_handle: Query goal from client
+
+
+

@@ -1,0 +1,124 @@
+robokudo.annotators.object_hypothesis_visualizer
+================================================
+
+.. py:module:: robokudo.annotators.object_hypothesis_visualizer
+
+.. autoapi-nested-parse::
+
+   Object hypothesis visualization for RoboKudo.
+
+   This module provides an annotator for visualizing object hypotheses in both
+   2D (image overlays) and 3D (point clouds) representations.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.object_hypothesis_visualizer.ObjectHypothesisVisualizer
+
+
+Module Contents
+---------------
+
+.. py:class:: ObjectHypothesisVisualizer(name: str = 'ObjectHypothesisVisualizer', descriptor: ObjectHypothesisVisualizer = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for visualizing object hypotheses in the CAS.
+
+   This annotator creates visualizations of detected objects by:
+
+   * Drawing bounding boxes and labels on the color image
+   * Displaying associated point clouds in 3D
+   * Optionally filtering objects based on query type
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for object hypothesis visualization.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring visualization behavior.
+
+
+         .. py:attribute:: query_aware
+            :type:  bool
+            :value: True
+
+
+            If set to true, only visualize an Object that matches the 'object.type' from the Query.
+
+
+
+         .. py:attribute:: visualize_full_cloud
+            :type:  bool
+            :value: False
+
+
+            If set to true, the scene cloud will be shown and the individual objects will be colored.
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: _mesh_cache
+      :type:  typing_extensions.Dict[typing_extensions.Tuple[object, Ellipsis], open3d.geometry.TriangleMesh]
+
+
+   .. py:method:: _iter_mesh_visuals(body: semantic_digital_twin.world_description.world_entity.Body) -> typing_extensions.List[semantic_digital_twin.world_description.geometry.Mesh]
+
+      Return mesh-based visual shapes for a body.
+
+
+
+   .. py:method:: _mesh_cache_key(shape: semantic_digital_twin.world_description.geometry.Mesh) -> typing_extensions.Tuple[object, Ellipsis]
+
+      Create a stable cache key for mesh conversion results.
+
+
+
+   .. py:method:: _mesh_shape_to_o3d(shape: semantic_digital_twin.world_description.geometry.Mesh) -> open3d.geometry.TriangleMesh
+
+      Convert a mesh shape to Open3D, cache the result, and apply its local origin.
+
+
+
+   .. py:method:: draw_text_middle(image: numpy.typing.NDArray[numpy.uint8], text: str, color: typing_extensions.Tuple[int, int, int] = (0, 0, 255), font: int = cv2.FONT_HERSHEY_SIMPLEX, font_scale: float = 1.0, thickness: int = 2)
+
+      Draw text in the middle of an image.
+
+      :param image: Image to draw on
+      :param text: Text to draw
+      :param color: BGR color tuple
+      :param font: OpenCV font type, defaults to cv2.FONT_HERSHEY_SIMPLEX
+      :param font_scale: Font scale factor, defaults to 1
+      :param thickness: Line thickness, defaults to 2
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the visualization with current object hypotheses.
+
+      Creates visualizations containing:
+
+      * Color image with bounding boxes and labels for each object
+      * 3D point clouds, pose and bounding box annotations for each object
+      * Optional filtering based on query type if query_aware is True
+
+      :return: SUCCESS after creating visualizations
+
+
+

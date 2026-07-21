@@ -1,0 +1,343 @@
+robokudo.utils.shape_fitting
+============================
+
+.. py:module:: robokudo.utils.shape_fitting
+
+.. autoapi-nested-parse::
+
+   Utilities for fitting primitive shapes to 3D points.
+
+   This module provides robust least-squares based fitting for sphere and cylinder models,
+   plus a cuboid approximation based on oriented bounding boxes. The implementation is
+   intended for segmented object-level point sets.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.utils.shape_fitting.MAX_ACCEPTABLE_RADIUS_GROWTH_WITHOUT_STRONG_INLIER_GAIN
+   robokudo.utils.shape_fitting.MIN_INLIER_GAIN_TO_ACCEPT_LARGER_RADIUS
+   robokudo.utils.shape_fitting.MIN_ACCEPTABLE_CYLINDER_SCORE
+   robokudo.utils.shape_fitting.FittedShape
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.utils.shape_fitting.SphereFit
+   robokudo.utils.shape_fitting.CylinderFit
+   robokudo.utils.shape_fitting.CuboidFit
+   robokudo.utils.shape_fitting.CylinderFitConstraints
+   robokudo.utils.shape_fitting.CylinderInitializationSettings
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.shape_fitting.sphere_residuals
+   robokudo.utils.shape_fitting.cylinder_residuals
+   robokudo.utils.shape_fitting.fit_sphere
+   robokudo.utils.shape_fitting.fit_cylinder
+   robokudo.utils.shape_fitting._fit_cylinder_from_initialization
+   robokudo.utils.shape_fitting._build_cylinder_fit_from_parameters
+   robokudo.utils.shape_fitting._generate_cylinder_initial_parameter_sets
+   robokudo.utils.shape_fitting._consensus_axis_candidates
+   robokudo.utils.shape_fitting._provisional_cylinder_axis_quality
+   robokudo.utils.shape_fitting._initial_cylinder_radius
+   robokudo.utils.shape_fitting._append_axis_if_distinct
+   robokudo.utils.shape_fitting._is_better_cylinder_fit
+   robokudo.utils.shape_fitting.fit_cuboid
+   robokudo.utils.shape_fitting.select_best_shape
+   robokudo.utils.shape_fitting.point_to_oriented_box_surface_distance
+   robokudo.utils.shape_fitting.compute_fit_score
+   robokudo.utils.shape_fitting._principal_axes
+   robokudo.utils.shape_fitting._normalize_vector
+   robokudo.utils.shape_fitting._fitted_shape_volume
+   robokudo.utils.shape_fitting._cross_section_max_extent
+   robokudo.utils.shape_fitting._orthogonal_basis
+   robokudo.utils.shape_fitting._point_cloud_max_extent
+   robokudo.utils.shape_fitting._is_box_like_extent_profile
+
+
+Module Contents
+---------------
+
+.. py:data:: MAX_ACCEPTABLE_RADIUS_GROWTH_WITHOUT_STRONG_INLIER_GAIN
+   :value: 1.35
+
+
+.. py:data:: MIN_INLIER_GAIN_TO_ACCEPT_LARGER_RADIUS
+   :value: 0.03
+
+
+.. py:data:: MIN_ACCEPTABLE_CYLINDER_SCORE
+   :value: 0.0
+
+
+.. py:class:: SphereFit
+
+   Fitted sphere model with inlier and quality information.
+
+
+   .. py:attribute:: center
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: radius
+      :type:  float
+
+
+   .. py:attribute:: inlier_indices
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: inlier_ratio
+      :type:  float
+
+
+   .. py:attribute:: root_mean_square_error
+      :type:  float
+
+
+   .. py:attribute:: score
+      :type:  float
+
+
+.. py:class:: CylinderFit
+
+   Fitted cylinder model with inlier and quality information.
+
+
+   .. py:attribute:: axis_center
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: axis_direction
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: radius
+      :type:  float
+
+
+   .. py:attribute:: height
+      :type:  float
+
+
+   .. py:attribute:: inlier_indices
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: inlier_ratio
+      :type:  float
+
+
+   .. py:attribute:: root_mean_square_error
+      :type:  float
+
+
+   .. py:attribute:: score
+      :type:  float
+
+
+.. py:class:: CuboidFit
+
+   Fitted cuboid model with inlier and quality information.
+
+
+   .. py:attribute:: center
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: rotation_matrix
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: extents
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: inlier_indices
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: inlier_ratio
+      :type:  float
+
+
+   .. py:attribute:: root_mean_square_error
+      :type:  float
+
+
+   .. py:attribute:: score
+      :type:  float
+
+
+.. py:data:: FittedShape
+
+.. py:class:: CylinderFitConstraints
+
+   Numerical constraints used during cylinder fitting and validation.
+
+
+   .. py:attribute:: distance_threshold
+      :type:  float
+
+
+   .. py:attribute:: robust_loss
+      :type:  str
+
+
+   .. py:attribute:: max_radius
+      :type:  float
+
+
+   .. py:attribute:: max_height
+      :type:  float
+
+
+   .. py:attribute:: max_radius_to_bbox_diagonal_ratio
+      :type:  float
+
+
+   .. py:attribute:: max_radius_to_cross_section_extent_ratio
+      :type:  float
+
+
+   .. py:attribute:: max_axis_center_distance_to_bbox_diagonal_ratio
+      :type:  float
+
+
+.. py:class:: CylinderInitializationSettings
+
+   Search settings controlling cylinder multi-start initialization.
+
+
+   .. py:attribute:: max_initializations
+      :type:  int
+
+
+   .. py:attribute:: consensus_trials
+      :type:  int
+
+
+   .. py:attribute:: inlier_polishing_iterations
+      :type:  int
+
+
+.. py:function:: sphere_residuals(parameters: numpy.ndarray, points: numpy.ndarray) -> numpy.ndarray
+
+   Compute sphere residuals for optimization.
+
+
+.. py:function:: cylinder_residuals(parameters: numpy.ndarray, points: numpy.ndarray) -> numpy.ndarray
+
+   Compute cylinder residuals for optimization.
+
+
+.. py:function:: fit_sphere(points: numpy.ndarray, distance_threshold: float, robust_loss: str = 'soft_l1', max_radius: float = np.inf, max_radius_to_bbox_diagonal_ratio: float = np.inf, max_radius_to_observed_extent_ratio: float = np.inf, max_center_distance_to_bbox_diagonal_ratio: float = np.inf, min_inlier_ratio: float = 0.0) -> typing_extensions.Optional[SphereFit]
+
+   Fit a sphere model and return model quality and inliers.
+
+
+.. py:function:: fit_cylinder(points: numpy.ndarray, distance_threshold: float, robust_loss: str = 'soft_l1', max_radius: float = np.inf, max_height: float = np.inf, max_radius_to_bbox_diagonal_ratio: float = np.inf, max_radius_to_cross_section_extent_ratio: float = np.inf, max_axis_center_distance_to_bbox_diagonal_ratio: float = np.inf, min_inlier_ratio: float = 0.0, max_initializations: int = 8, consensus_trials: int = 24, inlier_polishing_iterations: int = 0) -> typing_extensions.Optional[CylinderFit]
+
+   Fit a cylinder model and return model quality and inliers.
+
+
+.. py:function:: _fit_cylinder_from_initialization(points: numpy.ndarray, initial_parameters: numpy.ndarray, lower_bounds: numpy.ndarray, upper_bounds: numpy.ndarray, constraints: CylinderFitConstraints, initialization_settings: CylinderInitializationSettings) -> typing_extensions.Optional[CylinderFit]
+
+   Run one cylinder optimization from one initialization and validate the result.
+
+
+.. py:function:: _build_cylinder_fit_from_parameters(parameters: numpy.ndarray, points: numpy.ndarray, constraints: CylinderFitConstraints) -> typing_extensions.Optional[CylinderFit]
+
+   Validate one optimized cylinder parameter vector and construct a fit object.
+
+
+.. py:function:: _generate_cylinder_initial_parameter_sets(points: numpy.ndarray, constraints: CylinderFitConstraints, initialization_settings: CylinderInitializationSettings) -> typing_extensions.List[numpy.ndarray]
+
+   Generate distinct initialization vectors for cylinder multi-start optimization.
+
+
+.. py:function:: _consensus_axis_candidates(points: numpy.ndarray, axis_point: numpy.ndarray, distance_threshold: float, max_radius: float, trial_count: int) -> typing_extensions.List[typing_extensions.Tuple[numpy.ndarray, float, float]]
+
+   Return axis candidates ranked by provisional inlier ratio and residual error.
+
+
+.. py:function:: _provisional_cylinder_axis_quality(points: numpy.ndarray, axis_point: numpy.ndarray, axis_direction: numpy.ndarray, radius: float, distance_threshold: float) -> typing_extensions.Tuple[float, float]
+
+   Return provisional inlier ratio and error for one axis and radius hypothesis.
+
+
+.. py:function:: _initial_cylinder_radius(points: numpy.ndarray, axis_point: numpy.ndarray, axis_direction: numpy.ndarray, max_radius: float) -> typing_extensions.Optional[float]
+
+   Estimate a robust initial cylinder radius for one axis hypothesis.
+
+
+.. py:function:: _append_axis_if_distinct(axis_candidates: typing_extensions.List[numpy.ndarray], axis_direction: numpy.ndarray, min_angle_degrees: float = 8.0) -> None
+
+   Append a normalized axis direction unless it duplicates an existing direction.
+
+
+.. py:function:: _is_better_cylinder_fit(candidate_fit: CylinderFit, best_fit: CylinderFit, minimum_target_inlier_ratio: float) -> bool
+
+   Return whether one cylinder fit is better under inlier-target-aware ranking.
+
+
+.. py:function:: fit_cuboid(points: numpy.ndarray, distance_threshold: float, max_extent: float = np.inf, min_inlier_ratio: float = 0.0) -> typing_extensions.Optional[CuboidFit]
+
+   Fit a cuboid model and return model quality and inliers.
+
+
+.. py:function:: select_best_shape(candidates: typing_extensions.List[FittedShape], score_tolerance: float = 0.05, prefer_cuboid_when_close: bool = False, cuboid_preference_score_margin: float = 0.06, cuboid_preference_inlier_ratio_tolerance: float = 0.05, cuboid_box_like_cross_section_asymmetry_threshold: float = 0.12, cuboid_box_like_cube_axis_similarity_tolerance: float = 0.12) -> typing_extensions.Optional[FittedShape]
+
+   Return the best shape candidate with volume-aware tie-breaking.
+
+
+.. py:function:: point_to_oriented_box_surface_distance(points: numpy.ndarray, center: numpy.ndarray, rotation_matrix: numpy.ndarray, extents: numpy.ndarray) -> numpy.ndarray
+
+   Compute absolute distance from points to cuboid surface.
+
+
+.. py:function:: compute_fit_score(inlier_ratio: float, root_mean_square_error: float, distance_threshold: float, complexity_penalty: float) -> float
+
+   Compute a scalar quality score for model comparison.
+
+
+.. py:function:: _principal_axes(points: numpy.ndarray) -> typing_extensions.List[numpy.ndarray]
+
+.. py:function:: _normalize_vector(vector: numpy.ndarray) -> numpy.ndarray
+
+.. py:function:: _fitted_shape_volume(candidate: FittedShape) -> float
+
+   Return primitive volume for volume-aware candidate comparison.
+
+
+.. py:function:: _cross_section_max_extent(points: numpy.ndarray, axis_center: numpy.ndarray, axis_direction: numpy.ndarray) -> float
+
+   Return largest observed cross-section extent orthogonal to the cylinder axis.
+
+
+.. py:function:: _orthogonal_basis(axis_direction: numpy.ndarray) -> tuple[numpy.ndarray, numpy.ndarray]
+
+   Create two unit vectors orthogonal to the provided axis direction.
+
+
+.. py:function:: _point_cloud_max_extent(points: numpy.ndarray) -> float
+
+   Return largest principal-axis extent of a point cloud.
+
+
+.. py:function:: _is_box_like_extent_profile(extents: numpy.ndarray, cross_section_asymmetry_threshold: float, cube_axis_similarity_tolerance: float) -> bool
+
+   Return whether extents represent a box-like profile rather than axisymmetry.
+
+

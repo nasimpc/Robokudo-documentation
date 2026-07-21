@@ -1,0 +1,25 @@
+robokudo.descriptors.worlds.world_iai_kitchen20
+===============================================
+
+.. py:module:: robokudo.descriptors.worlds.world_iai_kitchen20
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.worlds.world_iai_kitchen20.WorldDescriptor
+
+
+Module Contents
+---------------
+
+.. py:class:: WorldDescriptor
+
+   Bases: :py:obj:`robokudo.world_descriptor.BaseWorldDescriptor`
+
+
+   Base class for describing a world with predefined objects and regions.
+
+

@@ -1,0 +1,221 @@
+robokudo.defs
+=============
+
+.. py:module:: robokudo.defs
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.defs.PACKAGE_NAME
+   robokudo.defs.TEST_ROS_NODE_NAME
+   robokudo.defs.NAME
+   robokudo.defs.LOGGING_IDENTIFIER_MAIN
+   robokudo.defs.LOGGING_IDENTIFIER_MAIN_EXECUTABLE
+   robokudo.defs.LOGGING_IDENTIFIER_QUERY
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.defs.Region3DWithName
+
+
+Module Contents
+---------------
+
+.. py:data:: PACKAGE_NAME
+   :type:  str
+   :value: 'robokudo'
+
+
+   The name of the RoboKudo package
+
+
+.. py:data:: TEST_ROS_NODE_NAME
+   :type:  str
+   :value: 'robokudo_test'
+
+
+   The name used for RoboKudo test nodes
+
+
+.. py:data:: NAME
+   :type:  str
+   :value: 'robokudo'
+
+
+   The base name for RoboKudo
+
+
+.. py:data:: LOGGING_IDENTIFIER_MAIN
+   :type:  str
+   :value: 'robokudo'
+
+
+   Logging name constant for core RoboKudo functionality. Other RK packages may choose to use others!
+
+
+.. py:data:: LOGGING_IDENTIFIER_MAIN_EXECUTABLE
+   :type:  str
+   :value: 'robokudo.main'
+
+
+   Logging name constant for core RoboKudo functionality. Other RK packages may choose to use others!
+
+
+.. py:data:: LOGGING_IDENTIFIER_QUERY
+   :type:  str
+   :value: 'robokudo.query'
+
+
+   Logging name constant for core RoboKudo functionality. Other RK packages may choose to use others!
+
+
+.. py:class:: Region3DWithName
+
+   A named 3D region with position, orientation and size.
+
+   This class represents a 3D region in space with a name identifier.
+   It includes position coordinates, quaternion orientation, and size
+   dimensions.
+
+
+   .. py:class:: PoseType
+
+      Bases: :py:obj:`enum.Enum`
+
+
+      Enum representing the supported pose types for regions.
+
+
+      .. py:attribute:: EULER
+         :value: 'euler'
+
+
+
+      .. py:attribute:: QUATERNION
+         :value: 'quaternion'
+
+
+
+
+   .. py:attribute:: name
+      :type:  str
+      :value: ''
+
+
+      Identifier for this region
+
+
+
+   .. py:attribute:: position_x
+      :type:  float
+      :value: 0.0
+
+
+      X coordinate of the region's position
+
+
+
+   .. py:attribute:: position_y
+      :type:  float
+      :value: 0.0
+
+
+      Y coordinate of the region's position
+
+
+
+   .. py:attribute:: position_z
+      :type:  float
+      :value: 0.0
+
+
+      Z coordinate of the region's position
+
+
+
+   .. py:attribute:: orientation_x
+      :type:  float
+      :value: 0.0
+
+
+      X component of the euler or quaternion orientation
+
+
+
+   .. py:attribute:: orientation_y
+      :type:  float
+      :value: 0.0
+
+
+      Y component of the euler or quaternion orientation
+
+
+
+   .. py:attribute:: orientation_z
+      :type:  float
+      :value: 0.0
+
+
+      Z component of the euler or quaternion orientation
+
+
+
+   .. py:attribute:: orientation_w
+      :type:  float
+      :value: 1.0
+
+
+      W component of the quaternion orientation, unused when `pose_type` is `PoseType.EULER`
+
+
+
+   .. py:attribute:: x_size
+      :type:  float
+      :value: 0.0
+
+
+      Size of the region in X dimension
+
+
+
+   .. py:attribute:: y_size
+      :type:  float
+      :value: 0.0
+
+
+      Size of the region in Y dimension
+
+
+
+   .. py:attribute:: z_size
+      :type:  float
+      :value: 0.0
+
+
+      Size of the region in Z dimension
+
+
+
+   .. py:attribute:: frame
+      :type:  str
+      :value: ''
+
+
+      The reference frame this region is defined in.
+
+
+
+   .. py:attribute:: pose_type
+      :type:  Region3DWithName.PoseType
+
+      Type of the pose defining the regions orientation.
+
+
+

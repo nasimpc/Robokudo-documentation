@@ -1,0 +1,80 @@
+robokudo.annotators
+===================
+
+.. py:module:: robokudo.annotators
+
+.. autoapi-nested-parse::
+
+   RoboKudo annotators package.
+
+   This package provides annotators for processing and analyzing sensor data.
+   It supports:
+
+   * Core annotator functionality
+   * Visualization and display
+   * Data processing and filtering
+   * Object detection and tracking
+   * Spatial analysis and mapping
+
+   The package contains:
+
+   * Core annotators for basic functionality
+   * Visualization annotators for display
+   * Processing annotators for data analysis
+   * Testing annotators for debugging
+   * Utility annotators for common tasks
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/robokudo/annotators/annotation_writer/index
+   /autoapi/robokudo/annotators/blur/index
+   /autoapi/robokudo/annotators/byte_track_annotator/index
+   /autoapi/robokudo/annotators/camera_viewpoint_visualizer/index
+   /autoapi/robokudo/annotators/cas_check/index
+   /autoapi/robokudo/annotators/clip_annotator/index
+   /autoapi/robokudo/annotators/cluster_color/index
+   /autoapi/robokudo/annotators/cluster_color_histogram/index
+   /autoapi/robokudo/annotators/cluster_pose_bb/index
+   /autoapi/robokudo/annotators/cluster_pose_pca/index
+   /autoapi/robokudo/annotators/cluster_position/index
+   /autoapi/robokudo/annotators/collection_reader/index
+   /autoapi/robokudo/annotators/core/index
+   /autoapi/robokudo/annotators/file_writer/index
+   /autoapi/robokudo/annotators/filter/index
+   /autoapi/robokudo/annotators/icp_pose_refinement/index
+   /autoapi/robokudo/annotators/image_cluster_extractor/index
+   /autoapi/robokudo/annotators/image_preprocessor/index
+   /autoapi/robokudo/annotators/lambda_function/index
+   /autoapi/robokudo/annotators/location/index
+   /autoapi/robokudo/annotators/object_associator/index
+   /autoapi/robokudo/annotators/object_hypothesis_visualizer/index
+   /autoapi/robokudo/annotators/object_pose_visualizer/index
+   /autoapi/robokudo/annotators/outlier_removal_objecthypothesis/index
+   /autoapi/robokudo/annotators/outputs/index
+   /autoapi/robokudo/annotators/pipeline_trigger/index
+   /autoapi/robokudo/annotators/plane/index
+   /autoapi/robokudo/annotators/pointcloud_check/index
+   /autoapi/robokudo/annotators/pointcloud_cluster_extractor/index
+   /autoapi/robokudo/annotators/pointcloud_crop/index
+   /autoapi/robokudo/annotators/query/index
+   /autoapi/robokudo/annotators/region_filter/index
+   /autoapi/robokudo/annotators/roi_adjuster/index
+   /autoapi/robokudo/annotators/semantic_world_connector/index
+   /autoapi/robokudo/annotators/shape_estimator/index
+   /autoapi/robokudo/annotators/simple_yolo_annotator/index
+   /autoapi/robokudo/annotators/size_bb/index
+   /autoapi/robokudo/annotators/static_object_detector/index
+   /autoapi/robokudo/annotators/storage/index
+   /autoapi/robokudo/annotators/testing/index
+   /autoapi/robokudo/annotators/tsdf_annotator/index
+   /autoapi/robokudo/annotators/vis/index
+   /autoapi/robokudo/annotators/world_descriptor_bootstrap/index
+   /autoapi/robokudo/annotators/world_visualizer/index
+
+

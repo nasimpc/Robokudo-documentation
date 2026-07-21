@@ -1,0 +1,140 @@
+robokudo.descriptors.analysis_engines.query_test
+================================================
+
+.. py:module:: robokudo.descriptors.analysis_engines.query_test
+
+.. autoapi-nested-parse::
+
+   This script defines a Robokudo-based behavior tree pipeline for processing queries
+   related to numbers.
+
+   Features:
+   - Implements a PyTrees behavior tree to handle query processing.
+   - Includes a PrintNumbers behavior that sequentially processes numbers from 1 to 10.
+   - Utilizes a CheckQueryType annotator to validate if the query type is 'numbers'.
+   - Incorporates a conditional selector to manage task execution with preemption handling.
+   - Integrates with the Robokudo analysis engine and pipeline framework.
+   - Uses a feedback mechanism to report progress dynamically.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.analysis_engines.query_test.PrintNumbers
+   robokudo.descriptors.analysis_engines.query_test.CheckQueryType
+   robokudo.descriptors.analysis_engines.query_test.AnalysisEngine
+
+
+Module Contents
+---------------
+
+.. py:class:: PrintNumbers(name: str = 'PrintNumbers')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Base class for all RoboKudo annotators.
+
+   This class provides core functionality for CAS access, tree structure navigation,
+   and GUI result handling. It serves as the foundation for implementing annotators in
+   the RoboKudo framework.
+
+
+   .. py:attribute:: current_number
+      :type:  int
+      :value: 1
+
+
+
+   .. py:attribute:: completed
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: result
+      :type:  typing_extensions.List[int]
+      :value: []
+
+
+
+   .. py:attribute:: result_string
+      :type:  str
+      :value: ''
+
+
+
+   .. py:method:: initialise() -> None
+
+      Initialize the annotator state.
+
+      Called when first tick is received and anytime status is not running.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the annotator state.
+
+      Called every time the behavior is ticked.
+
+      :return: Status of the behavior after update
+
+
+
+.. py:class:: CheckQueryType(name: str = 'CheckQueryType')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Checks if the query type on the CAS is 'numbers'.
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the annotator state.
+
+      Called every time the behavior is ticked.
+
+      :return: Status of the behavior after update
+
+
+
+.. py:class:: AnalysisEngine
+
+   Bases: :py:obj:`robokudo.analysis_engine.AnalysisEngineInterface`
+
+
+   Protocol defining the interface for Analysis Engines.
+
+   This interface must be implemented by all Analysis Engines in RoboKudo.
+   Each Analysis Engine provides a behavior tree implementation for a specific
+   task or pipeline. The RoboKudo runner will load and execute these
+   implementations.
+
+   .. warning::
+       Do not instantiate this class directly. Instead, create a subclass
+       that implements this interface.
+
+   See :mod:`robokudo.descriptors.analysis_engines` for example implementations.
+
+
+   .. py:method:: name() -> str
+
+      Get the name of this Analysis Engine.
+
+      :return: The unique name identifying this Analysis Engine
+
+
+
+   .. py:method:: implementation() -> robokudo.pipeline.Pipeline
+
+      Get the behavior tree implementation for this Analysis Engine.
+
+      :return: The root node of the behavior tree implementing this engine
+
+
+

@@ -1,0 +1,52 @@
+robokudo.descriptors.analysis_engines.static_detector_world_descriptor_from_storage
+===================================================================================
+
+.. py:module:: robokudo.descriptors.analysis_engines.static_detector_world_descriptor_from_storage
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.analysis_engines.static_detector_world_descriptor_from_storage.AnalysisEngine
+
+
+Module Contents
+---------------
+
+.. py:class:: AnalysisEngine
+
+   Bases: :py:obj:`robokudo.analysis_engine.AnalysisEngineInterface`
+
+
+   Protocol defining the interface for Analysis Engines.
+
+   This interface must be implemented by all Analysis Engines in RoboKudo.
+   Each Analysis Engine provides a behavior tree implementation for a specific
+   task or pipeline. The RoboKudo runner will load and execute these
+   implementations.
+
+   .. warning::
+       Do not instantiate this class directly. Instead, create a subclass
+       that implements this interface.
+
+   See :mod:`robokudo.descriptors.analysis_engines` for example implementations.
+
+
+   .. py:method:: name()
+
+      Get the name of this Analysis Engine.
+
+      :return: The unique name identifying this Analysis Engine
+
+
+
+   .. py:method:: implementation()
+
+      Get the behavior tree implementation for this Analysis Engine.
+
+      :return: The root node of the behavior tree implementing this engine
+
+
+

@@ -1,0 +1,70 @@
+robokudo.annotators.byte_track_annotator
+========================================
+
+.. py:module:: robokudo.annotators.byte_track_annotator
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.byte_track_annotator.ByteTrackAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: ByteTrackAnnotator(name: str = 'ByteTrackAnnotator')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   A ByteTrack annotator that tracks detected objects across pipeline ticks.
+
+   The annotator is capable of utilizing:
+
+   * ObjectHypothesis ROI
+   * ObjectHypothesis ROI + Mask
+   * ObjectHypothesis ROI + Mask + Classification annotation
+
+
+   .. py:attribute:: tracker
+      :type:  supervision.ByteTrack
+
+      Main ByteTrack instance for object instance tracking.
+
+
+
+   .. py:attribute:: last_ts
+      :type:  float
+      :value: 0.0
+
+
+      Timestamp of the last data received, used for tracker reset detection.
+
+
+
+   .. py:attribute:: label_annotator
+
+      A special label annotator, that cannot simply be used like the annotators in `self.vis_annotators`.
+
+
+
+   .. py:attribute:: vis_annotators
+
+      A list of simple supervision annotators to use for visualization. They will be applied in order.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+
+   .. py:method:: visualize(tracked_detections: supervision.Detections) -> None
+
+      Visualize the tracked detections and set the resulting image in the annotator output struct.
+
+      :param tracked_detections: The tracked detections to visualize.
+
+
+

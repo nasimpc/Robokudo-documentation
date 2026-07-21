@@ -1,0 +1,75 @@
+robokudo.descriptors.camera_configs.config_hsr
+==============================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_hsr
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_hsr.HsrCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: HsrCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig`, :py:obj:`robokudo.descriptors.camera_configs.components.RGBDComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.TfComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.StableViewpointComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.WorldDescriptorComponent`
+
+
+   Camera config for the HSR robot.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'hsr'
+
+
+      Name of the camera configuration in the registry.
+
+      Must be unique.
+
+
+
+   .. py:attribute:: interface_type
+      :type:  str
+      :value: 'Kinect'
+
+
+      Type of camera interface.
+
+
+
+   .. py:attribute:: topic_depth
+      :type:  str
+      :value: 'hsrb/head_rgbd_sensor/depth_registered/image/compressedDepth'
+
+
+
+   .. py:attribute:: topic_color
+      :type:  str
+      :value: 'hsrb/head_rgbd_sensor/rgb/image_raw/compressed'
+
+
+
+   .. py:attribute:: topic_cam_info
+      :type:  str
+      :value: 'hsrb/head_rgbd_sensor/rgb/camera_info'
+
+
+
+   .. py:attribute:: tf_from
+      :type:  str
+      :value: 'head_rgbd_sensor_rgb_optical_frame'
+
+
+
+   .. py:attribute:: tf_to
+      :type:  str
+      :value: 'map'
+
+
+

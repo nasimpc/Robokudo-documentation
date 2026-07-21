@@ -1,0 +1,42 @@
+robokudo.tree_components.looping
+================================
+
+.. py:module:: robokudo.tree_components.looping
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.tree_components.looping.BlockingCondition
+   robokudo.tree_components.looping.LoopingDecorator
+
+
+Module Contents
+---------------
+
+.. py:class:: BlockingCondition
+
+   Bases: :py:obj:`py_trees.decorators.Condition`
+
+
+   Alias class which only provides some meaning to the standard py_trees Condition
+   class.
+
+   As "Condition" in the BT literature is usually defined as a leaf node and not as a
+   decorator which can implement loop-like Behaviour, the name can cause confusion.
+
+
+.. py:class:: LoopingDecorator
+
+   Bases: :py:obj:`py_trees.decorators.Condition`
+
+
+   Alias class which only provides some meaning to the standard py_trees Condition
+   class.
+
+   As "Condition" in the BT literature is usually defined as a leaf node and not as a
+   decorator which can implement loop-like Behaviour, the name can cause confusion.
+
+

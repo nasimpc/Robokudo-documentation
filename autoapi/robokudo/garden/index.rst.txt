@@ -1,0 +1,49 @@
+robokudo.garden
+===============
+
+.. py:module:: robokudo.garden
+
+.. autoapi-nested-parse::
+
+   Tree initialization utilities for RoboKudo.
+
+   This module provides functionality to initialize and set up behavior trees in RoboKudo.
+   It handles the creation of visualization structures, blackboard initialization, and
+   proper tree setup.
+
+   The module is responsible for:
+
+   * Setting up the blackboard with required data structures
+   * Initializing visualization components when needed
+   * Supporting single-shot execution for testing
+   * Configuring proper tree structure with or without GUI
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.garden.grow_tree
+
+
+Module Contents
+---------------
+
+.. py:function:: grow_tree(tree: py_trees.behaviour.Behaviour, node: rclpy.node.Node, include_gui: bool = True, run_once: bool = False) -> py_trees_ros.trees.BehaviourTree
+
+   Initialize a behavior tree with all required RoboKudo data structures.
+
+   Sets up the blackboard with visualization maps and creates proper tree structure.
+   Can optionally wrap the tree in a OneShot decorator for testing or add GUI
+   visualization support.
+
+   :param tree: The behavior tree to initialize
+   :param node: The ROS node to use for tree setup
+   :param include_gui: Whether to include visualization support, defaults to True
+   :param run_once: Whether to wrap tree in OneShot for single execution, defaults to
+       False
+   :return: The initialized behavior tree
+
+

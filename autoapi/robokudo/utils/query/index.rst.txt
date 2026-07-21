@@ -1,0 +1,103 @@
+robokudo.utils.query
+====================
+
+.. py:module:: robokudo.utils.query
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.utils.query.QueryHandler
+
+
+Module Contents
+---------------
+
+.. py:class:: QueryHandler
+
+   Bases: :py:obj:`object`
+
+
+   QueryHandler provides an interface to interact with the ROS Action-based query
+   interface.
+
+   This wrapper eases the use of the various Blackboard variables devoted to the
+   communication with the query interface.
+
+
+   .. py:method:: init_feedback_queue() -> None
+      :staticmethod:
+
+
+      Initializes the feedback queue on the Blackboard.
+
+
+
+   .. py:method:: get_feedback_queue() -> queue.Queue
+      :staticmethod:
+
+
+      Retrieves and returns the feedback queue from the Blackboard.
+
+
+
+   .. py:method:: send_feedback(feedback: robokudo_msgs.action.Query.Feedback) -> None
+      :staticmethod:
+
+
+      Add a feedback part of the Query msg to the feedback queue, ready to be sent.
+
+      :param feedback: The feedback message to send.
+
+
+
+   .. py:method:: send_feedback_str(feedback_str: str) -> None
+      :staticmethod:
+
+
+      Add a simple string to the feedback to the feedback queue, ready to be sent.
+
+      :param feedback_str: The string to send as feedback.
+
+
+
+   .. py:method:: send_answer(result: robokudo_msgs.action.Query.Result) -> None
+      :staticmethod:
+
+
+      Raise a standard RoboKudo Query Result as a query answer to the blackboard.
+
+      :param result: The result to raise to the blackboard.
+
+
+
+   .. py:method:: send_arbitrary_answer(result: typing_extensions.Any) -> None
+      :staticmethod:
+
+
+      Raise any data as a query answer to the blackboard.
+
+      :param result: The data to raise to the blackboard.
+
+
+
+   .. py:method:: preempt_requested() -> bool
+      :staticmethod:
+
+
+      Checks whether a preempt request is pending on the blackboard.
+
+      :return: True if a preempt request is pending, False otherwise.
+
+
+
+   .. py:method:: acknowledge_preempt_request() -> None
+      :staticmethod:
+
+
+      Acknowledges the preempt request on the blackboard.
+
+
+

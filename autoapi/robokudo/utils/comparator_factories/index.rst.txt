@@ -1,0 +1,64 @@
+robokudo.utils.comparator_factories
+===================================
+
+.. py:module:: robokudo.utils.comparator_factories
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.utils.comparator_factories.FeatureComparatorFactory
+
+
+Module Contents
+---------------
+
+.. py:class:: FeatureComparatorFactory
+
+   A factory for creating feature comparators.
+
+
+   .. py:attribute:: annotator_comparators
+      :type:  typing_extensions.Dict[typing_extensions.Type[robokudo.types.core.Annotation], typing_extensions.Type[robokudo.utils.comparators.FeatureComparator]]
+
+      Mapping of annotation types to feature comparators.
+
+
+
+   .. py:attribute:: type_comparators
+      :type:  typing_extensions.Dict[typing_extensions.Type[robokudo.types.core.Type], typing_extensions.Type[robokudo.utils.comparators.FeatureComparator]]
+
+      Mapping of robokudo types to feature comparators.
+
+
+
+   .. py:method:: for_annotation(annotation: typing_extensions.Type[robokudo.types.core.Annotation], weight: float, **kwargs) -> typing_extensions.Optional[robokudo.utils.comparators.FeatureComparator]
+      :classmethod:
+
+
+      Get a feature comparator for the given annotation type and assign it the given
+      weight.
+
+      :param annotation: The annotation type to get a feature comparator for.
+      :param weight: The weight to assign the annotation type.
+      :return: A feature comparator instance for the given annotation type or None if
+          the type is not supported.
+
+
+
+   .. py:method:: for_type(rk_type: typing_extensions.Type[robokudo.types.core.Type], weight: float, **kwargs) -> typing_extensions.Optional[robokudo.utils.comparators.FeatureComparator]
+      :classmethod:
+
+
+      Get a feature comparator for the given robokudo type and assign it the given
+      weight.
+
+      :param rk_type: The robokudo type to get a feature comparator for.
+      :param weight: The weight to assign the annotation type.
+      :return: A feature comparator instance for the given annotation type or None if
+          the type is not supported.
+
+
+

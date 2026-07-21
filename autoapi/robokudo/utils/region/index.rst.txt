@@ -1,0 +1,62 @@
+robokudo.utils.region
+=====================
+
+.. py:module:: robokudo.utils.region
+
+.. autoapi-nested-parse::
+
+   SDT Region helpers for RoboKudo.
+
+   This module provides utilities to:
+   - Normalize region naming
+   - Compute region poses and OBBs
+   - Convert regions to annotations/markers
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.region._box_obb_from_shape
+   robokudo.utils.region.region_obb
+   robokudo.utils.region.region_obb_in_cam_coordinates
+   robokudo.utils.region.region_pose_annotation
+   robokudo.utils.region.region_marker_array
+
+
+Module Contents
+---------------
+
+.. py:function:: _box_obb_from_shape(box: semantic_digital_twin.world_description.geometry.Box, world_T_region: semantic_digital_twin.spatial_types.HomogeneousTransformationMatrix) -> open3d.geometry.OrientedBoundingBox
+
+   Build an OBB for a single SDT Box shape.
+
+
+.. py:function:: region_obb(region: semantic_digital_twin.world_description.world_entity.Region, world: typing_extensions.Optional[semantic_digital_twin.world.World] = None) -> open3d.geometry.OrientedBoundingBox
+
+   Return an OBB for the region in world coordinates.
+
+   Strategy:
+   - If a single Box shape exists, build directly from its scale and pose.
+   - Otherwise, fall back to combined mesh or bounding boxes.
+
+
+.. py:function:: region_obb_in_cam_coordinates(world: semantic_digital_twin.world.World, region: semantic_digital_twin.world_description.world_entity.Region, world_T_cam: typing_extensions.Union[numpy.ndarray, semantic_digital_twin.spatial_types.HomogeneousTransformationMatrix]) -> open3d.geometry.OrientedBoundingBox
+
+   Transform region OBB to camera frame using world_to_cam matrix.
+
+
+.. py:function:: region_pose_annotation(region: semantic_digital_twin.world_description.world_entity.Region) -> robokudo.types.annotation.PoseAnnotation
+
+   Create a PoseAnnotation from the region's global pose.
+
+
+.. py:function:: region_marker_array(regions: typing_extensions.Iterable[semantic_digital_twin.world_description.world_entity.Region], highlighted: typing_extensions.Optional[typing_extensions.Iterable[str]] = None, highlight_color: typing_extensions.Tuple[float, float, float] = (0.0, 1.0, 0.0), default_color: typing_extensions.Tuple[float, float, float] = (0.0, 0.0, 0.7))
+
+   Optional helper for visualization markers.
+
+   This can replace BaseSemanticMap.publish_visualization_markers.
+
+

@@ -1,0 +1,159 @@
+robokudo.scripts.query_test_client
+==================================
+
+.. py:module:: robokudo.scripts.query_test_client
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.scripts.query_test_client.PrettyResultPrinter
+   robokudo.scripts.query_test_client.RoboKudoActionClient
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.scripts.query_test_client.main_cli
+   robokudo.scripts.query_test_client.main
+
+
+Module Contents
+---------------
+
+.. py:class:: PrettyResultPrinter
+
+   .. py:method:: pretty_print_result(result: robokudo_msgs.action._query.Query_Result) -> str
+
+
+.. py:class:: RoboKudoActionClient(preempt_timer: typing_extensions.Optional[float] = None)
+
+   Bases: :py:obj:`rclpy.node.Node`
+
+
+   Debug Action Client for the Query Action Server.
+
+   Allows sending dynamic goals and handles feedback, result, and cancellation.
+
+
+   .. py:attribute:: rk_logger
+      :value: None
+
+
+
+   .. py:attribute:: _action_client
+      :type:  rclpy.action.ActionClient
+
+
+   .. py:attribute:: _preempt_timer
+      :type:  float
+      :value: None
+
+
+
+   .. py:attribute:: _cancel_timer
+      :type:  typing_extensions.Optional[rclpy.timer.Timer]
+      :value: None
+
+
+
+   .. py:attribute:: _goal_handle
+      :type:  typing_extensions.Optional[rclpy.action.client.ClientGoalHandle]
+      :value: None
+
+
+
+   .. py:attribute:: done
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: last_feedback
+      :type:  typing_extensions.Optional[robokudo_msgs.action._query.Query_FeedbackMessage]
+      :value: None
+
+
+
+   .. py:attribute:: goal_status
+      :type:  typing_extensions.Optional[action_msgs.msg.GoalStatus]
+      :value: None
+
+
+
+   .. py:attribute:: goal_result
+      :type:  typing_extensions.Optional[robokudo_msgs.action._query.Query_Result]
+      :value: None
+
+
+
+   .. py:attribute:: cancel_response
+      :type:  typing_extensions.Optional[rclpy.task.Future]
+      :value: None
+
+
+
+   .. py:method:: send_goal(goal_type: str) -> None
+
+      Waits for the action server and sends a dynamic goal.
+
+      :param goal_type: Content of the type field in the goal sent to the action
+          server.
+
+
+
+   .. py:method:: goal_response_callback(future: rclpy.task.Future) -> None
+
+      Handles the response from the action server regarding goal acceptance.
+
+      :param future: The future of the async goal task returned by the action client
+          upon sending a goal.
+
+
+
+   .. py:method:: feedback_callback(feedback_msg: robokudo_msgs.action._query.Query_FeedbackMessage) -> None
+
+      Processes feedback messages from the action server.
+
+      :param feedback_msg: The feedback message returned by the action client.
+
+
+
+   .. py:method:: cancel_goal() -> None
+
+      Sends a cancel request for the active goal.
+
+
+
+   .. py:method:: cancel_done_callback(future: rclpy.task.Future) -> None
+
+      Handles the response from the action server regarding goal cancellation.
+
+      :param future: The future of the async goal task returned by the action client
+          upon cancelling a goal.
+
+
+
+   .. py:method:: result_callback(future: rclpy.task.Future) -> None
+
+      Processes the result from the action server.
+
+      :param future: The future of the async goal task returned by the action client
+          upon getting the goal result.
+
+
+
+   .. py:method:: destroy_node() -> None
+
+      Cancel the goal and destroys the ROS node.
+
+
+
+.. py:function:: main_cli(args: typing_extensions.Optional[typing_extensions.List[str]] = None) -> None
+
+.. py:function:: main(timeout_seconds: float = 20.0, result: queue.Queue = Queue()) -> None
+

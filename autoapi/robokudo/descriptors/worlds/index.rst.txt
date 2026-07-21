@@ -1,0 +1,20 @@
+robokudo.descriptors.worlds
+===========================
+
+.. py:module:: robokudo.descriptors.worlds
+
+.. autoapi-nested-parse::
+
+   World descriptor modules.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/robokudo/descriptors/worlds/world_iai_kitchen20/index
+
+

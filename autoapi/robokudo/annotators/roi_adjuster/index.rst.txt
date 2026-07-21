@@ -1,0 +1,93 @@
+robokudo.annotators.roi_adjuster
+================================
+
+.. py:module:: robokudo.annotators.roi_adjuster
+
+.. autoapi-nested-parse::
+
+   ROI adjustment for RoboKudo.
+
+   This module provides an annotator for adjusting the size of Region of Interest (ROI)
+   boundaries for object hypotheses. It can grow or shrink ROIs and their associated
+   masks by a specified pixel offset.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.roi_adjuster.ROIAdjusterAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: ROIAdjusterAnnotator(name: str = 'ROIAdjusterAnnotator', descriptor: ROIAdjusterAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for adjusting ROI sizes of object hypotheses.
+
+   This annotator can grow or shrink ROIs (Regions of Interest) on object
+   hypotheses by a specified pixel offset. It handles both the ROI boundaries
+   and their associated masks, ensuring proper adjustment of both.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for ROI adjustment.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring ROI adjustment behavior.
+
+
+         .. py:attribute:: offset_pixel
+            :type:  int
+            :value: 20
+
+
+            Pixels to add/subtract from ROI sides (positive grows, negative shrinks)
+
+
+
+         .. py:attribute:: analysis_scope
+            :type:  typing_extensions.Type
+
+            Type of annotations to process.
+
+
+
+         .. py:attribute:: fill_value_mask
+            :type:  int
+            :value: 0
+
+
+            Value to fill new mask areas when growing ROIs
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update ROIs by applying the configured pixel offset.
+
+      For each object hypothesis in the analysis scope:
+      - Adjusts the ROI boundaries by the specified pixel offset
+      - If a mask exists, adjusts it accordingly with the specified fill value
+
+      :return: SUCCESS after adjusting all ROIs
+
+
+

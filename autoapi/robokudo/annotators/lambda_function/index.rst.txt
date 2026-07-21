@@ -1,0 +1,99 @@
+robokudo.annotators.lambda_function
+===================================
+
+.. py:module:: robokudo.annotators.lambda_function
+
+.. autoapi-nested-parse::
+
+   Lambda function annotator for RoboKudo.
+
+   This module provides an annotator for executing arbitrary functions.
+   It supports:
+
+   * Dynamic function execution
+   * Custom function arguments
+   * Flexible parameter passing
+   * Generic function handling
+
+   The module is used for:
+
+   * Custom processing
+   * Dynamic behavior
+   * Testing and debugging
+   * Quick prototyping
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.lambda_function.LambdaFunctionAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: LambdaFunctionAnnotator(name: str = 'LambdaFunctionAnnotator', descriptor: LambdaFunctionAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for executing arbitrary functions.
+
+   This annotator executes a provided function with configurable arguments, allowing
+   for dynamic behavior definition without creating new annotator classes.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for lambda function annotator.
+
+
+      .. py:class:: Parameters
+
+         Parameter container for function configuration.
+
+         :type func: callable
+         :type func_args: tuple
+         :type func_kwargs: dict
+
+
+         .. py:attribute:: func
+            :type:  typing_extensions.Optional[typing_extensions.Callable]
+            :value: None
+
+
+
+         .. py:attribute:: func_args
+            :type:  typing_extensions.Optional[typing_extensions.Tuple]
+            :value: None
+
+
+
+         .. py:attribute:: func_kwargs
+            :type:  typing_extensions.Optional[typing_extensions.Dict]
+            :value: None
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Execute the configured function.
+
+      The function is called with the annotator instance as first argument, followed
+      by any configured positional and keyword arguments.
+
+      :return: SUCCESS status
+
+
+

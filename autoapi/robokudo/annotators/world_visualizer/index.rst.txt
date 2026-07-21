@@ -1,0 +1,64 @@
+robokudo.annotators.world_visualizer
+====================================
+
+.. py:module:: robokudo.annotators.world_visualizer
+
+.. autoapi-nested-parse::
+
+   World visualization for RoboKudo.
+
+   This annotator visualizes predefined objects and regions from a world descriptor.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.world_visualizer.WorldVisualizer
+
+
+Module Contents
+---------------
+
+.. py:class:: WorldVisualizer(name: str = 'WorldVisualizer', descriptor: WorldVisualizer = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.ThreadedAnnotator`
+
+
+   Visualize predefined objects and regions from the shared world.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      .. py:class:: Parameters
+
+         .. py:attribute:: visualize_objects
+            :type:  bool
+            :value: True
+
+
+
+         .. py:attribute:: visualize_regions
+            :type:  bool
+            :value: True
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: _body_size(body: semantic_digital_twin.world_description.world_entity.Body) -> numpy.ndarray | None
+      :staticmethod:
+
+
+
+   .. py:method:: compute() -> py_trees.common.Status
+
+

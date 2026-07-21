@@ -1,0 +1,161 @@
+robokudo.utils.math_helper
+==========================
+
+.. py:module:: robokudo.utils.math_helper
+
+.. autoapi-nested-parse::
+
+   3D geometry math utilities for RoboKudo.
+
+   This module provides utilities for 3D geometric calculations.
+
+   :module: math_helper :synopsis: 3D geometric calculations and utilities :moduleauthor:
+   RoboKudo Team
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.math_helper.intersection_point
+   robokudo.utils.math_helper.distance
+   robokudo.utils.math_helper.intersecting_spheres
+   robokudo.utils.math_helper.compute_line_intersection_point
+   robokudo.utils.math_helper.does_line_intersect_sphere
+   robokudo.utils.math_helper.compute_direction_vector_angle
+   robokudo.utils.math_helper.intersecting_cuboids
+
+
+Module Contents
+---------------
+
+.. py:function:: intersection_point(point1: typing_extensions.Tuple[float, float, float], point2: typing_extensions.Tuple[float, float, float], t: float) -> typing_extensions.Tuple[float, float, float]
+
+   Calculate point along line segment using parameter t.
+
+   :param point1: Start point (x,y,z)
+   :param point2: End point (x,y,z)
+   :param t: Interpolation parameter [0,1]
+   :return: Interpolated point (x,y,z)
+
+   :Example:
+
+   .. code-block:: python
+
+       P1 = (0, 0, 0)
+       P2 = (1, 1, 1)
+       mid = intersection_point(P1, P2, 0.5)  # Returns (0.5, 0.5, 0.5)
+
+   .. note::
+       Uses linear interpolation: P = P1 + t*(P2 - P1)
+
+
+.. py:function:: distance(point1: typing_extensions.Tuple[float, float, float], point2: typing_extensions.Tuple[float, float, float]) -> float
+
+   Calculate Euclidean distance between two 3D points.
+
+   :param point1: First point (x,y,z)
+   :param point2: Second point (x,y,z)
+   :return: Euclidean distance
+
+   :Example:
+
+   .. code-block:: python
+
+       p1 = (0, 0, 0)
+       p2 = (1, 1, 1)
+       d = distance(p1, p2)  # Returns sqrt(3)
+
+
+.. py:function:: intersecting_spheres(point1: typing_extensions.Tuple[float, float, float], point2: typing_extensions.Tuple[float, float, float], spheres: typing_extensions.Iterable[typing_extensions.Tuple[str, typing_extensions.Tuple[float, float, float], float]]) -> typing_extensions.List[typing_extensions.Tuple[float, str, typing_extensions.Tuple[float, float, float], float, typing_extensions.Tuple[float, float, float]]]
+
+   Check where the first intersection between the line segment described by P1 and P2
+   and the spheres in our parameters happens.
+
+   Spheres must be a list of triples (name, center, radius)
+
+   :param point1: Start point of the line segment (x, y, z).
+   :param point2: End point of the line segment (x, y, z).
+   :param spheres: Iterable of tuples (name, center, radius) where center is a tuple (x, y, z).
+   :return: List of tuples (dist to point1, name, center, radius, first_intersection_from_point1).
+
+   :Example:
+
+   .. code-block:: python
+
+       P1 = (0, 0, 0)
+       P2 = (1, 1, 1)
+       spheres = [
+           ("sphere1", (0.5, 0.5, 0.5), 0.1),
+           ("sphere2", (0.7, 0.7, 0.7), 0.1)
+       ]
+       intersections = intersecting_spheres(P1, P2, spheres)
+
+   .. note::
+       Returns intersections sorted by distance from point1
+
+
+.. py:function:: compute_line_intersection_point(point1: typing_extensions.Tuple[float, float, float], point2: typing_extensions.Tuple[float, float, float], sphere_center: typing_extensions.Tuple[float, float, float], sphere_radius: float) -> typing_extensions.Optional[typing_extensions.List[float]]
+
+   Compute the intersection points between a sphere and a line segment.
+
+   :param point1: First point of the line (x, y, z)
+   :param point2: Second point of the line (x, y, z)
+   :param sphere_center: Center of the sphere
+   :param sphere_radius: Radius of the sphere
+   :return: List of intersection points on the line or None if line does not intersect
+
+
+.. py:function:: does_line_intersect_sphere(point1: typing_extensions.Tuple[float, float, float], point2: typing_extensions.Tuple[float, float, float], sphere_center: typing_extensions.Tuple[float, float, float], sphere_radius: float) -> bool
+
+   Test if line segment intersects sphere.
+
+   :param point1: Line segment start point (x,y,z)
+   :param point2: Line segment end point (x,y,z)
+   :param sphere_center: Sphere center point (x,y,z)
+   :param sphere_radius: Sphere radius
+   :return: True if line segment intersects sphere
+
+   :Example:
+
+   .. code-block:: python
+
+       point1 = (0, 0, 0)
+       point2 = (1, 1, 1)
+       sphere_center = (0.5, 0.5, 0.5)
+       sphere_radius = 0.1
+       intersects = does_line_intersect_sphere(point1, point2, sphere_center, sphere_radius)
+
+   .. note::
+       Uses quadratic equation to find intersection points
+
+
+.. py:function:: compute_direction_vector_angle(direction_vector: numpy.ndarray, floor: numpy.ndarray = np.array([0, 1, 0], dtype=float)) -> float
+
+   Computes the angle of a direction vector in degrees relative to the floor.
+
+   The angle is computed as the arctangent of the y and x components of the vector.
+   :param direction_vector: A 3D vector (numpy array) representing the direction.
+   :param floor: A 3D vector (numpy array) representing the floor normal. Default is
+       (0, 1, 0).
+   :return: Angle in degrees.
+
+
+.. py:function:: intersecting_cuboids(point1: typing_extensions.Tuple[float, float, float], point2: typing_extensions.Tuple[float, float, float], cuboids: typing_extensions.List[typing_extensions.Tuple[str, typing_extensions.Tuple[float, float, float], typing_extensions.Tuple[float, float, float, float], typing_extensions.Tuple[float, float, float]]]) -> typing_extensions.List[typing_extensions.Tuple[float, str, numpy.ndarray, numpy.ndarray, numpy.ndarray]]
+
+   Check where the first intersection between the line segment described by P1 and P2
+   and the cuboids in our parameters happens. The intersection problem is solved using the slab method (see
+   https://en.wikipedia.org/wiki/Slab_method).
+
+   Cuboids must be a list of tuples (name, position, orientation, size)
+
+   :param point1: Start point of the line segment (x, y, z).
+   :param point2: End point of the line segment (x, y, z).
+   :param cuboids: List of tuples (name, position, orientation, size) where position is a tuple (x, y, z),
+                    orientation is a tuple (x, y, z, w) representing a quaternion, and size is a tuple (width, height, depth).
+
+   :return: List of tuples (dist to P1, name, cuboid_min, cuboid_max, first_intersection_from_P1).
+
+

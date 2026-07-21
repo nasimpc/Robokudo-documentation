@@ -1,0 +1,53 @@
+robokudo.annotators.object_pose_visualizer
+==========================================
+
+.. py:module:: robokudo.annotators.object_pose_visualizer
+
+.. autoapi-nested-parse::
+
+   Object pose visualization for RoboKudo.
+
+   This module provides an annotator for visualizing the poses of detected objects in both
+   2D (image overlays) and 3D (coordinate frames) representations.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.object_pose_visualizer.ObjectPoseVisualizer
+
+
+Module Contents
+---------------
+
+.. py:class:: ObjectPoseVisualizer(name: str = 'ObjectPoseVisualizer')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for visualizing object poses in the CAS.
+
+   This annotator creates visualizations of object poses by:
+
+   * Drawing pose information on the color image
+   * Creating 3D coordinate frames at each object's pose
+   * Displaying the coordinate frames alongside the point cloud
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the visualization with current object poses.
+
+      Creates visualizations containing:
+
+      * Color image with pose information
+      * 3D coordinate frames for each object's pose
+      * Point cloud data
+
+      :return: SUCCESS after creating visualizations
+
+
+

@@ -1,0 +1,1184 @@
+robokudo.vis.multiprocessed_o3d_visualizer
+==========================================
+
+.. py:module:: robokudo.vis.multiprocessed_o3d_visualizer
+
+.. autoapi-nested-parse::
+
+   Open3D-based visualization for RoboKudo pipelines.
+
+   This module provides 3D visualization capabilities for RoboKudo pipelines using Open3D.
+   It handles:
+
+   * 3D geometry visualization
+   * Point cloud rendering
+   * Camera control
+   * Coordinate frame display
+   * Window management
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.vis.multiprocessed_o3d_visualizer.O3DVisualizer
+   robokudo.vis.multiprocessed_o3d_visualizer.MemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.ObjectMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.ArrayMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.Geometry3DMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.PointCloudMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.LineSetMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.MeshBaseMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.TriangleMeshMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.OrientedBoundingBoxMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.AxisAlignedBoundingBoxMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.TetraMeshMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.HalfEdgeMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.HalfEdgeTriangleMeshMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.VoxelGrid3DMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.Octree3DMemoryMap
+   robokudo.vis.multiprocessed_o3d_visualizer.ObjectMemoryMapFactory
+   robokudo.vis.multiprocessed_o3d_visualizer.Geometry3DMemoryMapFactory
+   robokudo.vis.multiprocessed_o3d_visualizer.MemoryMapTransport
+   robokudo.vis.multiprocessed_o3d_visualizer.SharedMemoryManager
+   robokudo.vis.multiprocessed_o3d_visualizer.MultiprocessedViewer3DClient
+   robokudo.vis.multiprocessed_o3d_visualizer.MultiprocessedViewer3D
+
+
+Module Contents
+---------------
+
+.. py:class:: O3DVisualizer(*args: typing_extensions.Any, **kwargs: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.vis.visualizer.Visualizer`, :py:obj:`robokudo.vis.visualizer.Visualizer.Observer`
+
+
+   Open3D-based visualizer for 3D geometry data.
+
+   This class provides visualization of 3D geometry data from pipeline annotators using
+   Open3D windows. It supports:
+
+   * 3D geometry visualization
+   * Point cloud rendering
+   * Camera control
+   * Coordinate frame display
+   * Shared visualization state
+
+   .. note::
+       This Visualizer works with a shared state and needs notifications
+
+
+   .. py:attribute:: viewer3d
+      :type:  typing_extensions.Optional[MultiprocessedViewer3D]
+      :value: None
+
+
+      Open3D viewer instance
+
+
+
+   .. py:method:: notify(observable: robokudo.vis.visualizer.Visualizer.Observable, *args: typing_extensions.Any, **kwargs: typing_extensions.Any) -> None
+
+      Handle notification of state changes.
+
+      :param observable: The object that sent the notification
+
+
+
+   .. py:method:: tick() -> None
+
+      Update the visualization display.
+
+      This method:
+
+      * Initializes viewer if needed
+      * Gets current annotator outputs
+      * Updates display if needed
+      * Handles viewer lifecycle
+
+      :returns: False if visualization should terminate, True otherwise
+
+
+
+   .. py:method:: window_title() -> str
+
+      Get the window title for this visualizer.
+
+
+
+.. py:class:: MemoryMap
+
+   Bases: :py:obj:`object`
+
+
+   A base memory map for shared memory.
+
+
+   .. py:attribute:: byte_size
+      :type:  int
+
+      Size of the underlying data in bytes.
+
+
+
+.. py:class:: ObjectMemoryMap
+
+   Bases: :py:obj:`MemoryMap`
+
+
+   A memory map for an object in shared memory.
+
+
+   .. py:method:: from_object(obj: typing_extensions.Any) -> ObjectMemoryMap
+      :classmethod:
+
+
+      Create a new memory map for the given object.
+
+
+
+   .. py:method:: write_object(write_buf: memoryview, write_idx: int, obj: typing_extensions.Any) -> int
+
+      Write the given object to the shared memory using the memory map.
+
+      :param write_buf: The memoryview to write to.
+      :param write_idx: The index to start writing at.
+      :param obj: The object to write.
+      :return: The new write index.
+
+
+
+   .. py:method:: read_object(read_buf: memoryview, read_idx: int) -> typing_extensions.Tuple[typing_extensions.Any, int]
+
+      Read an object from the shared memory using the memory map.
+
+      :param read_buf: The memoryview to read from.
+      :param read_idx: The index to start reading at.
+      :return: The object and the new read index.
+
+
+
+.. py:class:: ArrayMemoryMap
+
+   Bases: :py:obj:`MemoryMap`
+
+
+   A memory map for a numpy array in shared memory.
+
+
+   .. py:attribute:: shape
+      :type:  typing_extensions.Tuple
+
+      Shape of the underlying array.
+
+
+
+   .. py:attribute:: dtype
+      :type:  str
+
+      Datatype of the underlying data as a string.
+
+
+
+   .. py:method:: from_numpy_array(array: numpy.typing.NDArray) -> ArrayMemoryMap
+      :classmethod:
+
+
+      Create a new memory map for the given numpy array.
+
+
+
+.. py:class:: Geometry3DMemoryMap
+
+   Bases: :py:obj:`MemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: name
+      :type:  str
+
+      Name of the underlying geometry.
+
+
+
+   .. py:attribute:: type
+      :type:  typing_extensions.Type
+
+
+   .. py:attribute:: material
+      :type:  typing_extensions.Optional[open3d.visualization.rendering.MaterialRecord]
+      :value: None
+
+
+
+   .. py:attribute:: group
+      :type:  typing_extensions.Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: time
+      :type:  typing_extensions.Optional[float]
+      :value: None
+
+
+
+   .. py:attribute:: is_visible
+      :type:  typing_extensions.Optional[bool]
+      :value: None
+
+
+
+   .. py:attribute:: mapped_attributes
+      :value: []
+
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+   .. py:method:: from_geometry(name: str, geometry: open3d.geometry.Geometry3D, material: typing_extensions.Optional[open3d.visualization.rendering.MaterialRecord] = None, group: typing_extensions.Optional[str] = None, time: typing_extensions.Optional[float] = None, is_visible: typing_extensions.Optional[bool] = None) -> Geometry3DMemoryMap
+      :classmethod:
+
+
+      Create a new memory memory map for the given geometry.
+
+
+
+   .. py:method:: from_geometry_dict(geometry: typing_extensions.Dict) -> Geometry3DMemoryMap
+      :classmethod:
+
+
+      Create a new memory map from a geometry dictionary.
+
+
+
+   .. py:method:: as_geometry_dict(shm: multiprocessing.shared_memory.SharedMemory, read_idx: int) -> typing_extensions.Tuple[typing_extensions.Dict, int]
+
+      Create an open3d geometry dict from the memory map.
+
+
+
+   .. py:method:: _write_attribute(write_buf: memoryview, write_idx: int, attribute_map: typing_extensions.Any, geometry_attribute: typing_extensions.Any) -> int
+
+
+   .. py:method:: write_geometry(shm: multiprocessing.shared_memory.SharedMemory, write_idx: int, geometry: open3d.geometry.Geometry3D) -> int
+
+      Write the given geometry to the shared memory using the memory map.
+
+
+
+   .. py:method:: to_geometry(shm: multiprocessing.shared_memory.SharedMemory, read_idx: int) -> typing_extensions.Tuple[open3d.geometry.PointCloud, int]
+
+      Read the geometry from the shared memory using the memory map.
+
+
+
+.. py:class:: PointCloudMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: points
+      :type:  ArrayMemoryMap
+
+      Memory map of the point clouds points.
+
+
+
+   .. py:attribute:: normals
+      :type:  ArrayMemoryMap
+
+      Memory map of the point clouds point normals.
+
+
+
+   .. py:attribute:: colors
+      :type:  ArrayMemoryMap
+
+      Memory map of the point clouds point colors.
+
+
+
+   .. py:attribute:: covariances
+      :type:  ArrayMemoryMap
+
+      Memory map of the point clouds point covariances.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: LineSetMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: colors
+      :type:  ArrayMemoryMap
+
+      Memory map of the line set colors.
+
+
+
+   .. py:attribute:: lines
+      :type:  ArrayMemoryMap
+
+      Memory map of the line set lines.
+
+
+
+   .. py:attribute:: points
+      :type:  ArrayMemoryMap
+
+      Memory map of the line set points.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: MeshBaseMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: vertices
+      :type:  ArrayMemoryMap
+
+      Memory map of the mesh vertices.
+
+
+
+   .. py:attribute:: vertex_normals
+      :type:  ArrayMemoryMap
+
+      Memory map of the vertex normals.
+
+
+
+   .. py:attribute:: vertex_colors
+      :type:  ArrayMemoryMap
+
+      Memory map of the vertex colors.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: TriangleMeshMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: vertices
+      :type:  ArrayMemoryMap
+
+      Memory map of the mesh vertices.
+
+
+
+   .. py:attribute:: vertex_normals
+      :type:  ArrayMemoryMap
+
+      Memory map of the vertex normals.
+
+
+
+   .. py:attribute:: vertex_colors
+      :type:  ArrayMemoryMap
+
+      Memory map of the vertex colors.
+
+
+
+   .. py:attribute:: triangles
+      :type:  ArrayMemoryMap
+
+      Memory map of the mesh triangles.
+
+
+
+   .. py:attribute:: triangle_normals
+      :type:  ArrayMemoryMap
+
+      Memory map of the mesh triangle normals.
+
+
+
+   .. py:attribute:: triangle_uvs
+      :type:  ArrayMemoryMap
+
+      Memory map of the mesh triangle uvs.
+
+
+
+   .. py:attribute:: triangle_material_ids
+      :type:  ArrayMemoryMap
+
+      Memory map of the mesh triangle material ids.
+
+
+
+   .. py:attribute:: textures
+      :type:  typing_extensions.List[ArrayMemoryMap]
+
+      Memory map of the mesh textures.
+
+
+
+   .. py:attribute:: adjacency_list
+      :type:  typing_extensions.List[ArrayMemoryMap]
+
+      Memory map of the mesh adjacency list.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: OrientedBoundingBoxMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: center
+      :type:  ArrayMemoryMap
+
+      Memory map of the oriented bounding box center.
+
+
+
+   .. py:attribute:: color
+      :type:  ArrayMemoryMap
+
+      Memory map of the oriented bounding box color.
+
+
+
+   .. py:attribute:: extent
+      :type:  ArrayMemoryMap
+
+      Memory map of the oriented bounding box extent.
+
+
+
+   .. py:attribute:: R
+      :type:  ArrayMemoryMap
+
+      Memory map of the oriented bounding box extent.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: AxisAlignedBoundingBoxMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: color
+      :type:  ArrayMemoryMap
+
+      Memory map of the axis aligned bounding box color.
+
+
+
+   .. py:attribute:: max_bound
+      :type:  ArrayMemoryMap
+
+      Memory map of the axis aligned bounding box maximum bound.
+
+
+
+   .. py:attribute:: min_bound
+      :type:  ArrayMemoryMap
+
+      Memory map of the axis aligned bounding box maximum bound.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: TetraMeshMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: tetras
+      :type:  ArrayMemoryMap
+
+      Memory map of the tetra mesh tetras.
+
+
+
+   .. py:attribute:: vertex_colors
+      :type:  ArrayMemoryMap
+
+      Memory map of the tetra mesh vertex colors.
+
+
+
+   .. py:attribute:: vertex_normals
+      :type:  ArrayMemoryMap
+
+      Memory map of the tetra mesh vertex normals.
+
+
+
+   .. py:attribute:: vertices
+      :type:  ArrayMemoryMap
+
+      Memory map of the tetra mesh vertices.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: HalfEdgeMemoryMap
+
+   Bases: :py:obj:`ObjectMemoryMap`
+
+
+   A memory map for an object in shared memory.
+
+
+   .. py:attribute:: data
+      :type:  ArrayMemoryMap
+
+      Memory map containing next, triangle_index, twin and vertex_indices.
+
+
+
+   .. py:method:: from_object(obj: open3d.geometry.HalfEdge) -> HalfEdgeMemoryMap
+      :classmethod:
+
+
+      Create a new memory map for the given object.
+
+
+
+   .. py:method:: write_object(write_buf: memoryview, write_idx: int, obj: open3d.geometry.HalfEdge) -> int
+
+      Write the given object to the shared memory using the memory map.
+
+      :param write_buf: The memoryview to write to.
+      :param write_idx: The index to start writing at.
+      :param obj: The object to write.
+      :return: The new write index.
+
+
+
+   .. py:method:: read_object(read_buf: memoryview, read_idx: int) -> typing_extensions.Tuple[open3d.geometry.HalfEdge, int]
+
+      Read an object from the shared memory using the memory map.
+
+      :param read_buf: The memoryview to read from.
+      :param read_idx: The index to start reading at.
+      :return: The object and the new read index.
+
+
+
+.. py:class:: HalfEdgeTriangleMeshMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: half_edges
+      :type:  typing_extensions.List[HalfEdgeMemoryMap]
+
+      Memory map of the half edge mesh half edges.
+
+
+
+   .. py:attribute:: ordered_half_edge_from_vertex
+      :type:  typing_extensions.List[ArrayMemoryMap]
+
+      Memory map of the half edge mesh ordered half edge from vertex.
+
+
+
+   .. py:attribute:: triangle_normals
+      :type:  ArrayMemoryMap
+
+      Memory map of the half edge mesh triangle normals.
+
+
+
+   .. py:attribute:: triangles
+      :type:  ArrayMemoryMap
+
+      Memory map of the half edge mesh triangles.
+
+
+
+   .. py:attribute:: vertex_colors
+      :type:  ArrayMemoryMap
+
+      Memory map of the half edge mesh vertex colors.
+
+
+
+   .. py:attribute:: vertex_normals
+      :type:  ArrayMemoryMap
+
+      Memory map of the half edge mesh vertex normals.
+
+
+
+   .. py:attribute:: vertices
+      :type:  ArrayMemoryMap
+
+      Memory map of the half edge mesh vertices.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: VoxelGrid3DMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: origin
+      :type:  ArrayMemoryMap
+
+      Memory map of the voxel grid origin.
+
+
+
+   .. py:attribute:: voxel_size
+      :type:  ArrayMemoryMap
+
+      Memory map of the voxel grid voxel size.
+
+
+
+   .. py:attribute:: mapped_attributes
+
+      A list of (attribute name, attribute type) for the open3d attributes mapped by the memory map.
+
+
+
+.. py:class:: Octree3DMemoryMap
+
+   Bases: :py:obj:`Geometry3DMemoryMap`
+
+
+   A memory map for a geometry in shared memory.
+
+
+   .. py:attribute:: max_depth
+      :type:  int
+
+      Maximum depth of the octree.
+
+
+
+   .. py:attribute:: origin
+      :type:  ArrayMemoryMap
+
+      Memory map of the octree origin.
+
+
+
+   .. py:attribute:: root_node
+      :type:  open3d.geometry.OctreeNode
+
+      Memory map of the octree root node.
+
+
+
+   .. py:attribute:: size
+      :type:  float
+
+      Memory map of the octree size.
+
+
+
+.. py:class:: ObjectMemoryMapFactory
+
+   A factory class for creating geometry memory maps from open3d geometry objects.
+
+
+   .. py:attribute:: proxies
+      :type:  typing_extensions.Dict[typing_extensions.Type, typing_extensions.Type[ObjectMemoryMap]]
+
+      Map of open3d geometry types to their corresponding memory map types.
+
+
+
+   .. py:method:: has_proxy(obj: typing_extensions.Any) -> bool
+      :classmethod:
+
+
+
+   .. py:method:: from_object(obj: typing_extensions.Any) -> ObjectMemoryMap
+      :classmethod:
+
+
+      Create a geometry proxy from a geometry3d object.
+
+
+
+.. py:class:: Geometry3DMemoryMapFactory
+
+   A factory class for creating geometry memory maps from open3d geometry3d objects.
+
+
+   .. py:attribute:: proxies
+      :type:  typing_extensions.Dict[typing_extensions.Type, typing_extensions.Type[Geometry3DMemoryMap]]
+
+      Map of open3d geometry types to their corresponding memory map types.
+
+
+
+   .. py:method:: has_proxy(obj: typing_extensions.Any) -> bool
+      :classmethod:
+
+
+
+   .. py:method:: from_geometry(name: str, geometry: open3d.geometry.Geometry3D) -> Geometry3DMemoryMap
+      :classmethod:
+
+
+      Create a geometry proxy from a geometry3d object.
+
+
+
+   .. py:method:: from_geometry_dict(geometry: typing_extensions.Dict) -> Geometry3DMemoryMap
+      :classmethod:
+
+
+      Create a geometry proxy from a geometry3d object.
+
+
+
+.. py:class:: MemoryMapTransport
+
+   Bases: :py:obj:`object`
+
+
+   A message containing geometry data for visualization.
+
+
+   .. py:attribute:: shm_name
+      :type:  str
+
+      The shared memory to read from.
+
+
+
+   .. py:attribute:: memory_maps
+      :type:  typing_extensions.List[Geometry3DMemoryMap]
+      :value: []
+
+
+      The memory mappings for the geometries.
+
+
+
+.. py:class:: SharedMemoryManager
+
+   Bases: :py:obj:`object`
+
+
+   A manager for geometries in shared memory.
+
+
+   .. py:attribute:: memory_maps
+      :type:  typing_extensions.List[Geometry3DMemoryMap]
+      :value: []
+
+
+      A list of all memory maps managed by this object.
+
+
+
+   .. py:attribute:: write_cursor
+      :type:  int
+      :value: 0
+
+
+      The current end byte index of the shared memory (sum of all memory map sizes).
+
+
+
+   .. py:attribute:: read_cursor
+      :type:  int
+      :value: 0
+
+
+      The current start byte index of the shared memory (sum of all memory map sizes).
+
+
+
+   .. py:method:: append(memory_map: Geometry3DMemoryMap) -> int
+
+      Add a memory map to the shared memory manager.
+
+      :param memory_map: MemoryMap to add to the shared memory manager.
+      :return: The byte index to start writing to for the appended memory map
+
+
+
+   .. py:method:: extend(memory_maps: typing_extensions.List[Geometry3DMemoryMap]) -> typing_extensions.List[int]
+
+      Add a list of memory maps to the shared memory manager.
+
+      :return: The byte indices to start writing to for each of the appended memory maps
+
+
+
+   .. py:method:: read() -> typing_extensions.Iterator[typing_extensions.Tuple[int, Geometry3DMemoryMap]]
+
+      Read all memory maps from the shared memory manager.
+
+
+
+   .. py:method:: reset() -> None
+
+      Reset the shared memory manager to its initial state.
+
+
+
+.. py:class:: MultiprocessedViewer3DClient(title: str, cmd_conn: multiprocessing.connection.Connection)
+
+   Bases: :py:obj:`object`
+
+
+   .. py:attribute:: rk_logger
+      :type:  logging.Logger
+      :value: None
+
+
+      Logger instance
+
+
+
+   .. py:attribute:: viewer3d
+
+      Viewer3D instance for visualization.
+
+
+
+   .. py:attribute:: cmd_conn
+
+      Communication connection for sending and receiving commands from the main process.
+
+
+
+   .. py:attribute:: name_to_shm
+      :type:  typing_extensions.Dict[str, multiprocessing.shared_memory.SharedMemory]
+
+      Mapping of shared memory names to shared memory instances.
+
+
+
+   .. py:attribute:: name_to_shm_manager
+      :type:  typing_extensions.Dict[str, SharedMemoryManager]
+
+      Mapping of shared memory names to shared memory instances.
+
+
+
+   .. py:attribute:: visualized_geometries
+      :type:  typing_extensions.List[str]
+      :value: []
+
+
+      List of the names of the currently visualized geometries
+
+
+
+   .. py:attribute:: geometries_lock
+      :type:  threading.Lock
+
+      Lock for synchronizing access to the geometries list.
+
+
+
+   .. py:attribute:: geometries
+      :type:  typing_extensions.List[typing_extensions.Union[typing_extensions.Dict, open3d.geometry.Geometry3D]]
+      :value: []
+
+
+      List of the geometries to use for updating the viewer.
+
+
+
+   .. py:attribute:: receiver_thread
+
+      A thread for listening to commands from the main process.
+
+
+
+   .. py:method:: get_shm(shm_name: str) -> multiprocessing.shared_memory.SharedMemory
+
+      Get the shared memory instance for the given shared memory name.
+
+      :param shm_name: The name of the shared memory to get.
+
+
+
+   .. py:method:: get_shm_manager(shm_name: str) -> SharedMemoryManager
+
+      Get the current shared memory manager.
+
+      :param shm_name: The name of the shared memory to get the manager for.
+      :return: The shared memory manager for the given shared memory name.
+
+
+
+   .. py:method:: run() -> None
+
+      Run the visualization client.
+
+
+
+   .. py:method:: close() -> None
+
+      Close the visualization client and clean up resources.
+
+
+
+   .. py:method:: update_geometry() -> None
+
+      Update the geometry in the viewer.
+
+
+
+   .. py:method:: listen()
+
+      Listen for commands from the main process and handle them accordingly.
+
+
+
+.. py:class:: MultiprocessedViewer3D(title: str, shm_size: int = 5000000000)
+
+   Bases: :py:obj:`object`
+
+
+   A wrapper class for the Viewer3D class to run it in a separate process.
+
+
+   .. py:attribute:: rk_logger
+      :type:  logging.Logger
+      :value: None
+
+
+      Logger instance
+
+
+
+   .. py:attribute:: draw_queue
+      :type:  multiprocessing.Queue
+
+      Multiprocessing queue for triggering drawing events.
+
+
+
+   .. py:attribute:: buffer_count
+      :value: 2
+
+
+      Number of buffers to use for communication.
+
+
+
+   .. py:attribute:: buffer_write_cursor
+      :value: 0
+
+
+      Index of the shm to write to.
+
+
+
+   .. py:attribute:: buffer_read_cursor
+      :value: 1
+
+
+      Index of the shm to read to.
+
+
+
+   .. py:attribute:: shms
+
+      Shared memory instances for communicating with the viewer process.
+
+
+
+   .. py:attribute:: shm_names
+
+      Names of the shared memory instances.
+
+
+
+   .. py:attribute:: memory_manager
+
+      A manager for underlying data in shared memory.
+
+
+
+   .. py:attribute:: parent_cmd_conn
+      :type:  multiprocessing.connection.Connection
+
+      Pipe connection for sending and receiving commands from the main process.
+
+
+
+   .. py:attribute:: child_cmd_conn
+      :type:  multiprocessing.connection.Connection
+
+      Pipe connection for sending and receiving commands on the visualizer process.
+
+
+
+   .. py:attribute:: visualizer_process
+      :type:  multiprocessing.Process
+
+      A process running a viewer3d instance.
+
+
+
+   .. py:method:: run_visualizer(title: str, cmd_conn: multiprocessing.connection.Connection) -> None
+      :staticmethod:
+
+
+      Run the viewer3d instance in a separate process.
+
+      :param title: Window title for the viewer.
+      :param cmd_conn: Connection for sending and receiving commands from the main process.
+
+
+
+   .. py:property:: _read_shm
+      :type: multiprocessing.shared_memory.SharedMemory
+
+
+      The shared memory that is currently readable.
+
+
+
+   .. py:property:: _write_shm
+      :type: multiprocessing.shared_memory.SharedMemory
+
+
+      The shared memory that is currently writeable.
+
+
+
+   .. py:property:: _read_manager
+      :type: SharedMemoryManager
+
+
+      The manager for the shared memory that is currently readable.
+
+
+
+   .. py:property:: _write_manager
+      :type: SharedMemoryManager
+
+
+      The manager for the shared memory that is currently writeable.
+
+
+
+   .. py:method:: _swap() -> typing_extensions.Tuple[int, int]
+
+      Rotate the read and write buffers.
+
+      :return: The indices of the new buffers in format (read_buffer, write_buffer)
+
+
+
+   .. py:method:: tick() -> typing_extensions.Any
+
+      Update the viewer display.
+
+      :returns: False if visualization should terminate, True otherwise
+
+
+
+   .. py:method:: update_cloud(geometries: typing_extensions.Optional[typing_extensions.Union[open3d.geometry.Geometry, typing_extensions.Dict, typing_extensions.List]]) -> None
+
+      Update the displayed geometries.
+
+      This method updates the Open3D visualizer based on the outputs of the annotators.
+      For the first update, it also sets up the camera and coordinate frame.
+
+      :param geometries: Geometries to display. Can be:
+
+      .. note::
+          The dict format follows Open3D's draw() convention. See:
+          https://github.com/isl-org/Open3D/blob/master/examples/python/visualization/draw.py
+
+
+
+   .. py:method:: close() -> None
+
+      Clean up shared memory and process resources.
+
+
+

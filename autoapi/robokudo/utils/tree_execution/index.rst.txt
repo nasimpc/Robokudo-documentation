@@ -1,0 +1,54 @@
+robokudo.utils.tree_execution
+=============================
+
+.. py:module:: robokudo.utils.tree_execution
+
+.. autoapi-nested-parse::
+
+   Tree execution utilities for RoboKudo.
+
+   This module provides utilities for executing behavior trees in ROS environments.
+   It supports:
+
+   * One-shot tree execution with GUI option
+   * Rate-limited tree ticking
+   * Status monitoring and completion detection
+   * ROS time handling
+
+   Dependencies:
+
+   * py_trees for behavior tree functionality
+   * rospy for ROS integration
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.tree_execution.run_tree_once
+
+
+Module Contents
+---------------
+
+.. py:function:: run_tree_once(tree: py_trees.behaviour.Behaviour, node: rclpy.node.Node, include_gui: bool = False, max_iterations: int = 500, tick_rate: int = 5) -> typing_extensions.Optional[py_trees.common.Status]
+
+   Execute a behavior tree once with monitoring.
+
+   This function:
+   * Grows the tree with optional GUI
+   * Sets up all descendants
+   * Ticks the tree at specified rate
+   * Monitors for completion via OneShot decorator
+   * Handles ROS time exceptions
+
+   :param tree: Root behavior of tree to execute
+   :param node: a ros node
+   :param include_gui: Whether to show GUI visualization, defaults to False
+   :param max_iterations: Maximum number of ticks before timeout, defaults to 500
+   :param tick_rate: Rate to tick tree in Hz, defaults to 5
+   :return: Final tree status (SUCCESS/FAILURE) or None if timed out
+
+

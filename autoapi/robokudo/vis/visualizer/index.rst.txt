@@ -1,0 +1,313 @@
+robokudo.vis.visualizer
+=======================
+
+.. py:module:: robokudo.vis.visualizer
+
+.. autoapi-nested-parse::
+
+   Base visualization interface for RoboKudo pipelines.
+
+   This module provides the base visualization interface and shared state management
+   for RoboKudo pipeline visualization. It implements:
+
+   * Observer pattern for state updates
+   * Shared visualization state
+   * Visualizer lifecycle management
+   * Pipeline data access
+   * Common visualization utilities
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.vis.visualizer.Visualizer
+
+
+Module Contents
+---------------
+
+.. py:class:: Visualizer(pipeline: robokudo.pipeline.Pipeline, shared_visualizer_state: typing_extensions.Optional[Visualizer] = None)
+
+   Bases: :py:obj:`object`
+
+
+   Base class for RoboKudo pipeline visualizers.
+
+   This class provides the foundation for implementing pipeline visualizers. It includes:
+
+   * Observer pattern for state updates
+   * Shared visualization state
+   * Visualizer lifecycle management
+   * Pipeline data access
+   * Common visualization utilities
+
+   .. note::
+   Do not instantiate this class directly. Use :meth:`new_visualizer_instance`
+   to properly register visualizers.
+
+
+   .. py:class:: Observable
+
+      Base class for objects that can be observed.
+
+      This class implements the Observable part of the Observer pattern.
+
+
+      .. py:attribute:: _observers
+         :type:  typing_extensions.List[Visualizer]
+         :value: []
+
+
+
+      .. py:method:: register_observer(observer: Visualizer) -> None
+
+         Register an observer to receive notifications.
+
+         :param observer: The observer to register
+
+
+
+      .. py:method:: notify_observers(*args: typing_extensions.Any, **kwargs: typing_extensions.Any) -> None
+
+         Notify all registered observers.
+
+
+
+
+   .. py:class:: Observer
+
+      Base class for objects that observe state changes.
+
+      This class implements the Observer part of the Observer pattern.
+
+
+      .. py:method:: notify(observable: Visualizer, *args: typing_extensions.Any, **kwargs: typing_extensions.Any) -> None
+
+         Handle notification of state changes.
+
+         :param observable: The object that sent the notification
+         :raises Exception: If not implemented by subclass
+
+
+
+
+   .. py:class:: SharedState
+
+      Bases: :py:obj:`Observable`
+
+
+      Shared state for single-view visualizers.
+
+      This class manages state shared between visualizers, particularly for
+      single-view visualizers that switch between annotators. It uses the
+      Observer pattern to notify visualizers of state changes.
+
+      .. note::
+      The Observer pattern is used for state changes, not for new data.
+
+
+      .. py:attribute:: active_annotator
+         :type:  typing_extensions.Optional[robokudo.annotators.core.BaseAnnotator]
+         :value: None
+
+
+         Currently active annotator.
+
+
+
+      .. py:attribute:: active_annotator_i
+         :type:  int
+         :value: 0
+
+
+         Index of currently active annotator 
+
+
+
+
+   .. py:attribute:: instances
+      :type:  typing_extensions.List[Visualizer]
+      :value: []
+
+
+      List of all active visualizer instances
+
+
+
+   .. py:attribute:: pipeline
+      :type:  robokudo.pipeline.Pipeline
+
+      Pipeline being visualized
+
+
+
+   .. py:attribute:: indicate_termination_var
+      :type:  bool
+      :value: False
+
+
+      Flag indicating if visualization should terminate
+
+
+
+   .. py:attribute:: shared_visualizer_state
+      :type:  typing_extensions.Optional[Visualizer]
+      :value: None
+
+
+      Shared state object for coordinating between visualizers
+
+
+
+   .. py:attribute:: update_output
+      :type:  bool
+      :value: True
+
+
+      Indicate that the output of this Visualizer needs to be renewed/redrawn
+
+
+
+   .. py:attribute:: new_data
+      :type:  bool
+      :value: False
+
+
+      Flag indicating if new data is available
+
+
+
+   .. py:attribute:: rk_logger
+      :type:  logging.Logger
+      :value: None
+
+
+      Logger instance
+
+
+
+   .. py:method:: identifier() -> str
+
+      Get a unique identifier for this visualizer.
+
+
+
+   .. py:method:: pre_tick() -> None
+
+      Prepare for visualization update.
+
+      Called before :meth:`tick`. Override to implement pre-update logic.
+
+
+
+   .. py:method:: tick() -> None
+
+      Update the visualization display.
+
+      This is the main method for visualizers. Override to implement
+      visualization logic.
+
+
+
+   .. py:method:: post_tick() -> None
+
+      Clean up after visualization update.
+
+      Called after :meth:`tick`. Override to implement post-update logic.
+
+
+
+   .. py:method:: static_post_tick() -> None
+      :staticmethod:
+
+
+      Perform static post-update operations.
+
+      This method is called once per visualizer type, regardless of how many
+      instances exist. Override to implement static post-update logic.
+
+
+
+   .. py:method:: new_visualizer_instance(pipeline: robokudo.pipeline.Pipeline, shared_visualizer_state: typing_extensions.Optional[Visualizer] = None) -> Visualizer
+      :classmethod:
+
+
+      Create and register a new visualizer instance.
+
+      :param pipeline: Pipeline to visualize
+      :param shared_visualizer_state: Shared state object for coordinating between visualizers
+
+      :returns: New visualizer instance
+
+
+
+   .. py:method:: clear_visualizer_instances() -> None
+      :staticmethod:
+
+
+      Remove all registered visualizer instances.
+
+
+
+   .. py:method:: insert_input() -> None
+
+      Handle input insertion.
+
+      Override to implement input handling logic.
+
+
+
+   .. py:method:: activate_update_output() -> None
+
+      Mark visualizer for update.
+
+      Sets the update flag to trigger a redraw.
+
+
+
+   .. py:method:: new_data_available() -> None
+
+      Signal that new data is available.
+
+      Called by external code to indicate new data is ready for visualization.
+
+
+
+   .. py:method:: indicate_termination() -> bool
+
+      Check if visualization should terminate.
+
+      :returns: True if visualization should terminate, False otherwise
+
+
+
+   .. py:method:: get_unique_types_of_visualizer_instances() -> typing_extensions.Set[typing_extensions.Type]
+      :staticmethod:
+
+
+      Get set of unique visualizer types.
+
+      :returns: Set of visualizer classes that have instances
+
+
+
+   .. py:method:: update_output_flag_for_new_data() -> None
+
+      Update flags when new data arrives.
+
+      Sets update flag and clears new data flag when new data is available.
+
+
+
+   .. py:method:: get_visualized_annotator_outputs_for_pipeline() -> robokudo.annotators.outputs.AnnotatorOutputs
+
+      Get annotator outputs for visualization.
+
+      :returns: Annotator outputs for the current pipeline
+      :raises AssertionError: If outputs are not of the expected type
+
+
+

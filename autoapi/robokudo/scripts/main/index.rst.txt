@@ -1,0 +1,29 @@
+robokudo.scripts.main
+=====================
+
+.. py:module:: robokudo.scripts.main
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.scripts.main.run_ae
+   robokudo.scripts.main.main
+
+
+Module Contents
+---------------
+
+.. py:function:: run_ae(ae_name: str, ae_root: py_trees_ros.trees.BehaviourTree, tickrate: int = 20) -> None
+
+   Run an Analysis Engine (AE) by periodically ticking the Behavior Tree.
+
+
+.. py:function:: main() -> None
+
+   Entry point for the RoboKudo system, setting up ROS, parsing arguments, loading the
+   requested Analysis Engine, and spinning the ROS executors.
+
+

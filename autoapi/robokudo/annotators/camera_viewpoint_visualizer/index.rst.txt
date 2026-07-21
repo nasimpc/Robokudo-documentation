@@ -1,0 +1,54 @@
+robokudo.annotators.camera_viewpoint_visualizer
+===============================================
+
+.. py:module:: robokudo.annotators.camera_viewpoint_visualizer
+
+.. autoapi-nested-parse::
+
+   Camera viewpoint visualization for RoboKudo.
+
+   This module provides an annotator for visualizing camera viewpoints and reference frames
+   in 3D space using Open3D.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.camera_viewpoint_visualizer.CameraViewpointVisualizer
+
+
+Module Contents
+---------------
+
+.. py:class:: CameraViewpointVisualizer(name: str = 'CameraViewpointVisualizer')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for visualizing camera viewpoints and reference frames.
+
+   This annotator displays the reference frame set in the viewpoint (e.g., /map frame)
+   along with the point cloud data. It creates a 3D visualization showing the
+   coordinate frame and the point cloud in the same space.
+
+   The annotator will fail if the required viewpoint transform cannot be found in the
+   CAS.
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the visualization with the current viewpoint and point cloud data.
+
+      Creates a visualization containing:
+
+      * A coordinate frame representing the world reference frame
+      * The current point cloud data
+
+      :return: SUCCESS if visualization was created, FAILURE if cam to world transform not found
+      :raises AssertionError: If viewpoint transform is of a wrong type
+
+
+

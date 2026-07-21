@@ -1,0 +1,45 @@
+robokudo.annotators.object_associator
+=====================================
+
+.. py:module:: robokudo.annotators.object_associator
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.object_associator.ObjectAssociator
+
+
+Module Contents
+---------------
+
+.. py:class:: ObjectAssociator(name: str = 'ObjectAssociator')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   An annotator that associates the objects of the current iteration with the objects
+   of the last iteration.
+
+
+   .. py:attribute:: tracked_objects
+      :type:  typing_extensions.List[robokudo.types.scene.ObjectHypothesis]
+      :value: []
+
+
+
+   .. py:attribute:: obj_comparator
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update the annotator state.
+
+      Called every time the behavior is ticked.
+
+      :return: Status of the behavior after update
+
+
+

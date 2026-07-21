@@ -1,0 +1,110 @@
+robokudo.descriptors.camera_configs.config_kinect_robot
+=======================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_kinect_robot
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_kinect_robot.KinectCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: KinectCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig`, :py:obj:`robokudo.descriptors.camera_configs.components.RGBDComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.TfComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.StableViewpointComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.WorldDescriptorComponent`
+
+
+   Configuration class for a Kinect camera setup in a robotic environment.
+
+   This class defines the configuration parameters for a Kinect camera, including
+   interface settings, topic names, and transformation settings. It is designed to work
+   with ROS topics and TF transformations.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'kinect'
+
+
+      Overwrite BaseCameraConfig.
+
+
+
+   .. py:attribute:: interface_type
+      :type:  str
+      :value: 'Kinect'
+
+
+      Overwrite BaseCameraConfig.
+
+
+
+   .. py:attribute:: topic_depth
+      :type:  str
+      :value: '/kinect_head/depth_registered/image_raw/compressedDepth'
+
+
+      Overwrite RGBDComponent.
+
+
+
+   .. py:attribute:: topic_color
+      :type:  str
+      :value: '/kinect_head/rgb/image_color/compressed'
+
+
+      Overwrite RGBDComponent.
+
+
+
+   .. py:attribute:: topic_cam_info
+      :type:  str
+      :value: '/kinect_head/rgb/camera_info'
+
+
+      Overwrite RGBDComponent.
+
+
+
+   .. py:attribute:: color2depth_ratio
+      :type:  typing_extensions.Tuple[float, float]
+      :value: (0.5, 0.5)
+
+
+      Overwrite RGBDComponent.
+
+
+
+   .. py:attribute:: hi_res_mode
+      :type:  bool
+      :value: True
+
+
+      Overwrite RGBDComponent.
+
+
+
+   .. py:attribute:: tf_from
+      :type:  str
+      :value: 'head_mount_kinect_rgb_optical_frame'
+
+
+      Overwrite TFComponent.
+
+
+
+   .. py:attribute:: tf_to
+      :type:  str
+      :value: 'map'
+
+
+      Overwrite TFComponent.
+
+
+

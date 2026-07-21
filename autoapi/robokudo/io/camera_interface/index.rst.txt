@@ -1,0 +1,344 @@
+robokudo.io.camera_interface
+============================
+
+.. py:module:: robokudo.io.camera_interface
+
+.. autoapi-nested-parse::
+
+   Camera interface module for RoboKudo.
+
+   This module provides base classes and implementations for interfacing with
+   various camera types in RoboKudo. It supports:
+
+   * ROS camera interfaces (raw and compressed)
+   * Kinect-style RGB-D cameras
+   * Camera calibration handling
+   * Transform lookups
+   * Synchronized data acquisition
+   * Thread-safe operation
+
+   The module handles:
+
+   * RGB and depth image acquisition
+   * Camera calibration information
+   * Camera-to-world transforms
+   * Data synchronization
+   * Format conversions
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.camera_interface.CameraInterface
+   robokudo.io.camera_interface.ROSCameraInterface
+   robokudo.io.camera_interface.KinectCameraInterface
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.io.camera_interface.depth_convert_workaround
+
+
+Module Contents
+---------------
+
+.. py:class:: CameraInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`object`
+
+
+   Base class for all camera interfaces in RoboKudo.
+
+   This class defines the basic interface that all camera implementations must provide.
+   It handles configuration and data availability tracking.
+
+
+   .. py:attribute:: _has_new_data
+      :type:  bool
+      :value: False
+
+
+      Whether new data is available.
+
+
+
+   .. py:attribute:: camera_config
+      :type:  typing_extensions.Any
+
+      Camera configuration object.
+
+
+
+   .. py:attribute:: rk_logger
+      :type:  logging.Logger
+      :value: None
+
+
+      RoboKudo logger instance.
+
+
+
+   .. py:method:: has_new_data() -> bool
+
+      Check if new data is available.
+
+      :return: True if new data is available, False otherwise
+
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+      :abstractmethod:
+
+
+      This method is supposed to read in, convert (if needed) and put the data into
+      the CAS. If you are running a CameraInterface which is getting data via callback
+      methods, please make sure to keep callbacks light and do the main conversion
+      work here! Callbacks should be short.
+
+      :param cas: The CAS where the data should be placed in
+
+
+
+.. py:class:: ROSCameraInterface(camera_config: typing_extensions.Any, node: typing_extensions.Optional[rclpy.node.Node] = None)
+
+   Bases: :py:obj:`CameraInterface`
+
+
+   Base class for ROS-based camera interfaces.
+
+   This class extends the base camera interface with ROS-specific functionality like
+   transform lookups and camera intrinsics handling.
+
+
+   .. py:attribute:: node
+      :value: None
+
+
+      ROS node for communication with ROS.
+
+
+
+   .. py:attribute:: cam_translation
+      :type:  typing_extensions.Optional[typing_extensions.List[float]]
+      :value: None
+
+
+      Camera translation from TF.
+
+
+
+   .. py:attribute:: cam_quaternion
+      :type:  typing_extensions.Optional[typing_extensions.List[float]]
+      :value: None
+
+
+      Camera rotation from TF.
+
+
+
+   .. py:method:: lookup_transform() -> bool
+
+      Look up the camera transform from TF.
+
+      :return: True if transform lookup succeeded, False otherwise
+
+
+
+   .. py:method:: store_cam_to_world_transform(cas: robokudo.cas.CAS, timestamp: builtin_interfaces.msg.Time) -> None
+
+      If the camera is configured to look up transforms, store the camera transform in
+      the CAS.
+
+      :param cas: The CAS to store the transform in
+      :param timestamp: The timestamp of the transform
+
+
+
+   .. py:method:: store_legacy_cam_to_world_transform_from_cas(cas: robokudo.cas.CAS) -> None
+      :staticmethod:
+
+
+      Create legacy StampedTransform from CAS cam_to_world_transform and
+      data_timestamp.
+
+      :param cas: The CAS to store the transform in
+
+
+
+   .. py:method:: set_o3d_cam_intrinsics_from_ros_cam_info() -> None
+
+      Convert ROS camera info to Open3D camera intrinsics.
+
+      Creates an Open3D camera intrinsics object from the ROS camera calibration
+      parameters.
+
+
+
+.. py:function:: depth_convert_workaround(msg: sensor_msgs.msg.CompressedImage) -> numpy.typing.NDArray
+
+   Convert compressed depth image to proper depth format.
+
+   This is a workaround for handling compressed depth images in ROS.
+   Source: https://answers.ros.org/question/249775/display-compresseddepth-image-python-cv2/
+
+   :param msg: Compressed depth image message
+   :return: Depth image as numpy array
+   :raises Exception: If compression type is wrong or decoding fails
+
+
+.. py:class:: KinectCameraInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`ROSCameraInterface`
+
+
+   Interface for Kinect-style RGB-D cameras using ROS.
+
+   This class implements a camera interface for RGB-D cameras that publish color and
+   depth images through ROS topics. It supports both raw and compressed image formats.
+
+
+   .. py:attribute:: color_subscriber
+      :type:  message_filters.Subscriber
+
+      Color image subscriber.
+
+
+
+   .. py:attribute:: depth_subscriber
+      :type:  message_filters.Subscriber
+
+      Depth image subscriber.
+
+
+
+   .. py:attribute:: cam_info_subscriber
+      :type:  message_filters.Subscriber
+
+      Camera info subscriber.
+
+
+
+   .. py:attribute:: color
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Latest color image.
+
+
+
+   .. py:attribute:: depth
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Latest depth image.
+
+
+
+   .. py:attribute:: cam_info
+      :type:  typing_extensions.Optional[sensor_msgs.msg.CameraInfo]
+      :value: None
+
+
+      Latest camera info message.
+
+
+
+   .. py:attribute:: cam_intrinsic
+      :type:  typing_extensions.Optional[open3d.camera.PinholeCameraIntrinsic]
+      :value: None
+
+
+      Open3D camera intrinsics.
+
+
+
+   .. py:attribute:: color2depth_ratio
+      :type:  typing_extensions.Optional[typing_extensions.Tuple[float, float]]
+      :value: None
+
+
+      Ratio between color and depth image sizes.
+
+
+
+   .. py:attribute:: timestamp
+      :type:  typing_extensions.Optional[float]
+      :value: None
+
+
+      Latest message timestamp.
+
+
+
+   .. py:attribute:: lock
+      :type:  threading.Lock
+
+      Thread synchronization lock.
+
+
+
+   .. py:method:: compressed_depth_configured() -> bool
+
+      Check if compressed depth images are configured.
+
+      :return: True if compressed depth is configured, False otherwise
+
+
+
+   .. py:method:: compressed_color_configured() -> bool
+
+      Check if compressed color images are configured.
+
+      :return: True if compressed color is configured, False otherwise
+
+
+
+   .. py:method:: get_node() -> rclpy.node.Node
+
+
+   .. py:method:: blackhole_callback(data: typing_extensions.Any) -> None
+
+      This callback is just a dummy to receive data coming from a workaround
+      subscription to handle problems with the ApproximateTimeSynchronizer.
+
+      :param data: Dummy data
+
+
+
+   .. py:method:: callback(color_data: typing_extensions.Union[sensor_msgs.msg.Image, sensor_msgs.msg.CompressedImage], depth_data: typing_extensions.Optional[typing_extensions.Union[sensor_msgs.msg.Image, sensor_msgs.msg.CompressedImage]] = None, cam_info: typing_extensions.Optional[sensor_msgs.msg.CameraInfo] = None) -> None
+
+      Process synchronized camera data.
+
+      This callback handles incoming color, depth, and camera info messages. It
+      converts the data to OpenCV format and stores it for later use.
+
+      TODO make this generic. handle the encoding and order properly. For standard and
+      compressed images. this might also depend on the fix of image_transport_plugins
+      being published as a package. Startpoint can be found at the bottom of this
+      method.
+
+      :param color_data: Color image message
+      :param depth_data: Depth image message
+      :param cam_info: Camera calibration message
+
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      This method is supposed to read in, convert (if needed) and put the data into
+      the CAS. If you are running a CameraInterface which is getting data via callback
+      methods, please make sure to keep callbacks light and do the main conversion
+      work here! Callbacks should be short.
+
+      :param cas: The CAS where the data should be placed in
+
+
+

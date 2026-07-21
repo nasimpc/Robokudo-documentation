@@ -1,0 +1,114 @@
+robokudo.annotators.blur
+========================
+
+.. py:module:: robokudo.annotators.blur
+
+.. autoapi-nested-parse::
+
+   Image blur detection for RoboKudo.
+
+   This module provides an annotator for calculating and visualizing image blur metrics
+   using the Laplacian variance method. It can optionally halt pipeline execution if
+   blur exceeds a threshold.
+
+   .. note::
+      The blur metric is calculated using the Laplacian operator variance, where:
+
+      * Higher values indicate sharper images
+      * Lower values indicate more blur
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.blur.BlurAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: BlurAnnotator(name: str = 'BlurAnnotator', descriptor: BlurAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Annotator for calculating and visualizing image blur metrics.
+
+   This annotator:
+
+   * Calculates a blur metric using Laplacian variance
+   * Visualizes the blur value on the image
+   * Optionally halts pipeline if blur exceeds threshold
+
+   .. warning::
+      Setting return_failure_above_threshold to True will stop pipeline
+      advancement when the blur threshold is exceeded.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for blur detection.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring blur detection behavior.
+
+
+         .. py:attribute:: blur_threshold
+            :type:  float
+            :value: 100.0
+
+
+            Threshold for acceptable blur level, defaults to 100
+
+
+
+         .. py:attribute:: return_failure_above_threshold
+            :type:  bool
+            :value: True
+
+
+            Let this behaviour return failure to stop the advancement of the current pipeline
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: compute_bluriness(img: numpy.typing.NDArray) -> float
+
+      Compute the blur metric for an image.
+
+      Uses Laplacian variance to measure image sharpness:
+
+      * Converts image to grayscale
+      * Computes Laplacian operator
+      * Returns variance of Laplacian values
+
+      :param img: Input image in BGR format
+      :return: Blur metric value (higher = sharper)
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Update blur detection and visualization.
+
+      Creates visualizations containing:
+
+      * Color image with blur metric overlay
+      * Point cloud data
+
+      :return: SUCCESS if blur is acceptable, FAILURE if above threshold (if configured)
+
+
+

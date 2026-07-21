@@ -1,0 +1,51 @@
+robokudo.descriptors.camera_configs.config_kinect_robot_wo_transform
+====================================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_kinect_robot_wo_transform
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_kinect_robot_wo_transform.KinectWoTfCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: KinectWoTfCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.config_kinect_robot.KinectCameraConfig`
+
+
+   Configuration class for a Kinect camera setup without transform lookup.
+
+   This class defines the configuration parameters for a Kinect camera in a robotic
+   setup, similar to config_kinect_robot.py but with viewpoint lookup disabled.
+   It includes interface settings, topic names, and transformation settings.
+
+   .. note::
+       This configuration is identical to config_kinect_robot.py except that
+       lookup_viewpoint is set to False by default.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'kinect_wo_tf'
+
+
+      Overwrite KinectCameraConfig.
+
+
+
+   .. py:attribute:: lookup_viewpoint
+      :type:  bool
+      :value: False
+
+
+      Overwrite KinectCameraConfig.
+
+
+

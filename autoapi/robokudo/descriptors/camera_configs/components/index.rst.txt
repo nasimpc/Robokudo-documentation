@@ -1,0 +1,194 @@
+robokudo.descriptors.camera_configs.components
+==============================================
+
+.. py:module:: robokudo.descriptors.camera_configs.components
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.components.DepthComponent
+   robokudo.descriptors.camera_configs.components.ColorComponent
+   robokudo.descriptors.camera_configs.components.TfComponent
+   robokudo.descriptors.camera_configs.components.StableViewpointComponent
+   robokudo.descriptors.camera_configs.components.WorldDescriptorComponent
+   robokudo.descriptors.camera_configs.components.RGBDComponent
+
+
+Module Contents
+---------------
+
+.. py:class:: DepthComponent
+
+   Camera component with configuration for depth input data.
+
+
+   .. py:attribute:: topic_depth
+      :type:  str
+
+      ROS depth topic name. Must be set by camera configs using this component.
+
+
+
+   .. py:attribute:: depthOffset
+      :type:  int
+      :value: 0
+
+
+      Depth offset.
+
+
+
+   .. py:attribute:: depth_hints
+      :type:  str
+      :value: 'compressedDepth'
+
+
+      Datatype hint for the depth topic. For example: 'compressedDepth' or 'raw'.
+
+
+
+.. py:class:: ColorComponent
+
+   Camera component with configuration for color input data.
+
+
+   .. py:attribute:: topic_cam_info
+      :type:  str
+
+      ROS camera info topic name. Must be set by camera configs using this component.
+
+
+
+   .. py:attribute:: topic_color
+      :type:  str
+
+      ROS color topic name. Must be set by camera configs using this component.
+
+
+
+   .. py:attribute:: filterBlurredImages
+      :type:  bool
+      :value: True
+
+
+      Flag to enable/disable filtering of blurred images
+
+
+
+   .. py:attribute:: color_hints
+      :type:  str
+      :value: 'compressed'
+
+
+      Datatype hint for the color topic. For example: 'compressed' or 'raw'.
+
+
+
+.. py:class:: TfComponent
+
+   Camera component with configuration for transform handling.
+
+
+   .. py:attribute:: tf_from
+      :type:  str
+
+      Frame ID of the camera's optical frame. Must be set by camera configs using this component.
+
+
+
+   .. py:attribute:: tf_to
+      :type:  str
+      :value: 'map'
+
+
+      World frame ID to transform the camera's optical frame to.
+
+
+
+   .. py:attribute:: lookup_viewpoint
+      :type:  bool
+      :value: True
+
+
+      Whether to lookup the viewpoint between the camera and the world.
+
+
+
+.. py:class:: StableViewpointComponent
+
+   Camera component with configuration for viewpoint stabilization.
+
+
+   .. py:attribute:: only_stable_viewpoints
+      :type:  bool
+      :value: True
+
+
+      Flag to use only stable viewpoints
+
+
+
+   .. py:attribute:: max_viewpoint_distance
+      :type:  float
+      :value: 0.01
+
+
+      Maximum allowed distance for viewpoint changes
+
+
+
+   .. py:attribute:: max_viewpoint_rotation
+      :type:  float
+      :value: 1.0
+
+
+      Maximum allowed rotation for viewpoint changes
+
+
+
+.. py:class:: WorldDescriptorComponent
+
+   Camera component with configuration for world descriptors.
+
+
+   .. py:attribute:: world_descriptor
+      :type:  str
+      :value: 'world_iai_kitchen20'
+
+
+      Filename of the world descriptor configuration
+
+
+
+.. py:class:: RGBDComponent
+
+   Bases: :py:obj:`DepthComponent`, :py:obj:`ColorComponent`
+
+
+   Camera component with configuration for RGB-D input data.
+
+
+   .. py:attribute:: color2depth_ratio
+      :type:  typing_extensions.Tuple[float, float]
+      :value: (1.0, 1.0)
+
+
+      If the resolution of the depth image differs from the color image,
+      we need to define the factor for (x, y).
+      Example: (0.5,0.5) for a 640x480 depth image compared to a
+      1280x960 rgb image Otherwise, just put (1,1) here
+
+
+
+   .. py:attribute:: hi_res_mode
+      :type:  bool
+      :value: False
+
+
+      Setting this to true will apply some workarounds to match the depth data to RGB on the Kinect.
+
+
+

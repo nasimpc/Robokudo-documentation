@@ -1,0 +1,88 @@
+robokudo.descriptors.analysis_engines.trigger_example
+=====================================================
+
+.. py:module:: robokudo.descriptors.analysis_engines.trigger_example
+
+.. autoapi-nested-parse::
+
+   Analysis engine demonstrating pipeline trigger functionality.
+
+   This module provides an analysis engine that demonstrates how to use pipeline
+   triggers to control the execution flow. It implements a pipeline that waits for
+   user input (keypress) before processing each frame from a Kinect camera.
+
+   The pipeline implements the following functionality:
+   - Pipeline trigger for user-controlled execution
+   - Reading data from a Kinect camera
+   - Image preprocessing
+   - Simulated slow processing (for demonstration)
+
+   .. note::
+       This example is particularly useful for debugging and step-by-step analysis
+       of pipeline behavior, as it allows manual control over frame processing.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.analysis_engines.trigger_example.AnalysisEngine
+
+
+Module Contents
+---------------
+
+.. py:class:: AnalysisEngine
+
+   Bases: :py:obj:`robokudo.analysis_engine.AnalysisEngineInterface`
+
+
+   Analysis engine with pipeline trigger functionality.
+
+   This class implements a pipeline that demonstrates the use of pipeline
+   triggers for controlled execution. The pipeline waits for user input
+   before processing each frame, making it useful for debugging and
+   step-by-step analysis.
+
+   The pipeline includes:
+   - Pipeline trigger for user control
+   - Collection reader for Kinect camera data
+   - Image preprocessing
+   - Simulated slow processing
+
+   .. note::
+       The pipeline uses a SlowAnnotator to simulate time-consuming processing.
+       This helps demonstrate the effect of the trigger mechanism on pipeline
+       execution.
+
+
+   .. py:method:: name() -> str
+
+      Get the name of the analysis engine.
+
+      :return: The name identifier of this analysis engine
+
+
+
+   .. py:method:: implementation() -> robokudo.pipeline.Pipeline
+
+      Create a pipeline with trigger-controlled execution.
+
+      This method constructs a processing pipeline that includes a trigger
+      mechanism. The pipeline will pause and wait for user input (keypress)
+      before processing each frame from the Kinect camera.
+
+      The pipeline execution sequence is:
+      1. Wait for trigger (keypress)
+      2. Initialize pipeline
+      3. Read frame from Kinect
+      4. Preprocess image
+      5. Simulate slow processing
+      6. Return to step 1
+
+      :return: The configured pipeline with trigger mechanism
+
+
+

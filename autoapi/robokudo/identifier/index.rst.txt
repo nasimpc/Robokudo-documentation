@@ -1,0 +1,106 @@
+robokudo.identifier
+===================
+
+.. py:module:: robokudo.identifier
+
+.. autoapi-nested-parse::
+
+   Blackboard identifier constants for RoboKudo.
+
+   This module provides a set of constants used to identify and access data stored
+   in the behavior tree's blackboard. These identifiers are used consistently across
+   the codebase to ensure proper data access and communication between components.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.identifier.BBIdentifier
+
+
+Module Contents
+---------------
+
+.. py:class:: BBIdentifier
+
+   Bases: :py:obj:`object`
+
+
+   Constants for accessing data on the behavior tree's blackboard.
+
+   This class defines string constants that serve as keys for storing and
+   retrieving data from the blackboard. The constants are used primarily for:
+
+   * Action server communication
+   * Query handling
+   * Exception management
+
+   The constants ensure consistent access to blackboard data across the system.
+
+
+   .. py:attribute:: QUERY_SERVER
+      :type:  str
+      :value: 'query_server'
+
+
+      Action server instance for handling queries
+
+
+
+   .. py:attribute:: QUERY_SERVER_IN_PIPELINE
+      :type:  str
+      :value: 'query_server_in_pipeline'
+
+
+      Indicate that a node in the pipeline actually requires the Action Server
+
+
+
+   .. py:attribute:: QUERY_ANSWER
+      :type:  str
+      :value: 'query_answer'
+
+
+      Result message instance from the action server (typically `robokudo_msgs.msg.QueryResult`)
+
+
+
+   .. py:attribute:: QUERY_FEEDBACK
+      :type:  str
+      :value: 'query_feedback'
+
+
+      Feedback message for the action server
+
+
+
+   .. py:attribute:: QUERY_PREEMPT_REQUESTED
+      :type:  str
+      :value: 'query_preempt_requested'
+
+
+      Flag indicating if preemption was requested
+
+
+
+   .. py:attribute:: QUERY_PREEMPT_ACK
+      :type:  str
+      :value: 'query_preempt_ack'
+
+
+      Flag indicating if preemption was acknowledged
+
+
+
+   .. py:attribute:: BLACKBOARD_EXCEPTION_NAME
+      :type:  str
+      :value: 'exception'
+
+
+      Name for storing exceptions on the blackboard
+
+
+

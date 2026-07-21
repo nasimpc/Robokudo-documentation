@@ -1,0 +1,137 @@
+robokudo.annotators.collection_reader
+=====================================
+
+.. py:module:: robokudo.annotators.collection_reader
+
+.. autoapi-nested-parse::
+
+   Sensor data collection and CAS initialization.
+
+   This module provides an annotator for:
+
+   * Reading sensor data from multiple interfaces
+   * Initializing the CAS with sensor data
+   * Managing multiple collection readers
+   * Handling data synchronization
+
+   The module uses:
+
+   * Camera interface abstraction
+   * Pipeline CAS management
+   * Data availability monitoring
+   * Query preservation
+
+   .. note::
+      This is typically the first annotator in a pipeline.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.collection_reader.CollectionReaderAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: CollectionReaderAnnotator(descriptor: CollectionReaderAnnotator, name: str = 'CollectionReader')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Sensor data collection and CAS initialization.
+
+   This annotator:
+
+   * Reads sensor data from camera interfaces
+   * Initializes new CAS instances
+   * Manages multiple collection readers
+   * Monitors data availability
+   * Preserves existing queries
+
+   .. note::
+      Uses separate camera interfaces for different sensor types.
+
+
+   .. py:class:: Descriptor(camera_config: robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig, camera_interface: robokudo.io.camera_interface.CameraInterface)
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for collection reader.
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: collection_readers
+      :type:  typing_extensions.List[CollectionReaderAnnotator]
+
+
+   .. py:attribute:: start_timer
+      :type:  typing_extensions.Optional[float]
+      :value: None
+
+
+
+   .. py:attribute:: iterations_since_last_data
+      :type:  int
+      :value: 0
+
+
+
+   .. py:attribute:: iterations_since_last_data_warn_threshold
+      :type:  int
+      :value: 40
+
+
+
+   .. py:method:: initialise() -> None
+
+      Initialize the collection reader.
+
+      Called when:
+
+      * First tick is received
+      * Status changes from non-running
+
+      Clears feedback messages for all children.
+
+
+
+   .. py:method:: add_collection_reader(descriptor: CollectionReaderAnnotator) -> None
+
+      Add another collection reader descriptor.
+
+      :param descriptor: Configuration descriptor for additional reader
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process sensor data and update CAS.
+
+      The method:
+
+      * Checks for new data from all readers
+      * Creates new CAS when data available
+      * Preserves existing queries
+      * Updates feedback messages
+      * Monitors data availability
+
+      :return: SUCCESS if data processed, RUNNING if waiting
+
+
+
+   .. py:method:: terminate(new_status: py_trees.common.Status) -> None
+
+      Handle behavior termination.
+
+      :param new_status: New status (SUCCESS, FAILURE or INVALID)
+
+
+

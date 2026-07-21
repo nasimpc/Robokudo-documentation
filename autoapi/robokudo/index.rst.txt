@@ -1,0 +1,66 @@
+robokudo
+========
+
+.. py:module:: robokudo
+
+.. autoapi-nested-parse::
+
+   RoboKudo - A behavior tree based perception framework.
+
+   This package provides a flexible framework for building robotic perception
+   systems using behavior trees. It includes:
+
+   * Behavior tree based pipeline execution
+   * Modular annotator system for perception tasks
+   * Visualization tools for debugging and monitoring
+   * Support for ROS integration
+   * Common data structures for perception data
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/robokudo/analysis_engine/index
+   /autoapi/robokudo/annotator_parameters/index
+   /autoapi/robokudo/annotators/index
+   /autoapi/robokudo/behaviours/index
+   /autoapi/robokudo/cas/index
+   /autoapi/robokudo/defs/index
+   /autoapi/robokudo/descriptors/index
+   /autoapi/robokudo/display/index
+   /autoapi/robokudo/garden/index
+   /autoapi/robokudo/gui/index
+   /autoapi/robokudo/identifier/index
+   /autoapi/robokudo/idioms/index
+   /autoapi/robokudo/io/index
+   /autoapi/robokudo/pipeline/index
+   /autoapi/robokudo/scripts/index
+   /autoapi/robokudo/subtree/index
+   /autoapi/robokudo/tree_components/index
+   /autoapi/robokudo/types/index
+   /autoapi/robokudo/utils/index
+   /autoapi/robokudo/vis/index
+   /autoapi/robokudo/world/index
+   /autoapi/robokudo/world_descriptor/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.__version__
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :type:  str
+   :value: '1.0.0'
+
+

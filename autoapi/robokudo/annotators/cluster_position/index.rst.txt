@@ -1,0 +1,127 @@
+robokudo.annotators.cluster_position
+====================================
+
+.. py:module:: robokudo.annotators.cluster_position
+
+.. autoapi-nested-parse::
+
+   3D position estimation for object hypotheses.
+
+   This module provides an annotator for:
+
+   * Calculating 3D positions for object hypotheses
+   * Supporting different analysis scopes
+   * Computing centroids from point clouds
+   * Generating visualization markers
+
+   The module uses:
+
+   * Point cloud centroid computation
+   * Covariance analysis
+   * Open3D visualization tools
+   * Flexible annotation types
+
+   .. note::
+      Can analyze either ObjectHypothesis or CloudAnnotation data.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.cluster_position.ClusterPositionAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: ClusterPositionAnnotator(name: str = 'ClusterPositionAnnotator', descriptor: ClusterPositionAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   3D position estimation for object hypotheses.
+
+   This annotator:
+
+   * Calculates 3D positions from point clouds
+   * Supports multiple analysis scopes
+   * Computes centroids and covariance
+   * Creates position annotations
+   * Generates visualization markers
+
+   .. note::
+      Can process either ObjectHypothesis or CloudAnnotation data.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for position estimation.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring position estimation.
+
+
+         .. py:attribute:: analysis_scope
+            :type:  typing_extensions.Type
+
+            Type of data to perform position estimation on(e.g. ObjectHypothesis or
+            CloudAnnotation)
+
+
+
+         .. py:attribute:: visualizer_point_radius
+            :type:  float
+            :value: 0.04
+
+
+            Radius of centroid sphere markers in meters.
+
+
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process object hypotheses and estimate positions.
+
+      The method:
+
+      * Loads point cloud from CAS
+      * For each object hypothesis:
+        * Gets appropriate point cloud data
+        * Computes centroid and covariance
+        * Creates position annotation
+        * Creates visualization marker
+
+      :return: SUCCESS after processing
+
+
+
+   .. py:method:: position_annotation_from_centroid(centroid: typing_extensions.List[float]) -> robokudo.types.annotation.PositionAnnotation
+
+      Create position annotation from centroid.
+
+      :param centroid: 3D centroid coordinates
+      :return: Position annotation with centroid as translation
+
+
+
+   .. py:method:: add_centroid_to_vis(centroid: typing_extensions.List[float], centroids_to_visualize: typing_extensions.List[typing_extensions.List[float]]) -> None
+
+      Add centroid visualization marker.
+
+      Creates a colored sphere at the centroid position.
+
+      :param centroid: 3D centroid coordinates
+      :param centroids_to_visualize: List to append visualization marker to
+
+
+

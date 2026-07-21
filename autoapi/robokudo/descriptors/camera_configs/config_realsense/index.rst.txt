@@ -1,0 +1,87 @@
+robokudo.descriptors.camera_configs.config_realsense
+====================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_realsense
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_realsense.RealsenseCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: RealsenseCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig`, :py:obj:`robokudo.descriptors.camera_configs.components.RGBDComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.TfComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.StableViewpointComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.WorldDescriptorComponent`
+
+
+   Configuration class for Intel RealSense cameras.
+
+   This class defines the configuration parameters for RealSense cameras,
+   particularly tested with the D435 model. It assumes the use of aligned depth
+   data and requires the RealSense ROS driver to be running.
+
+   .. note::
+       Requires the RealSense ROS driver to be running with aligned depth:
+       roslaunch realsense2_camera rs_aligned_depth.launch
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'realsense'
+
+
+
+   .. py:attribute:: interface_type
+      :type:  str
+      :value: 'Kinect'
+
+
+
+   .. py:attribute:: topic_depth
+      :type:  str
+      :value: '/camera/aligned_depth_to_color/image_raw/compressedDepth'
+
+
+
+   .. py:attribute:: topic_color
+      :type:  str
+      :value: '/camera/color/image_raw/compressed'
+
+
+
+   .. py:attribute:: topic_cam_info
+      :type:  str
+      :value: '/camera/color/camera_info'
+
+
+
+   .. py:attribute:: tf_from
+      :type:  str
+      :value: '/camera_color_optical_frame'
+
+
+
+   .. py:attribute:: tf_to
+      :type:  str
+      :value: '/map'
+
+
+
+   .. py:attribute:: filterBlurredImages
+      :type:  bool
+      :value: False
+
+
+
+   .. py:attribute:: lookup_viewpoint
+      :type:  bool
+      :value: False
+
+
+

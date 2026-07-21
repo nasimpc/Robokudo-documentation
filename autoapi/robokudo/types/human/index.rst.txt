@@ -1,0 +1,183 @@
+robokudo.types.human
+====================
+
+.. py:module:: robokudo.types.human
+
+.. autoapi-nested-parse::
+
+   Human-related annotation types for Robokudo.
+
+   This module provides types for representing various aspects of human detection
+   and analysis in computer vision applications. It includes:
+
+   * Face detection results
+   * Facial expressions and mimics
+   * Human attributes
+   * Activity recognition
+   * Body keypoint detection
+
+   The types support both 2D and 3D representations where applicable.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.types.human.FaceAnnotation
+   robokudo.types.human.MimicAnnotation
+   robokudo.types.human.AttributeAnnotation
+   robokudo.types.human.ActivityAnnotation
+   robokudo.types.human.KeypointAnnotation
+
+
+Module Contents
+---------------
+
+.. py:class:: FaceAnnotation
+
+   Bases: :py:obj:`robokudo.types.cv.ImageROI`, :py:obj:`robokudo.types.cv.Points3D`, :py:obj:`robokudo.types.tf.Pose`
+
+
+   Face detection result combining 2D, 3D and pose information.
+
+   Provides:
+   * 2D region of interest in image
+   * 3D point cloud of face
+   * 6-DOF pose of face
+
+   .. note::
+      Does not contain identity information. Use Classification annotations
+      on the parent HumanAnnotation for identity.
+
+
+.. py:class:: MimicAnnotation
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Facial expression or mimic detection result.
+
+   Represents detected facial expressions or mimics.
+
+
+   .. py:attribute:: type
+      :type:  str
+      :value: ''
+
+
+      Type of expression/mimic detected
+
+
+
+.. py:class:: AttributeAnnotation
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Generic human attribute annotation.
+
+   Used for various human attributes such as:
+   * Age
+   * Height
+   * Clothing
+   * Gender
+   * Other physical or visual characteristics
+
+
+   .. py:attribute:: type
+      :type:  str
+      :value: ''
+
+
+      Type of attribute
+
+
+
+.. py:class:: ActivityAnnotation
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Human activity detection result.
+
+   Represents detected human activities and their context.
+   Can be subclassed for specific activity types.
+
+   Examples:
+   * Pointing
+   * Waving
+   * Walking
+   * Sitting
+
+
+   .. py:attribute:: type
+      :type:  str
+      :value: ''
+
+
+      Type of activity detected
+
+
+
+   .. py:attribute:: interaction_with
+      :type:  typing_extensions.Any
+      :value: None
+
+
+      Target of interaction if applicable
+
+
+
+.. py:class:: KeypointAnnotation
+
+   Bases: :py:obj:`robokudo.types.core.Annotation`
+
+
+   Human body keypoint detection result.
+
+   Represents detected keypoints like:
+   * Joint positions
+   * Body part locations
+   * Facial landmarks
+
+   Supports both 2D and 3D keypoint types.
+
+
+   .. py:attribute:: KP_TYPE_2D
+      :type:  str
+      :value: '2D'
+
+
+      Identifier for 2D keypoint sets
+
+
+
+   .. py:attribute:: KP_TYPE_3D
+      :type:  str
+      :value: '3D'
+
+
+      Identifier for 3D keypoint sets
+
+
+
+   .. py:attribute:: keypoints
+      :type:  typing_extensions.List
+      :value: []
+
+
+      List of detected keypoints
+
+
+
+   .. py:attribute:: type
+      :type:  str
+      :value: None
+
+
+      Type of keypoints (2D or 3D)
+
+
+

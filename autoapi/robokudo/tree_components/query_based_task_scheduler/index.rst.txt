@@ -1,0 +1,76 @@
+robokudo.tree_components.query_based_task_scheduler
+===================================================
+
+.. py:module:: robokudo.tree_components.query_based_task_scheduler
+
+.. autoapi-nested-parse::
+
+   Query-based task scheduling for behavior trees.
+
+   This module provides a task scheduler that uses queries in the CAS (Common Analysis
+   Structure) to determine which perception subtree to execute. It allows dynamic selection
+   of perception pipelines based on the current query state.
+
+   Original implementation by Malte Huerkamp.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.tree_components.query_based_task_scheduler.QueryBasedScheduler
+
+
+Module Contents
+---------------
+
+.. py:class:: QueryBasedScheduler(name: str = 'QueryBasedScheduler', tasks: typing_extensions.Optional[typing_extensions.Dict[str, py_trees.composites.Composite]] = None, filter_fn: typing_extensions.Optional[typing_extensions.Callable[[robokudo_msgs.action.Query.Goal], str]] = None)
+
+   Bases: :py:obj:`robokudo.tree_components.task_scheduler.TaskSchedulerBase`, :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   A Task Scheduler that checks the active Query in the CAS to infer which perception
+   subtree to execute. You can apply a function to infer per use-case which perception
+   tree you want to incorporate.
+
+   Original implementation by Malte Huerkamp
+
+   :ivar tasks: Dictionary mapping task identifiers to behavior trees
+   :type tasks: dict
+   :ivar filter_fn: Function that maps queries to task identifiers
+   :type filter_fn: Callable[[QueryGoal], str]
+
+
+   .. py:attribute:: tasks
+      :type:  typing_extensions.Dict[str, py_trees.composites.Composite]
+      :value: None
+
+
+
+   .. py:attribute:: filter_fn
+      :type:  typing_extensions.Optional[typing_extensions.Callable[[robokudo_msgs.action.Query.Goal], str]]
+      :value: None
+
+
+
+   .. py:method:: setup(**kwargs: typing_extensions.Any) -> bool
+
+      Set up all task trees.
+
+
+
+   .. py:method:: plan_new_job() -> typing_extensions.Optional[py_trees.composites.Sequence]
+
+      Plan the next job based on the current query.
+
+      This method:
+      * Gets the current query from CAS
+      * Uses filter_fn to determine which task to run
+      * Creates a new sequence with the selected task
+
+      :return: New job sequence containing selected task, or None if no task found
+
+
+

@@ -1,0 +1,145 @@
+robokudo.vis.ros_visualizer
+===========================
+
+.. py:module:: robokudo.vis.ros_visualizer
+
+.. autoapi-nested-parse::
+
+   ROS-based visualization for RoboKudo pipelines.
+
+   This module provides ROS-based visualization capabilities for RoboKudo pipelines.
+   It handles:
+
+   * Image publishing to ROS topics
+   * Single and multi-view visualization
+   * Pipeline state visualization
+   * Dynamic topic management
+   * Image format conversion
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.vis.ros_visualizer.SharedROSVisualizer
+   robokudo.vis.ros_visualizer.AllAnnotatorROSVisualizer
+
+
+Module Contents
+---------------
+
+.. py:class:: SharedROSVisualizer(*args: typing_extensions.Any, **kwargs: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.vis.visualizer.Visualizer`, :py:obj:`robokudo.vis.visualizer.Visualizer.Observer`, :py:obj:`rclpy.node.Node`
+
+
+   A single-view ROS Image Publisher.
+
+   It publishes the active annotator from the SharedState.
+
+
+   .. py:attribute:: ros_image_publisher
+      :type:  rclpy.publisher.Publisher
+
+      Publisher for the image topic.
+
+
+
+   .. py:attribute:: ros_image_cv_bridge
+      :type:  cv_bridge.CvBridge
+
+      Bridge for converting between ROS and OpenCV image formats.
+
+
+
+   .. py:method:: tick() -> None
+
+      Update the visualization display.
+
+      This method:
+
+      * Gets current annotator outputs
+      * Updates display if needed
+      * Renders annotator name overlay
+      * Publishes image to ROS topic
+
+
+
+   .. py:method:: notify(observable: robokudo.vis.visualizer.Visualizer.Observable, *args: typing_extensions.Any, **kwargs: typing_extensions.Any) -> None
+
+      Handle notification of state changes.
+
+      :param observable: The object that sent the notification
+
+
+
+.. py:class:: AllAnnotatorROSVisualizer(*args: typing_extensions.Any, **kwargs: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.vis.visualizer.Visualizer`, :py:obj:`rclpy.node.Node`
+
+
+   A ROS Image Publisher that publishes the output of all images in the given Pipeline.
+
+   This class provides visualization of all annotator outputs in a pipeline
+   through separate ROS image topics. It supports:
+
+   * Multiple image topic publishing
+   * Dynamic topic creation
+   * Image format conversion
+   * Per-annotator output streams
+
+   .. note::
+       This Visualizer works with a shared state and needs notifications
+
+
+   .. py:attribute:: ros_image_publishers
+      :type:  typing_extensions.Dict[str, rclpy.publisher.Publisher]
+
+      Mapping of annotator names to ROS publishers.
+
+
+
+   .. py:attribute:: ros_image_cv_bridge
+      :type:  cv_bridge.CvBridge
+
+      Bridge for converting between ROS and OpenCV image formats.
+
+
+
+   .. py:method:: update_ros_image_publishers() -> None
+
+      Update ROS publishers for all annotators.
+
+      This method:
+
+      * Gets current list of annotators
+      * Creates publishers for new annotators
+      * Maintains existing publishers
+
+      TODO: Consider removing publishers for non-existing annotators. May not be
+       worth the cost if re-instantiation is frequent due to changing annotator lists.
+
+
+
+   .. py:method:: tick() -> None
+
+      Update all visualization displays.
+
+      This method:
+
+      * Gets current annotator outputs
+      * Updates publishers if needed
+      * Publishes all annotator images to ROS topics
+
+
+
+   .. py:method:: notify(observable: robokudo.vis.visualizer.Visualizer.Observable, *args: typing_extensions.Any, **kwargs: typing_extensions.Any) -> None
+
+      Handle notification of state changes.
+
+      :param observable: The object that sent the notification
+
+
+

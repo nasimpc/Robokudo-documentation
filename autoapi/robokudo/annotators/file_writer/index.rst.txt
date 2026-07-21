@@ -1,0 +1,135 @@
+robokudo.annotators.file_writer
+===============================
+
+.. py:module:: robokudo.annotators.file_writer
+
+.. autoapi-nested-parse::
+
+   Sensor data storage to filesystem.
+
+   This module provides an annotator for:
+
+   * Storing sensor data to local filesystem
+   * Supporting color and depth images
+   * Saving camera calibration info
+   * Using consistent naming schemes
+
+   The module uses:
+
+   * OpenCV image writing
+   * JSON serialization
+   * Timestamp-based filenames
+   * Configurable storage paths
+
+   .. note::
+      Designed to work with robokudo.io.file_reader_interface.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.file_writer.FileWriter
+
+
+Module Contents
+---------------
+
+.. py:class:: FileWriter(name: str = 'FileWriter', descriptor: FileWriter = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Sensor data storage to filesystem.
+
+   This module provides methods to store sensor data into the local filesystem.
+   This way you can work on recorded data without having to use bag files.
+   It is intended to be used with robokudo.io.file_reader_interface
+
+   .. note::
+      Target directory must exist and be writable.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for file writer.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring file storage.
+
+         .. note::
+            filename_prefix should match FileReader configuration.
+
+
+         .. py:attribute:: target_dir
+            :type:  str
+            :value: '/tmp/'
+
+
+            Directory to store files in
+
+
+
+         .. py:attribute:: filename_prefix
+            :type:  str
+            :value: 'rk_'
+
+
+            Prefix for generated filenames, make sure that this matches the FileReader filename_prefix
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:attribute:: initialized
+      :value: False
+
+
+
+   .. py:attribute:: target_dir_path
+      :type:  pathlib.Path
+
+
+   .. py:method:: generate_full_file_path_(cas_view: str, file_extension: str) -> str
+
+      Generate the full filename and path where data should be stored.
+
+      Creates a filepath using:
+
+      * Configured prefix
+      * Current timestamp
+      * CAS view name
+      * File extension
+
+      :param cas_view: One of the definitions from CASView.X
+      :param file_extension: File extension without dot (e.g. "jpg")
+      :return: A string with the full path according to our naming scheme.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Process and store sensor data.
+
+      The method:
+
+      * Checks initialization status
+      * Loads color image, depth image and camera info
+      * Writes color image as JPG
+      * Writes depth image as PNG
+      * Saves camera info as JSON
+
+      :return: SUCCESS after storing, FAILURE if not initialized
+
+
+

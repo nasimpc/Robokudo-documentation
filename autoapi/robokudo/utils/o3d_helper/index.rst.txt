@@ -1,0 +1,218 @@
+robokudo.utils.o3d_helper
+=========================
+
+.. py:module:: robokudo.utils.o3d_helper
+
+.. autoapi-nested-parse::
+
+   Open3D helper utilities for Robokudo.
+
+   This module provides helper functions for working with Open3D geometries and cameras.
+   It supports:
+
+   * Oriented bounding box operations
+   * Point cloud manipulation
+   * Camera intrinsics handling
+   * 2D-3D projections
+   * Visualization utilities
+
+   The module integrates with:
+   * Open3D for 3D geometry operations
+   * OpenCV for image operations
+   * NumPy for numerical computations
+   * ROS for camera info conversion
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.utils.o3d_helper.put_obb_on_target_obb
+   robokudo.utils.o3d_helper.transform_obb_relative_to_obb_center
+   robokudo.utils.o3d_helper.get_obb_from_size_and_transform
+   robokudo.utils.o3d_helper.get_2d_corner_points_from_3d_bb
+   robokudo.utils.o3d_helper.project_points_to_image
+   robokudo.utils.o3d_helper.draw_mesh_wireframe_on_image
+   robokudo.utils.o3d_helper.get_2d_bounding_rect_from_3d_bb
+   robokudo.utils.o3d_helper.draw_wireframe_of_obb_into_image
+   robokudo.utils.o3d_helper.get_mask_from_pointcloud
+   robokudo.utils.o3d_helper.scale_o3d_cam_intrinsics
+   robokudo.utils.o3d_helper.concatenate_clouds
+   robokudo.utils.o3d_helper.get_cloud_from_rgb_depth_and_mask
+   robokudo.utils.o3d_helper.create_line_for_visualization
+   robokudo.utils.o3d_helper.create_sphere_from_translation
+   robokudo.utils.o3d_helper.trimesh_to_o3d_mesh
+
+
+Module Contents
+---------------
+
+.. py:function:: put_obb_on_target_obb(input_obb: open3d.geometry.OrientedBoundingBox, target_obb: open3d.geometry.OrientedBoundingBox) -> open3d.geometry.OrientedBoundingBox
+
+   Place one oriented bounding box on top of another.
+
+   Places input_obb on top of target_obb by aligning their centers and adjusting height
+   based on extents. Assumes positive Z is up.
+
+   :param input_obb: Bounding box to place
+   :param target_obb: Target bounding box to place on
+   :return: Transformed input bounding box
+
+
+.. py:function:: transform_obb_relative_to_obb_center(input_obb: open3d.geometry.OrientedBoundingBox, target_obb: open3d.geometry.OrientedBoundingBox, transform_matrix: numpy.typing.NDArray) -> open3d.geometry.OrientedBoundingBox
+
+   Transform a bounding box relative to another's center.
+
+   :param input_obb: Bounding box to transform
+   :param target_obb: Reference bounding box
+   :param transform_matrix: 4x4 transform matrix relative to target center
+   :return: Transformed bounding box
+
+
+.. py:function:: get_obb_from_size_and_transform(bb_size: numpy.typing.NDArray, transform_matrix: numpy.typing.NDArray) -> open3d.geometry.OrientedBoundingBox
+
+   Create an oriented bounding box from size and transform.
+
+   :param bb_size: Numpy array with 3 elements for BoundingBox size in X,Y,Z
+   :param transform_matrix: 4x4 numpy array
+   :return: Oriented bounding box
+
+
+.. py:function:: get_2d_corner_points_from_3d_bb(cas: robokudo.cas.CAS, object_bb: open3d.geometry.OrientedBoundingBox) -> cv2.typing.Rect
+
+   Project 3D bounding box corners to 2D image points.
+
+   :param cas: CAS containing camera parameters
+   :param object_bb: 3D bounding box to project
+   :return: Array of 2D corner points
+
+
+.. py:function:: project_points_to_image(cas: robokudo.cas.CAS, points_cam: numpy.typing.NDArray) -> typing_extensions.Tuple[numpy.typing.NDArray, numpy.typing.NDArray]
+
+   Project 3D camera-frame points to 2D image pixels and validity mask.
+
+
+.. py:function:: draw_mesh_wireframe_on_image(image: numpy.typing.NDArray, mesh_shape: semantic_digital_twin.world_description.geometry.Mesh, object_transform: numpy.typing.NDArray, cas: robokudo.cas.CAS, color: typing_extensions.Tuple[int, int, int] = (0, 255, 0), thickness: int = 1) -> None
+
+   Draw the mesh wireframe by projecting its edges into the image.
+
+
+.. py:function:: get_2d_bounding_rect_from_3d_bb(cas: robokudo.cas.CAS, object_bb: open3d.geometry.OrientedBoundingBox) -> cv2.typing.Rect
+
+   Get a cv2.boundingRect which represents the space taken by a open3d boundingbox.
+   Perspective projection and color2depth ratio are taken into account.
+
+   :param cas:
+   :param object_bb:
+   :return: cv2.boundingRect
+
+
+.. py:function:: draw_wireframe_of_obb_into_image(cas: robokudo.cas.CAS, image: numpy.typing.NDArray, obb: open3d.geometry.OrientedBoundingBox) -> None
+
+   Draw 3D bounding box wireframe on image.
+
+   Projects 3D box edges to image plane and draws lines.
+
+   :param cas: CAS containing camera parameters
+   :param image: Image to draw on
+   :param obb: 3D bounding box to visualize
+
+
+.. py:function:: get_mask_from_pointcloud(input_cloud: open3d.geometry.PointCloud, ref_image: numpy.typing.NDArray, cam_intrinsics: open3d.camera.PinholeCameraIntrinsic, mask_scale_factor: float = None, crop_to_ref: bool = None) -> numpy.typing.NDArray
+
+   Generate a binary mask image by projecting the input_cloud to the ref_image mask.
+
+   :param input_cloud: 3d points which should be projected to the result mask image
+   :param ref_image: A reference image for the dimensionality of the mask
+   :param cam_intrinsics: Camera intrinsics that have been used to generate input_cloud
+   :param mask_scale_factor: If your color and depth image size mismatches, you might
+       have to scale your depth-based mask image to the dimensions of your color image.
+       Please provide that factor here. Example: Kinect has 1280x images were as the
+       depth images are only 640x . This would require a scale factor of 2.0
+   :param crop_to_ref: This is usually set to True, if mask_scale_factor has been set.
+       Crop the result of the scale operation to the size of ref_image (0:height) and
+       (0:width)
+   :return: A binary mask image for OpenCV
+
+
+.. py:function:: scale_o3d_cam_intrinsics(cam_intrinsic: open3d.camera.PinholeCameraIntrinsic, scalex: float, scaley: float) -> open3d.camera.PinholeCameraIntrinsic
+
+   Scale camera intrinsics by x and y factors.
+
+   Create and return a new cam intrinsic by scaling an input cam_intrinsic
+   based on a scale factor scalex and scaley.
+   Scaling will be done by multipling the factors with the relevant properties.
+   Example: new_height = height * scaley
+
+   :param cam_intrinsic: Original camera intrinsics
+   :param scalex: Scale factor for width/x
+   :param scaley: Scale factor for height/y
+   :return: Scaled camera intrinsics
+
+
+.. py:function:: concatenate_clouds(clouds: typing_extensions.List[open3d.geometry.PointCloud]) -> open3d.geometry.PointCloud
+
+   Combine multiple point clouds into one.
+
+   Concatenates points and colors from input clouds.
+
+   :param clouds: List of point clouds to combine
+   :return: Combined point cloud
+
+
+.. py:function:: get_cloud_from_rgb_depth_and_mask(rgb_image: numpy.typing.NDArray, depth_image: numpy.typing.NDArray, mask: numpy.typing.NDArray, cam_intrinsics: open3d.camera.PinholeCameraIntrinsic, depth_truncate: float = 9.0, mask_true_val: int = 255) -> open3d.geometry.PointCloud
+
+   Create point cloud from RGB-D images and mask.
+
+   Generate a pointcloud from an object mask, rgb and depth image.
+   Important: The depth_image will be changed when executing this function. Provide a copy if necessary.
+
+   Constraints:
+     - RGB, Depth image and Mask must be of the same resolution.
+
+
+   :param rgb_image: An image in RGB order. Please note that cv2 normally uses BGR order. So you have to convert first.
+   :param depth_image: A depth image
+   :param mask: a numpy array of dtype np.uint8
+   :param cam_intrinsics: Camera intrinsics for the rgb and depth image
+   :param depth_truncate: During cloud creation, ignore points beyond this many meters
+   :param mask_true_val: If the 'mask' contains a value equal to 'max_true_val', the corresponding value in 'depth'
+   will be included. Otherwise, it will be set to 0.
+   :return: Point cloud from masked RGB-D data
+
+   .. warning::
+      The depth_image will be modified during processing.
+      Provide a copy if the original needs to be preserved.
+
+
+.. py:function:: create_line_for_visualization(origin: typing_extensions.Tuple[float, float, float], target: typing_extensions.Tuple[float, float, float], color: typing_extensions.Tuple[float, float, float]) -> open3d.geometry.LineSet
+
+   Create a LineSet that you can use to visualize a line between two points.
+
+   :param origin: 3 element list: [x,y,z]
+   :param target: 3 element list: [x,y,z]
+   :param color: 3 element list: [r,g,b]
+   :return: Line segment geometry
+
+
+.. py:function:: create_sphere_from_translation(origin: numpy.typing.NDArray, color: typing_extensions.Tuple[float, float, float], radius: float) -> open3d.geometry.TriangleMesh
+
+   Create an o3d sphere for visualization.
+
+   :param origin: 3d translation vector
+   :param color: 3 element list with entries 0-1 for RGB
+   :param radius: radius of the sphere in meters
+   :return: o3d sphere mesh
+
+
+.. py:function:: trimesh_to_o3d_mesh(mesh: trimesh.Trimesh) -> open3d.geometry.TriangleMesh
+
+   Convert the standard mesh representation of semantic_digital_twin (trimesh) to a
+   type that the O3DVisualizer can show.
+
+   :param mesh: The mesh to convert
+   :return: An open3d compatible triangle mesh
+
+

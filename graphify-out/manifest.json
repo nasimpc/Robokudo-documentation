@@ -1,0 +1,952 @@
+{
+  "about.md.txt": {
+    "mtime": 1781692488.0,
+    "ast_hash": "0e7ae5f6553a27ff718baed623d62c5d",
+    "semantic_hash": "0e7ae5f6553a27ff718baed623d62c5d"
+  },
+  "autoapi/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "7099350b03b4b7f0cc25d0042d43523f",
+    "semantic_hash": "7099350b03b4b7f0cc25d0042d43523f"
+  },
+  "autoapi/robokudo/analysis_engine/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "cd87987f416b401839dc85f736dba3e2",
+    "semantic_hash": "cd87987f416b401839dc85f736dba3e2"
+  },
+  "autoapi/robokudo/annotator_parameters/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "fe467cef72b6e727fe7481a1a40fa28d",
+    "semantic_hash": "fe467cef72b6e727fe7481a1a40fa28d"
+  },
+  "autoapi/robokudo/annotators/annotation_writer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "1f64ecd80d8e0eb915affb263451f86e",
+    "semantic_hash": "1f64ecd80d8e0eb915affb263451f86e"
+  },
+  "autoapi/robokudo/annotators/blur/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "ed42b3f7cccb84b592e45a64189b38b4",
+    "semantic_hash": "ed42b3f7cccb84b592e45a64189b38b4"
+  },
+  "autoapi/robokudo/annotators/byte_track_annotator/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "6adcde5ccdd6fae0ab5693e84cdf5960",
+    "semantic_hash": "6adcde5ccdd6fae0ab5693e84cdf5960"
+  },
+  "autoapi/robokudo/annotators/camera_viewpoint_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "75a731fb70a3b6de6670a3c5d4ae09e3",
+    "semantic_hash": "75a731fb70a3b6de6670a3c5d4ae09e3"
+  },
+  "autoapi/robokudo/annotators/cas_check/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "04a4519d9ca054f98ada9425f30cba03",
+    "semantic_hash": "04a4519d9ca054f98ada9425f30cba03"
+  },
+  "autoapi/robokudo/annotators/clip_annotator/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4461d302e667b629c2c01dc7497fb66c",
+    "semantic_hash": "4461d302e667b629c2c01dc7497fb66c"
+  },
+  "autoapi/robokudo/annotators/cluster_color/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "36e50c693f33b93b0ff8ae5d413fc563",
+    "semantic_hash": "36e50c693f33b93b0ff8ae5d413fc563"
+  },
+  "autoapi/robokudo/annotators/cluster_color_histogram/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8d62011473ed4aefa27cbe3b4a46b528",
+    "semantic_hash": "8d62011473ed4aefa27cbe3b4a46b528"
+  },
+  "autoapi/robokudo/annotators/cluster_pose_bb/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4a96741d6dd0bacad0bf318d8c003804",
+    "semantic_hash": "4a96741d6dd0bacad0bf318d8c003804"
+  },
+  "autoapi/robokudo/annotators/cluster_pose_pca/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "2210b5c2a59ad6241998a783a92648c4",
+    "semantic_hash": "2210b5c2a59ad6241998a783a92648c4"
+  },
+  "autoapi/robokudo/annotators/cluster_position/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "ce2a025a01e69e7809d9677e8b373c88",
+    "semantic_hash": "ce2a025a01e69e7809d9677e8b373c88"
+  },
+  "autoapi/robokudo/annotators/collection_reader/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "79cccd0b35058de6d32ada1514995f24",
+    "semantic_hash": "79cccd0b35058de6d32ada1514995f24"
+  },
+  "autoapi/robokudo/annotators/core/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "1d24d3814c2c6f3d768c98dbe02e8777",
+    "semantic_hash": "1d24d3814c2c6f3d768c98dbe02e8777"
+  },
+  "autoapi/robokudo/annotators/file_writer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "fe0c919e5b9ca79b3ac774ba672e7026",
+    "semantic_hash": "fe0c919e5b9ca79b3ac774ba672e7026"
+  },
+  "autoapi/robokudo/annotators/filter/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "251bd738f291fd457bb2d7325d7bbc28",
+    "semantic_hash": "251bd738f291fd457bb2d7325d7bbc28"
+  },
+  "autoapi/robokudo/annotators/icp_pose_refinement/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "80b4acc1ac34a93775e9a4538889ed05",
+    "semantic_hash": "80b4acc1ac34a93775e9a4538889ed05"
+  },
+  "autoapi/robokudo/annotators/image_cluster_extractor/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "721ea7a5b07b9dac8aea6e7f1ab6a21f",
+    "semantic_hash": "721ea7a5b07b9dac8aea6e7f1ab6a21f"
+  },
+  "autoapi/robokudo/annotators/image_preprocessor/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "44875ef5d905687ba0bec9083403d120",
+    "semantic_hash": "44875ef5d905687ba0bec9083403d120"
+  },
+  "autoapi/robokudo/annotators/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b6a78d9d63c71305a4fb3905148d3da5",
+    "semantic_hash": "b6a78d9d63c71305a4fb3905148d3da5"
+  },
+  "autoapi/robokudo/annotators/lambda_function/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "1ce5339d2d5d6521eaca1edfa1cc7be6",
+    "semantic_hash": "1ce5339d2d5d6521eaca1edfa1cc7be6"
+  },
+  "autoapi/robokudo/annotators/location/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4e9ae1e6573623fef4e90d943cfb7796",
+    "semantic_hash": "4e9ae1e6573623fef4e90d943cfb7796"
+  },
+  "autoapi/robokudo/annotators/object_associator/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "74f187944da371b44c6f15a2b8b2afc7",
+    "semantic_hash": "74f187944da371b44c6f15a2b8b2afc7"
+  },
+  "autoapi/robokudo/annotators/object_hypothesis_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8954673771e1f89a835f806856ecf4c3",
+    "semantic_hash": "8954673771e1f89a835f806856ecf4c3"
+  },
+  "autoapi/robokudo/annotators/object_pose_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "e6050ef64c1526a4c3a20524edeedb2f",
+    "semantic_hash": "e6050ef64c1526a4c3a20524edeedb2f"
+  },
+  "autoapi/robokudo/annotators/outlier_removal_objecthypothesis/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "36c059198597201480569efec02fce22",
+    "semantic_hash": "36c059198597201480569efec02fce22"
+  },
+  "autoapi/robokudo/annotators/outputs/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "08a0b91658cf326cb91fc41a4735b7cf",
+    "semantic_hash": "08a0b91658cf326cb91fc41a4735b7cf"
+  },
+  "autoapi/robokudo/annotators/pipeline_trigger/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "ae664175b0827791d523b4f8cbe7ab02",
+    "semantic_hash": "ae664175b0827791d523b4f8cbe7ab02"
+  },
+  "autoapi/robokudo/annotators/plane/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "08a22fb3f48bd85c02d6564387a4c5da",
+    "semantic_hash": "08a22fb3f48bd85c02d6564387a4c5da"
+  },
+  "autoapi/robokudo/annotators/pointcloud_check/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "2f78aefbc662154803e3075fdc9a722b",
+    "semantic_hash": "2f78aefbc662154803e3075fdc9a722b"
+  },
+  "autoapi/robokudo/annotators/pointcloud_cluster_extractor/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "fc2cce67b133170469ac263fcd1d248f",
+    "semantic_hash": "fc2cce67b133170469ac263fcd1d248f"
+  },
+  "autoapi/robokudo/annotators/pointcloud_crop/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "fae28f298d03ffcb201beaf76142e90d",
+    "semantic_hash": "fae28f298d03ffcb201beaf76142e90d"
+  },
+  "autoapi/robokudo/annotators/query/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8682a2bba2347b2b44718263d0ee8b3e",
+    "semantic_hash": "8682a2bba2347b2b44718263d0ee8b3e"
+  },
+  "autoapi/robokudo/annotators/region_filter/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "c36d576c2e78925af5385d7d26a97566",
+    "semantic_hash": "c36d576c2e78925af5385d7d26a97566"
+  },
+  "autoapi/robokudo/annotators/roi_adjuster/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "9b692b353645d99fa99487cb58c7b015",
+    "semantic_hash": "9b692b353645d99fa99487cb58c7b015"
+  },
+  "autoapi/robokudo/annotators/semantic_world_connector/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "bc8f23ed8f581017da193133e32499dd",
+    "semantic_hash": "bc8f23ed8f581017da193133e32499dd"
+  },
+  "autoapi/robokudo/annotators/shape_estimator/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "96b866f5d4ef3fcc59636b3794dc0e05",
+    "semantic_hash": "96b866f5d4ef3fcc59636b3794dc0e05"
+  },
+  "autoapi/robokudo/annotators/simple_yolo_annotator/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "e30d9119f5b81f6287e0e9ae9a6a98ab",
+    "semantic_hash": "e30d9119f5b81f6287e0e9ae9a6a98ab"
+  },
+  "autoapi/robokudo/annotators/size_bb/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "39d784fbb3f7f7c810a557cbc4278b4c",
+    "semantic_hash": "39d784fbb3f7f7c810a557cbc4278b4c"
+  },
+  "autoapi/robokudo/annotators/static_object_detector/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "dd0205de1940810500158e5b41d6574e",
+    "semantic_hash": "dd0205de1940810500158e5b41d6574e"
+  },
+  "autoapi/robokudo/annotators/storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "dba2987fb90682f221fd830626c4c97e",
+    "semantic_hash": "dba2987fb90682f221fd830626c4c97e"
+  },
+  "autoapi/robokudo/annotators/testing/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "67f3d583ef9a8635b7ff5f72d61b0061",
+    "semantic_hash": "67f3d583ef9a8635b7ff5f72d61b0061"
+  },
+  "autoapi/robokudo/annotators/tsdf_annotator/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "dff544bea04f697408672f591a2e27b5",
+    "semantic_hash": "dff544bea04f697408672f591a2e27b5"
+  },
+  "autoapi/robokudo/annotators/vis/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "7a900fe829139f297bcd9ecf34f46c6c",
+    "semantic_hash": "7a900fe829139f297bcd9ecf34f46c6c"
+  },
+  "autoapi/robokudo/annotators/world_descriptor_bootstrap/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "437cb0660d71280d489646af8545cefa",
+    "semantic_hash": "437cb0660d71280d489646af8545cefa"
+  },
+  "autoapi/robokudo/annotators/world_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "bebfb7867ee07b7d670e1ef6160602e6",
+    "semantic_hash": "bebfb7867ee07b7d670e1ef6160602e6"
+  },
+  "autoapi/robokudo/behaviours/action_server_checks/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "48150ec3f939f48cd719d30ba7a668e1",
+    "semantic_hash": "48150ec3f939f48cd719d30ba7a668e1"
+  },
+  "autoapi/robokudo/behaviours/clear_errors/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4ac83d04a524c7d1024745368fe0613d",
+    "semantic_hash": "4ac83d04a524c7d1024745368fe0613d"
+  },
+  "autoapi/robokudo/behaviours/goal_canceled/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "59a8f596289bbd004ba204f15b8dc7f7",
+    "semantic_hash": "59a8f596289bbd004ba204f15b8dc7f7"
+  },
+  "autoapi/robokudo/behaviours/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "5130ad5027694b0b2b3dd2cb25e11b81",
+    "semantic_hash": "5130ad5027694b0b2b3dd2cb25e11b81"
+  },
+  "autoapi/robokudo/cas/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4add2aaae006f37140d459be364278c4",
+    "semantic_hash": "4add2aaae006f37140d459be364278c4"
+  },
+  "autoapi/robokudo/defs/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b93aaede3155eb505d1d1d8823db5a43",
+    "semantic_hash": "b93aaede3155eb505d1d1d8823db5a43"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/annotations_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "81feba9b92310fd0d62ba9a507596c47",
+    "semantic_hash": "81feba9b92310fd0d62ba9a507596c47"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/demo/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8f5679a4566199002936c7e7347513bb",
+    "semantic_hash": "8f5679a4566199002936c7e7347513bb"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/demo_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b97d02cda8929848d2ce45337fdb3c65",
+    "semantic_hash": "b97d02cda8929848d2ce45337fdb3c65"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/demo_subtree/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "937e1fa48383ecb92cddb77e10b01cf7",
+    "semantic_hash": "937e1fa48383ecb92cddb77e10b01cf7"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/demo_usb_camera/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "69d888c857f18be7293b8c83e1f5d114",
+    "semantic_hash": "69d888c857f18be7293b8c83e1f5d114"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/filereader/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "e5571a68b59f05c932005e9ff09b5379",
+    "semantic_hash": "e5571a68b59f05c932005e9ff09b5379"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/filewriter_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "2ff01e5e382b823a572ab8fc415e871b",
+    "semantic_hash": "2ff01e5e382b823a572ab8fc415e871b"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "23e0a229f9196360658674a0b5ad1c94",
+    "semantic_hash": "23e0a229f9196360658674a0b5ad1c94"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/nested_pipeline/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "850b939721651a296de725e405a4612a",
+    "semantic_hash": "850b939721651a296de725e405a4612a"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/parallel/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b4da293abc2508aa0c64c7c3795fba22",
+    "semantic_hash": "b4da293abc2508aa0c64c7c3795fba22"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/query/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "f48c6bb3517c25d543f34138d049485c",
+    "semantic_hash": "f48c6bb3517c25d543f34138d049485c"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/query_complex/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "dbfca04af3b13009d477d29c87ffac12",
+    "semantic_hash": "dbfca04af3b13009d477d29c87ffac12"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/query_demo_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b7e231a6b836dee844d948538dd9b123",
+    "semantic_hash": "b7e231a6b836dee844d948538dd9b123"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/query_startstop_pipeline_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8ca93dce4c4c001e1c83058011ea37cc",
+    "semantic_hash": "8ca93dce4c4c001e1c83058011ea37cc"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/query_test/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "7714f3cef746515ed7eba51397a0bf6d",
+    "semantic_hash": "7714f3cef746515ed7eba51397a0bf6d"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/realsense/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b6e72df8bf375ab18ac262cd3e7ceec2",
+    "semantic_hash": "b6e72df8bf375ab18ac262cd3e7ceec2"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/regionfilter_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "ce4492bf4a1157fe625abe3f6f9ac4e8",
+    "semantic_hash": "ce4492bf4a1157fe625abe3f6f9ac4e8"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/semdt_demo/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "3045f3fe49eaaf31fdccb17829ac80fb",
+    "semantic_hash": "3045f3fe49eaaf31fdccb17829ac80fb"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/semdt_demo_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b07588556ae9490ea325f0360e14023f",
+    "semantic_hash": "b07588556ae9490ea325f0360e14023f"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/semdt_demo_from_storage_full/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "1b1e5d1cce3e377a672bcd8d20e9f2b0",
+    "semantic_hash": "1b1e5d1cce3e377a672bcd8d20e9f2b0"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/simple_with_parameters/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "d409780343f90e6e5a151e889858c4b1",
+    "semantic_hash": "d409780343f90e6e5a151e889858c4b1"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/static_detector_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "191c358d2bb1566a0cc659c1ef6c2ba5",
+    "semantic_hash": "191c358d2bb1566a0cc659c1ef6c2ba5"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/static_detector_world_descriptor_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b86965ce64d8237cabae0c68d2ee7ad6",
+    "semantic_hash": "b86965ce64d8237cabae0c68d2ee7ad6"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "116aa5810d2de6e914b9f5b7f0e7ed62",
+    "semantic_hash": "116aa5810d2de6e914b9f5b7f0e7ed62"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/subtree_tabletop_object_localization/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "a01973969d3765aa01df4dbb4ad14d53",
+    "semantic_hash": "a01973969d3765aa01df4dbb4ad14d53"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/task_scheduler/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "135d46be2a9ee8de1a9f5066ff3791a5",
+    "semantic_hash": "135d46be2a9ee8de1a9f5066ff3791a5"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/tiago_demo/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8226d3ade33622f206f1c57a7452d22e",
+    "semantic_hash": "8226d3ade33622f206f1c57a7452d22e"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/tiago_demo_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "6bd794fd12aee7a4bcdb84b134952f57",
+    "semantic_hash": "6bd794fd12aee7a4bcdb84b134952f57"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/tiago_storage_with_transform/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "27de0cb51c7dd7b27fa0834af8906129",
+    "semantic_hash": "27de0cb51c7dd7b27fa0834af8906129"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/trigger_example/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "63d4a919ceadfd7f6bd5506542daf45c",
+    "semantic_hash": "63d4a919ceadfd7f6bd5506542daf45c"
+  },
+  "autoapi/robokudo/descriptors/analysis_engines/world_descriptor_from_storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "19a2e306733c4e1805e51511e05d014e",
+    "semantic_hash": "19a2e306733c4e1805e51511e05d014e"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/base_camera_config/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "7c41be28ff4a17a28362ab7fc43cb210",
+    "semantic_hash": "7c41be28ff4a17a28362ab7fc43cb210"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/components/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "3619e0a10dbacee501cd298a6303ffd1",
+    "semantic_hash": "3619e0a10dbacee501cd298a6303ffd1"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_cv_camera_without_depth/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "13db87d3904ac34502851f705f3a9a03",
+    "semantic_hash": "13db87d3904ac34502851f705f3a9a03"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_filereader_playback/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "9ae9014af4b0b0540e10b42d8b03de63",
+    "semantic_hash": "9ae9014af4b0b0540e10b42d8b03de63"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_hsr/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "892bdb920e956c31fe987d836ff8c14f",
+    "semantic_hash": "892bdb920e956c31fe987d836ff8c14f"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_hsr_handcam/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "f22c2713df913a6149075ccb5e401f1d",
+    "semantic_hash": "f22c2713df913a6149075ccb5e401f1d"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_hsr_ros2/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "9bd7a1d31546952d6eaa5b1a7f7b4a51",
+    "semantic_hash": "9bd7a1d31546952d6eaa5b1a7f7b4a51"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_kinect_robot/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "0b9bd4f2b408b8a95c74b0c4a7b7098e",
+    "semantic_hash": "0b9bd4f2b408b8a95c74b0c4a7b7098e"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_kinect_robot_wo_transform/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "cce8e3fd8d9790e2d39566832b8074bc",
+    "semantic_hash": "cce8e3fd8d9790e2d39566832b8074bc"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_mongodb_playback/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "031b59a5e15d0cccd144c515a8ca0f9b",
+    "semantic_hash": "031b59a5e15d0cccd144c515a8ca0f9b"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_orbbec/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "12674b417bcd7a4661dc6fcd37e6d8ef",
+    "semantic_hash": "12674b417bcd7a4661dc6fcd37e6d8ef"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_orbbec_wo_transform/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b04f314e6f7a2f306647ddbd4a8ef4ea",
+    "semantic_hash": "b04f314e6f7a2f306647ddbd4a8ef4ea"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_realsense/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "45550fd31910097ca8750eca30e0132a",
+    "semantic_hash": "45550fd31910097ca8750eca30e0132a"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_tiago/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "429a9dd77de65c4fbac3059bf8ec1443",
+    "semantic_hash": "429a9dd77de65c4fbac3059bf8ec1443"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_tiago_wo_transform/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "5971d7c87e0e8bdfeeb51a939b66719f",
+    "semantic_hash": "5971d7c87e0e8bdfeeb51a939b66719f"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/config_unreal_vision_bridge/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "d873c3525eafcf4393ca94e818115f41",
+    "semantic_hash": "d873c3525eafcf4393ca94e818115f41"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "e703de6afc93958379afa8ef4778c686",
+    "semantic_hash": "e703de6afc93958379afa8ef4778c686"
+  },
+  "autoapi/robokudo/descriptors/camera_configs/registry/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "e2000a0650ff1758c5ddc8c947dc65dc",
+    "semantic_hash": "e2000a0650ff1758c5ddc8c947dc65dc"
+  },
+  "autoapi/robokudo/descriptors/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "1bc458a997bd2463dad72013d6150e7c",
+    "semantic_hash": "1bc458a997bd2463dad72013d6150e7c"
+  },
+  "autoapi/robokudo/descriptors/worlds/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "9415b88a739e72547b59f11b5ce6a4d8",
+    "semantic_hash": "9415b88a739e72547b59f11b5ce6a4d8"
+  },
+  "autoapi/robokudo/descriptors/worlds/world_iai_kitchen20/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "ed866d2a57d07661f96d966962282ff6",
+    "semantic_hash": "ed866d2a57d07661f96d966962282ff6"
+  },
+  "autoapi/robokudo/display/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "9a9e93e50383c86ecf7f8e0e51afa268",
+    "semantic_hash": "9a9e93e50383c86ecf7f8e0e51afa268"
+  },
+  "autoapi/robokudo/garden/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "60e78abcc3b3f265f8e782552616ee0a",
+    "semantic_hash": "60e78abcc3b3f265f8e782552616ee0a"
+  },
+  "autoapi/robokudo/gui/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "262dbabae2be9fce79fd6d4d28fc8362",
+    "semantic_hash": "262dbabae2be9fce79fd6d4d28fc8362"
+  },
+  "autoapi/robokudo/identifier/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4094c71dad493047112ec43af888e98b",
+    "semantic_hash": "4094c71dad493047112ec43af888e98b"
+  },
+  "autoapi/robokudo/idioms/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "986403bf5e513d44bf7f83d17ba4a6c9",
+    "semantic_hash": "986403bf5e513d44bf7f83d17ba4a6c9"
+  },
+  "autoapi/robokudo/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "33da5e142795ee896e876fe7574d60ee",
+    "semantic_hash": "33da5e142795ee896e876fe7574d60ee"
+  },
+  "autoapi/robokudo/io/camera_interface/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "63ee494a31aec6c3d2b596301bbb8f74",
+    "semantic_hash": "63ee494a31aec6c3d2b596301bbb8f74"
+  },
+  "autoapi/robokudo/io/camera_without_depth_interface/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "cf1135bfbf857597e3c281a1325bd6f3",
+    "semantic_hash": "cf1135bfbf857597e3c281a1325bd6f3"
+  },
+  "autoapi/robokudo/io/cas_annotation_codecs/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "3226ebb1a63b321143d2992017726204",
+    "semantic_hash": "3226ebb1a63b321143d2992017726204"
+  },
+  "autoapi/robokudo/io/cas_view_codecs/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "03b015b38e976f5df940d1253ff97d23",
+    "semantic_hash": "03b015b38e976f5df940d1253ff97d23"
+  },
+  "autoapi/robokudo/io/file_reader_interface/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8a73005b40494c3fb0c2421a7c0c0a37",
+    "semantic_hash": "8a73005b40494c3fb0c2421a7c0c0a37"
+  },
+  "autoapi/robokudo/io/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "63add5d81e92b427d2925b0a1681fd7d",
+    "semantic_hash": "63add5d81e92b427d2925b0a1681fd7d"
+  },
+  "autoapi/robokudo/io/open3d_codec_utils/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "87bdcdcd7f26fd894631a1f8557bcba5",
+    "semantic_hash": "87bdcdcd7f26fd894631a1f8557bcba5"
+  },
+  "autoapi/robokudo/io/ros/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "e377ca0371b47ec7425da143f2e05152",
+    "semantic_hash": "e377ca0371b47ec7425da143f2e05152"
+  },
+  "autoapi/robokudo/io/ros_camera_without_depth_interface/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "07b96cd4a74d49ec3d428bc001e66a69",
+    "semantic_hash": "07b96cd4a74d49ec3d428bc001e66a69"
+  },
+  "autoapi/robokudo/io/semantic_digital_twin/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "0cbb1d459cd6b62460d68aae5f646061",
+    "semantic_hash": "0cbb1d459cd6b62460d68aae5f646061"
+  },
+  "autoapi/robokudo/io/storage/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "60a177b3d7da6a01c29502d71c4d20d9",
+    "semantic_hash": "60a177b3d7da6a01c29502d71c4d20d9"
+  },
+  "autoapi/robokudo/io/storage_reader_interface/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "6a7153276124d7523ddeab44ccd544ca",
+    "semantic_hash": "6a7153276124d7523ddeab44ccd544ca"
+  },
+  "autoapi/robokudo/io/tf_listener_proxy/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "0e0d47eff44e19130036c699377b7b9d",
+    "semantic_hash": "0e0d47eff44e19130036c699377b7b9d"
+  },
+  "autoapi/robokudo/pipeline/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "313315494190bc9ceed62b7b477e7ab5",
+    "semantic_hash": "313315494190bc9ceed62b7b477e7ab5"
+  },
+  "autoapi/robokudo/scripts/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "e7f29247df73bff925a7ec36b327c598",
+    "semantic_hash": "e7f29247df73bff925a7ec36b327c598"
+  },
+  "autoapi/robokudo/scripts/main/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "a62cbc2ca3dc30aa690103bb60a46b1b",
+    "semantic_hash": "a62cbc2ca3dc30aa690103bb60a46b1b"
+  },
+  "autoapi/robokudo/scripts/query_test_client/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "c8a29487b692e7723034d42a1904ce18",
+    "semantic_hash": "c8a29487b692e7723034d42a1904ce18"
+  },
+  "autoapi/robokudo/subtree/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "077d4540f9929e7e05844fa92d8c8bc8",
+    "semantic_hash": "077d4540f9929e7e05844fa92d8c8bc8"
+  },
+  "autoapi/robokudo/tree_components/better_parallel/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "bf3618e6c60c2fd392c84e2680ba174d",
+    "semantic_hash": "bf3618e6c60c2fd392c84e2680ba174d"
+  },
+  "autoapi/robokudo/tree_components/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "46bb4e84032afb8b34073cbadc4d107e",
+    "semantic_hash": "46bb4e84032afb8b34073cbadc4d107e"
+  },
+  "autoapi/robokudo/tree_components/looping/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "19b8b6790653aaa86eb4a6656918f365",
+    "semantic_hash": "19b8b6790653aaa86eb4a6656918f365"
+  },
+  "autoapi/robokudo/tree_components/query_based_task_scheduler/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "af31da12115aeb3bc9d1ccc30ab1b296",
+    "semantic_hash": "af31da12115aeb3bc9d1ccc30ab1b296"
+  },
+  "autoapi/robokudo/tree_components/render_dot/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "085c6bc60f913b3a4a19b5bfe0897ee3",
+    "semantic_hash": "085c6bc60f913b3a4a19b5bfe0897ee3"
+  },
+  "autoapi/robokudo/tree_components/task_scheduler/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "3337b0a0091af21edd9df16e22a9f79a",
+    "semantic_hash": "3337b0a0091af21edd9df16e22a9f79a"
+  },
+  "autoapi/robokudo/types/annotation/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "1b72620f551446aed7e05480766b9051",
+    "semantic_hash": "1b72620f551446aed7e05480766b9051"
+  },
+  "autoapi/robokudo/types/core/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "403d4c1615acb477f42ff2c2b37c1f2e",
+    "semantic_hash": "403d4c1615acb477f42ff2c2b37c1f2e"
+  },
+  "autoapi/robokudo/types/cv/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "f6ed8c0c2e37554ec844b48da43b4f51",
+    "semantic_hash": "f6ed8c0c2e37554ec844b48da43b4f51"
+  },
+  "autoapi/robokudo/types/human/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "341ecfb6202a67f00a3a0bca84982e73",
+    "semantic_hash": "341ecfb6202a67f00a3a0bca84982e73"
+  },
+  "autoapi/robokudo/types/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "cebeb220d8aac3c8e331972d4156c8f8",
+    "semantic_hash": "cebeb220d8aac3c8e331972d4156c8f8"
+  },
+  "autoapi/robokudo/types/ros/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "38926f804257b666db4c6282ee171ce1",
+    "semantic_hash": "38926f804257b666db4c6282ee171ce1"
+  },
+  "autoapi/robokudo/types/scene/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8c6b08f2779955cd7494aaf9c2244251",
+    "semantic_hash": "8c6b08f2779955cd7494aaf9c2244251"
+  },
+  "autoapi/robokudo/types/tf/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "1e307861931c861af7bf1efa258b99a9",
+    "semantic_hash": "1e307861931c861af7bf1efa258b99a9"
+  },
+  "autoapi/robokudo/utils/annotation_conversion/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "50e901bfd6fc403b2dc62a89b33c79fd",
+    "semantic_hash": "50e901bfd6fc403b2dc62a89b33c79fd"
+  },
+  "autoapi/robokudo/utils/annotator_helper/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "f89496bb5384a032545dade3a9372f42",
+    "semantic_hash": "f89496bb5384a032545dade3a9372f42"
+  },
+  "autoapi/robokudo/utils/comparator_factories/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "24b9b1c21db5e33a4aa90bba6fc5d54c",
+    "semantic_hash": "24b9b1c21db5e33a4aa90bba6fc5d54c"
+  },
+  "autoapi/robokudo/utils/comparators/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "a500cc7721adb7b4a1648c3ad2c1e175",
+    "semantic_hash": "a500cc7721adb7b4a1648c3ad2c1e175"
+  },
+  "autoapi/robokudo/utils/cv_helper/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "d6c1573599cfcc2ae7b59bf64a9b57a2",
+    "semantic_hash": "d6c1573599cfcc2ae7b59bf64a9b57a2"
+  },
+  "autoapi/robokudo/utils/data_downloader/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "a18fdbccb008181825ca448cadfe2166",
+    "semantic_hash": "a18fdbccb008181825ca448cadfe2166"
+  },
+  "autoapi/robokudo/utils/decorators/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "b7294cf943661f0643c9b8dfb37dbb78",
+    "semantic_hash": "b7294cf943661f0643c9b8dfb37dbb78"
+  },
+  "autoapi/robokudo/utils/error_handling/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "f300638825bf9c551de2596fa841c21c",
+    "semantic_hash": "f300638825bf9c551de2596fa841c21c"
+  },
+  "autoapi/robokudo/utils/file_loader/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "063bd0dfbba3084592e8de7eece5a68e",
+    "semantic_hash": "063bd0dfbba3084592e8de7eece5a68e"
+  },
+  "autoapi/robokudo/utils/hypothesis_comparators/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "46c73f7bb24d18fada374c45e736ac74",
+    "semantic_hash": "46c73f7bb24d18fada374c45e736ac74"
+  },
+  "autoapi/robokudo/utils/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "7c6aedebeb9bd744d4126f39b439f774",
+    "semantic_hash": "7c6aedebeb9bd744d4126f39b439f774"
+  },
+  "autoapi/robokudo/utils/logging_configuration/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "79001cb9ad694c4aea69be4412ff73fe",
+    "semantic_hash": "79001cb9ad694c4aea69be4412ff73fe"
+  },
+  "autoapi/robokudo/utils/math_helper/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "36c09d66a852af5ea7b2ffef1e10ff5e",
+    "semantic_hash": "36c09d66a852af5ea7b2ffef1e10ff5e"
+  },
+  "autoapi/robokudo/utils/module_loader/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "6cb2e50f4e28a946aed793f5b3200c27",
+    "semantic_hash": "6cb2e50f4e28a946aed793f5b3200c27"
+  },
+  "autoapi/robokudo/utils/non_maxima_suppression/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4ee90c980ad622007a38b95d48728ccb",
+    "semantic_hash": "4ee90c980ad622007a38b95d48728ccb"
+  },
+  "autoapi/robokudo/utils/o3d_helper/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "c2946c956bf46214b8237e3fa8108877",
+    "semantic_hash": "c2946c956bf46214b8237e3fa8108877"
+  },
+  "autoapi/robokudo/utils/query/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "ce81dfa251b7c8ed269d8dfca650eaf3",
+    "semantic_hash": "ce81dfa251b7c8ed269d8dfca650eaf3"
+  },
+  "autoapi/robokudo/utils/region/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "cc4ebadcb4cb3e9776c0a7d25affa9ed",
+    "semantic_hash": "cc4ebadcb4cb3e9776c0a7d25affa9ed"
+  },
+  "autoapi/robokudo/utils/shape_fitting/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "ce348dda095750945c7edc044e0d3545",
+    "semantic_hash": "ce348dda095750945c7edc044e0d3545"
+  },
+  "autoapi/robokudo/utils/transform/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "8702751497d42c004061eb895326ec3b",
+    "semantic_hash": "8702751497d42c004061eb895326ec3b"
+  },
+  "autoapi/robokudo/utils/tree/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "eebd1b7fc79551dd4a3dec2bf3984ac2",
+    "semantic_hash": "eebd1b7fc79551dd4a3dec2bf3984ac2"
+  },
+  "autoapi/robokudo/utils/tree_execution/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "cf563923706d85fdfe3edac3a87877df",
+    "semantic_hash": "cf563923706d85fdfe3edac3a87877df"
+  },
+  "autoapi/robokudo/utils/type_conversion/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "357081241c204447d9a9ee4ed82b0eb7",
+    "semantic_hash": "357081241c204447d9a9ee4ed82b0eb7"
+  },
+  "autoapi/robokudo/utils/world_descriptor/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "3dc6f7e89f3305917a05bfc06f3eec38",
+    "semantic_hash": "3dc6f7e89f3305917a05bfc06f3eec38"
+  },
+  "autoapi/robokudo/vis/cv_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "fee7fd2d2f2383392bea02e59ca518f0",
+    "semantic_hash": "fee7fd2d2f2383392bea02e59ca518f0"
+  },
+  "autoapi/robokudo/vis/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "44296d3f0c5e21cd2c00cc759d32e3f4",
+    "semantic_hash": "44296d3f0c5e21cd2c00cc759d32e3f4"
+  },
+  "autoapi/robokudo/vis/multiprocessed_o3d_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "99f6532269446db562671b4baccb8df2",
+    "semantic_hash": "99f6532269446db562671b4baccb8df2"
+  },
+  "autoapi/robokudo/vis/o3d_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "04a0f77dc15277a0538bf2da2b8d3b89",
+    "semantic_hash": "04a0f77dc15277a0538bf2da2b8d3b89"
+  },
+  "autoapi/robokudo/vis/ros_visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "fea00b23d7dbe3eeb58051cd381fd5a5",
+    "semantic_hash": "fea00b23d7dbe3eeb58051cd381fd5a5"
+  },
+  "autoapi/robokudo/vis/visualizer/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "53788502d23551cf63a2f595f6999514",
+    "semantic_hash": "53788502d23551cf63a2f595f6999514"
+  },
+  "autoapi/robokudo/vis/visualizer_manager/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "4278f5c042f70959ee302735eeb96320",
+    "semantic_hash": "4278f5c042f70959ee302735eeb96320"
+  },
+  "autoapi/robokudo/world/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "98355e11bf93d4aea03e602342ce7e11",
+    "semantic_hash": "98355e11bf93d4aea03e602342ce7e11"
+  },
+  "autoapi/robokudo/world_descriptor/index.rst.txt": {
+    "mtime": 1784143648.0,
+    "ast_hash": "34b09381afdd86d7ec2d5f97e7a93d58",
+    "semantic_hash": "34b09381afdd86d7ec2d5f97e7a93d58"
+  },
+  "index.rst.txt": {
+    "mtime": 1781692488.0,
+    "ast_hash": "94809ac439344e31bdfd2d70712df75f",
+    "semantic_hash": "94809ac439344e31bdfd2d70712df75f"
+  },
+  "introduction.md.txt": {
+    "mtime": 1781692488.0,
+    "ast_hash": "1d9fda4bb9e88fad7a659e1060c5ff3a",
+    "semantic_hash": "1d9fda4bb9e88fad7a659e1060c5ff3a"
+  },
+  "tutorials/Advanced_query_handling.md.txt": {
+    "mtime": 1781725443.0,
+    "ast_hash": "e56a2f708152d519b7609d4142608986",
+    "semantic_hash": "e56a2f708152d519b7609d4142608986"
+  },
+  "tutorials/configure_your_annotator.md.txt": {
+    "mtime": 1781725443.0,
+    "ast_hash": "b2dae65698df9af34fa65ee22092574d",
+    "semantic_hash": "b2dae65698df9af34fa65ee22092574d"
+  },
+  "tutorials/create_your_own_annotator.md.txt": {
+    "mtime": 1783010331.0,
+    "ast_hash": "5c5e75b984d3b07ff3b8698bb02933d5",
+    "semantic_hash": "5c5e75b984d3b07ff3b8698bb02933d5"
+  },
+  "tutorials/create_your_own_package.md.txt": {
+    "mtime": 1783010331.0,
+    "ast_hash": "f0f9e9be05ceaae1dd0049f0cb7c52d6",
+    "semantic_hash": "f0f9e9be05ceaae1dd0049f0cb7c52d6"
+  },
+  "tutorials/database_storage.md.txt": {
+    "mtime": 1783010331.0,
+    "ast_hash": "bc269137817a45e0e6278c77e4c07ce5",
+    "semantic_hash": "bc269137817a45e0e6278c77e4c07ce5"
+  },
+  "tutorials/docker_rk.md.txt": {
+    "mtime": 1783010331.0,
+    "ast_hash": "fa06658c1755f0384d267cbfd17d68cb",
+    "semantic_hash": "fa06658c1755f0384d267cbfd17d68cb"
+  },
+  "tutorials/query_interface.md.txt": {
+    "mtime": 1783010331.0,
+    "ast_hash": "3ce6fc4abdc2f92a8b3765de6f3f6968",
+    "semantic_hash": "3ce6fc4abdc2f92a8b3765de6f3f6968"
+  },
+  "tutorials/run_pipeline.md.txt": {
+    "mtime": 1783010331.0,
+    "ast_hash": "17ad136cddefca07fd479948bf2192a9",
+    "semantic_hash": "17ad136cddefca07fd479948bf2192a9"
+  },
+  "tutorials/wsl_installation.md.txt": {
+    "mtime": 1781692488.0,
+    "ast_hash": "9400ae1b229215c9ac7e8fb6937b0021",
+    "semantic_hash": "9400ae1b229215c9ac7e8fb6937b0021"
+  },
+  "tutorials_overview.md.txt": {
+    "mtime": 1781692488.0,
+    "ast_hash": "f6456ef0d8ddae21587629e51ddf51da",
+    "semantic_hash": "f6456ef0d8ddae21587629e51ddf51da"
+  }
+}

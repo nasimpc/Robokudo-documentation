@@ -1,0 +1,68 @@
+robokudo.annotators.simple_yolo_annotator
+=========================================
+
+.. py:module:: robokudo.annotators.simple_yolo_annotator
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.simple_yolo_annotator.SimpleYoloAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: SimpleYoloAnnotator(name: str = 'SimpleYoloAnnotator')
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Base class for all RoboKudo annotators.
+
+   This class provides core functionality for CAS access, tree structure navigation,
+   and GUI result handling. It serves as the foundation for implementing annotators in
+   the RoboKudo framework.
+
+
+   .. py:attribute:: model
+
+      The YOLO model instance.
+
+
+
+   .. py:attribute:: id2name
+
+      The YOLO models id to name map.
+
+
+
+   .. py:attribute:: roi_comparator
+
+      A comparator for ROIs used to associate YOLO and RoboKudo ROIs.
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Run YOLO inference on the cas color image and combine classifications with
+      existing object hypotheses.
+
+      Runs objects detection on the image and uses the RoiComparator find the closest
+      bounding box created for an ObjectHypothesis by previous annotator. If there is
+      a similar ROI present in an ObjectHypothesis, a Classification is attached to
+      it.
+
+
+
+   .. py:method:: add_to_image(obj: robokudo.types.scene.ObjectHypothesis, classification: robokudo.types.annotation.Classification, image: numpy.typing.NDArray[numpy.uint8]) -> numpy.typing.NDArray[numpy.uint8]
+      :staticmethod:
+
+
+      Add the object hypothesis along with the classification name and confidence to
+      the visualization image.
+
+
+

@@ -1,0 +1,424 @@
+robokudo.io.semantic_digital_twin
+=================================
+
+.. py:module:: robokudo.io.semantic_digital_twin
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.semantic_digital_twin.Object
+   robokudo.io.semantic_digital_twin.TrackedObject
+   robokudo.io.semantic_digital_twin.AddCollisionCommand
+   robokudo.io.semantic_digital_twin.UpdateCollisionCommand
+   robokudo.io.semantic_digital_twin.RemoveCollisionCommand
+   robokudo.io.semantic_digital_twin.WorldDiff
+   robokudo.io.semantic_digital_twin.AddObjectDiff
+   robokudo.io.semantic_digital_twin.UpdateObjectDiff
+   robokudo.io.semantic_digital_twin.RemoveObjectDiff
+   robokudo.io.semantic_digital_twin.SemanticDigitalTwinAdapter
+
+
+Module Contents
+---------------
+
+.. py:class:: Object
+
+   A wrapper around perception data that is used to store data used for object comparison.
+
+
+   .. py:attribute:: data
+      :type:  typing_extensions.Dict[str, typing_extensions.Any]
+
+      The actual data that is used for comparison.
+
+
+
+   .. py:method:: __eq__(other: object) -> bool
+
+
+.. py:class:: TrackedObject
+
+   .. py:attribute:: obj
+      :type:  Object
+
+      Object that stores relevant perception data for comparison with other objects.
+
+
+
+   .. py:attribute:: body
+      :type:  semantic_digital_twin.world_description.world_entity.Body
+
+      Reference to the body representing the object in the world.
+
+
+
+   .. py:attribute:: semantic_annotations
+      :type:  typing_extensions.List[semantic_digital_twin.world_description.world_entity.SemanticAnnotation]
+
+      References to semantic annotations attached to the bodies.
+
+
+
+   .. py:attribute:: conns
+      :type:  typing_extensions.List[semantic_digital_twin.world_description.connections.Connection6DoF]
+
+      References to the connections used by the bodies.
+
+
+
+   .. py:attribute:: uid
+      :type:  uuid.UUID
+
+      Unique identifier for the tracked object.
+
+
+
+   .. py:method:: __eq__(other: object) -> bool
+
+
+.. py:class:: AddCollisionCommand(body: semantic_digital_twin.world_description.world_entity.Body, new_collision: semantic_digital_twin.world_description.geometry.Shape)
+
+   Bases: :py:obj:`semantic_digital_twin.world_description.world_modification.WorldModification`
+
+
+   .. py:attribute:: body
+
+      The body to add the collision to.
+
+
+
+   .. py:attribute:: new_collision
+
+      The collision to add to the body.
+
+
+
+   .. py:method:: from_kwargs(kwargs: typing_extensions.Dict[str, typing_extensions.Any]) -> typing_extensions.Self
+      :classmethod:
+
+
+
+   .. py:method:: apply(world: semantic_digital_twin.world.World) -> None
+
+
+   .. py:method:: undo(world: semantic_digital_twin.world.World) -> None
+
+
+.. py:class:: UpdateCollisionCommand(old_collision: semantic_digital_twin.world_description.geometry.Shape, new_collision: semantic_digital_twin.world_description.geometry.Shape)
+
+   Bases: :py:obj:`semantic_digital_twin.world_description.world_modification.WorldModification`
+
+
+   .. py:attribute:: collision
+
+      The collision to update.
+
+
+
+   .. py:attribute:: old_collision
+
+      A deep copy of the old collision for undo.
+
+
+
+   .. py:attribute:: new_collision
+
+      The new collision to update to.
+
+
+
+   .. py:method:: from_kwargs(kwargs: typing_extensions.Dict[str, typing_extensions.Any]) -> typing_extensions.Self
+      :classmethod:
+
+
+
+   .. py:method:: apply(world: semantic_digital_twin.world.World) -> None
+
+
+   .. py:method:: undo(world: semantic_digital_twin.world.World) -> None
+
+
+.. py:class:: RemoveCollisionCommand(body: semantic_digital_twin.world_description.world_entity.Body, old_collision: semantic_digital_twin.world_description.geometry.Shape)
+
+   Bases: :py:obj:`semantic_digital_twin.world_description.world_modification.WorldModification`
+
+
+   .. py:attribute:: body
+
+      The body to remove the collision from.
+
+
+
+   .. py:attribute:: old_collision
+
+      The collision to remove from the body.
+
+
+
+   .. py:method:: from_kwargs(kwargs: typing_extensions.Dict[str, typing_extensions.Any]) -> typing_extensions.Self
+      :classmethod:
+
+
+
+   .. py:method:: apply(world: semantic_digital_twin.world.World) -> None
+
+
+   .. py:method:: undo(world: semantic_digital_twin.world.World) -> None
+
+
+.. py:class:: WorldDiff
+
+   Bases: :py:obj:`typing_extensions.Protocol`
+
+
+   Base class for protocol classes.
+
+   Protocol classes are defined as::
+
+       class Proto(Protocol):
+           def meth(self) -> int:
+               ...
+
+   Such classes are primarily used with static type checkers that recognize
+   structural subtyping (static duck-typing), for example::
+
+       class C:
+           def meth(self) -> int:
+               return 0
+
+       def func(x: Proto) -> int:
+           return x.meth()
+
+       func(C())  # Passes static type check
+
+   See PEP 544 for details. Protocol classes decorated with
+   @typing.runtime_checkable act as simple-minded runtime protocols that check
+   only the presence of given attributes, ignoring their type signatures.
+   Protocol classes can be generic, they are defined as::
+
+       class GenProto(Protocol[T]):
+           def meth(self) -> T:
+               ...
+
+
+   .. py:method:: apply() -> None
+
+      Apply the diff to the word stored in the adapter.
+
+
+
+   .. py:method:: undo() -> None
+
+      Undo the diff in the world stored in the adapter.
+
+
+
+.. py:class:: AddObjectDiff(adapter: SemanticDigitalTwinAdapter, new_object: Object)
+
+   .. py:attribute:: adapter
+
+      SemDT adapter instance that is used to store the diff.
+
+
+
+   .. py:attribute:: new_object
+
+      The newly created object data.
+
+
+
+   .. py:attribute:: tracked_object
+
+      A tracked object created from the newly created object data.
+
+
+
+   .. py:attribute:: commands
+      :type:  typing_extensions.List[semantic_digital_twin.world_description.world_modification.WorldModification]
+      :value: []
+
+
+      The commands to apply with this diff.
+
+
+
+   .. py:method:: apply() -> None
+
+
+   .. py:method:: undo() -> None
+
+
+.. py:class:: UpdateObjectDiff(adapter: SemanticDigitalTwinAdapter, old_object: TrackedObject, new_object: Object)
+
+   .. py:attribute:: adapter
+
+      SemDT adapter instance used to store the diff.
+
+
+
+   .. py:attribute:: old_tracked_object
+
+      The tracked object instance that will be updated.
+
+
+
+   .. py:attribute:: old_object
+
+      A copy of the old object data that will be overwritten in the update.
+
+
+
+   .. py:attribute:: new_object
+
+      The new object data that will be updated to.
+
+
+
+   .. py:attribute:: new_tracked_object
+
+      The new object data as a tracked object for easier diff creation.
+
+
+
+   .. py:attribute:: commands
+      :type:  typing_extensions.List[semantic_digital_twin.world_description.world_modification.WorldModification]
+      :value: []
+
+
+      The commands to apply with this diff.
+
+
+
+   .. py:method:: apply() -> None
+
+
+   .. py:method:: undo() -> None
+
+
+.. py:class:: RemoveObjectDiff(adapter: SemanticDigitalTwinAdapter, old_object: TrackedObject)
+
+   .. py:attribute:: adapter
+
+      The SemDT adapter instance used to store the diff.
+
+
+
+   .. py:attribute:: old_object
+
+      The object to remove.
+
+
+
+   .. py:attribute:: commands
+      :type:  typing_extensions.List[semantic_digital_twin.world_description.world_modification.WorldModification]
+      :value: []
+
+
+      The commands to be executed by this diff.
+
+
+
+   .. py:method:: apply() -> None
+
+
+   .. py:method:: undo() -> None
+
+
+.. py:class:: SemanticDigitalTwinAdapter(cas_fn: typing_extensions.Callable[Ellipsis, robokudo.cas.CAS], urdf_path: typing_extensions.Optional[str] = None, semantic_annotation_sources: typing_extensions.Optional[typing_extensions.List] = None)
+
+   Class to convert RoboKudo concepts to the SemanticWorld.
+
+
+   .. py:attribute:: world
+
+      World instance that will be modified by this adapter.
+
+
+
+   .. py:attribute:: rk_logger
+      :value: None
+
+
+      Logger instance for this adapter.
+
+
+
+   .. py:attribute:: cas_fn
+
+      Callable that returns a cas instance when called.
+
+
+
+   .. py:attribute:: tracked_objects
+      :type:  list[TrackedObject]
+      :value: []
+
+
+      List of world objects currently tracked by the adapter.
+
+
+
+   .. py:attribute:: comparators
+
+      Mapping of data keys to comparators that are used to compare objects.
+
+
+
+   .. py:attribute:: semantic_color_to_rgb
+
+      Mapping of color names to actual color values used for visuals in created objects.
+
+
+
+   .. py:method:: compute_diffs(new_objects: list[Object]) -> typing_extensions.List[WorldDiff]
+
+      Compute a list of diffs between the current tracked objects and the novel objects provided.
+
+      :param new_objects: List of new objects to compare to the current tracked objects.
+      :return: List of diffs between the current tracked objects and the novel objects provided.
+
+
+
+   .. py:method:: compute_obj_diff(old_object: Object, new_object: Object) -> float
+
+      Compute similarity value between a known object and a novel object.
+
+      :param old_object: The known object to compare to.
+      :param new_object: The novel object to check for similarity with.
+
+
+
+   .. py:method:: object_to_tracked_object(obj: Object) -> TrackedObject
+
+      Creates a TrackedObject from a RoboKudo object.
+
+      :param obj: Object to wrap into a TrackedObject.
+      :return: The object wrapped into a TrackedObject instance.
+
+
+
+   .. py:method:: class_to_semantic_annotation(class_name: str, **kwargs: typing_extensions.Any) -> semantic_digital_twin.world_description.world_entity.SemanticAnnotation
+      :staticmethod:
+
+
+      Convert a classification name to a SemanticWorld SemanticAnnotation.
+
+      :param class_name: Class to convert to a semantic annotation.
+      :return: SemanticAnnotation instance.
+      :raises ValueError: If there is no class name equivalent semantic annotation.
+
+
+
+   .. py:method:: apply_diffs(diffs: typing_extensions.List[WorldDiff]) -> None
+      :staticmethod:
+
+
+      Applies all the given diffs to the world stored in the adapter.
+
+      :param diffs: The diffs to apply to the world instance.
+
+
+

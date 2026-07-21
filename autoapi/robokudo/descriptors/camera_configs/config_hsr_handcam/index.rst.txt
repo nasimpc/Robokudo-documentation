@@ -1,0 +1,78 @@
+robokudo.descriptors.camera_configs.config_hsr_handcam
+======================================================
+
+.. py:module:: robokudo.descriptors.camera_configs.config_hsr_handcam
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.descriptors.camera_configs.config_hsr_handcam.HsrHandCameraConfig
+
+
+Module Contents
+---------------
+
+.. py:class:: HsrHandCameraConfig
+
+   Bases: :py:obj:`robokudo.descriptors.camera_configs.base_camera_config.BaseCameraConfig`, :py:obj:`robokudo.descriptors.camera_configs.components.ColorComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.TfComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.StableViewpointComponent`, :py:obj:`robokudo.descriptors.camera_configs.components.WorldDescriptorComponent`
+
+
+   Camera config for the camera-in-hand on the Toyota HSR robot.
+
+
+   .. py:attribute:: registry_name
+      :type:  typing_extensions.ClassVar[str]
+      :value: 'hsr_handcam'
+
+
+      Name of the camera configuration in the registry.
+
+      Must be unique.
+
+
+
+   .. py:attribute:: rotate_image
+      :type:  str
+      :value: '90_ccw'
+
+
+      Rotate the image cw = clockwise, ccw = counter-clockwise. Possible values: None, 90_{cw, ccw}, 180_{cw, ccw}.
+
+
+
+   .. py:attribute:: interface_type
+      :type:  str
+      :value: 'ROSCameraWithoutDepthInterface'
+
+
+      Type of camera interface.
+
+
+
+   .. py:attribute:: topic_color
+      :type:  str
+      :value: 'hsrb/head_rgbd_sensor/rgb/image_raw/compressed'
+
+
+
+   .. py:attribute:: topic_cam_info
+      :type:  str
+      :value: 'hsrb/head_rgbd_sensor/rgb/camera_info'
+
+
+
+   .. py:attribute:: tf_from
+      :type:  str
+      :value: 'hand_camera_frame'
+
+
+
+   .. py:attribute:: tf_to
+      :type:  str
+      :value: 'map'
+
+
+

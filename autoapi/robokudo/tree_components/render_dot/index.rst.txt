@@ -1,0 +1,195 @@
+robokudo.tree_components.render_dot
+===================================
+
+.. py:module:: robokudo.tree_components.render_dot
+
+.. autoapi-nested-parse::
+
+   Behavior tree visualization using DOT format.
+
+   This module provides functionality to render behavior trees in DOT format for visualization.
+   It supports both one-time rendering and decorator-based automatic rendering on status changes.
+
+   The module provides:
+
+   * Directory management for output
+   * Threaded rendering for performance
+   * Customizable rendering triggers
+   * Tree traversal utilities
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.tree_components.render_dot.RenderTreeToDot
+   robokudo.tree_components.render_dot.RenderTreeToDotDecorator
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   robokudo.tree_components.render_dot.create_dir_if_not_exists
+   robokudo.tree_components.render_dot.render_now
+
+
+Module Contents
+---------------
+
+.. py:function:: create_dir_if_not_exists(path: str) -> None
+
+   Create directory if it doesn't exist.
+
+   :param path: Directory path to create
+
+
+.. py:function:: render_now(behaviour: typing_extensions.Union[RenderTreeToDot, RenderTreeToDotDecorator]) -> None
+
+   Generate behavior tree snapshot and save to disk.
+
+   This method:
+   * Creates output directory if needed
+   * Finds root of tree
+   * Renders tree to DOT format
+   * Updates rendering statistics
+
+   :param behaviour: Behavior node requesting the render
+
+
+.. py:class:: RenderTreeToDot(path: typing_extensions.Optional[str] = None, suffix: str = '')
+
+   Bases: :py:obj:`py_trees.behaviour.Behaviour`
+
+
+   Behavior that renders tree to DOT format when ticked.
+
+   This behavior renders the entire tree to DOT format each time it is ticked,
+   saving the output to the specified directory.
+
+
+   .. py:attribute:: path
+      :type:  typing_extensions.Optional[str]
+      :value: None
+
+
+      Output directory path
+
+
+
+   .. py:attribute:: counter
+      :type:  int
+      :value: 0
+
+
+      Number of renders performed
+
+
+
+   .. py:attribute:: create_dir_for_path
+      :type:  bool
+      :value: True
+
+
+      Whether to create output directory
+
+
+
+   .. py:attribute:: executor
+      :type:  concurrent.futures.ThreadPoolExecutor
+
+      Thread pool for rendering
+
+
+
+   .. py:attribute:: suffix
+      :type:  str
+      :value: ''
+
+
+      Suffix to append to output filenames
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Render tree on each tick.
+
+      :return: Always returns SUCCESS
+
+
+
+.. py:class:: RenderTreeToDotDecorator(child: typing_extensions.Optional[py_trees.behaviour.Behaviour] = None, path: typing_extensions.Optional[str] = None, suffix: str = '', trigger_when_status_is: typing_extensions.Optional[typing_extensions.List[py_trees.common.Status]] = None)
+
+   Bases: :py:obj:`py_trees.decorators.Decorator`
+
+
+   Decorator that renders tree when child returns specific status.
+
+   This decorator monitors its child's status and triggers a tree render
+   when the status matches configured triggers.
+
+
+   .. py:attribute:: trigger_when_status_is
+      :type:  typing_extensions.List[py_trees.common.Status]
+      :value: None
+
+
+      List of status values that trigger rendering
+
+
+
+   .. py:attribute:: path
+      :type:  str
+      :value: None
+
+
+      Output directory path
+
+
+
+   .. py:attribute:: counter
+      :type:  int
+      :value: 0
+
+
+      Number of renders performed
+
+
+
+   .. py:attribute:: create_dir_for_path
+      :type:  bool
+      :value: True
+
+
+      Whether to create output directory
+
+
+
+   .. py:attribute:: executor
+      :type:  concurrent.futures.ThreadPoolExecutor
+
+      Thread pool for rendering
+
+
+
+   .. py:attribute:: suffix
+      :type:  str
+      :value: ''
+
+
+      Suffix to append to output filenames
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check child status and render if triggered.
+
+      :return: Status of decorated child
+
+
+

@@ -1,0 +1,150 @@
+robokudo.io.camera_without_depth_interface
+==========================================
+
+.. py:module:: robokudo.io.camera_without_depth_interface
+
+.. autoapi-nested-parse::
+
+   OpenCV camera interface for RGB-only devices in RoboKudo.
+
+   This module provides an interface for OpenCV-compatible cameras and video sources
+   that only provide RGB data without depth information. It supports:
+
+   * Live camera streams
+   * Video file playback
+   * Single image loading
+   * Contrast/brightness normalization
+   * Configurable looping behavior
+
+   The module is used for:
+
+   * USB webcams
+   * IP cameras
+   * Video file playback
+   * Image sequence processing
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   robokudo.io.camera_without_depth_interface.TYPE_VIDEO
+   robokudo.io.camera_without_depth_interface.TYPE_CAMERA
+   robokudo.io.camera_without_depth_interface.TYPE_IMAGE
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.io.camera_without_depth_interface.OpenCVCameraWithoutDepthInterface
+
+
+Module Contents
+---------------
+
+.. py:data:: TYPE_VIDEO
+   :type:  int
+   :value: 0
+
+
+.. py:data:: TYPE_CAMERA
+   :type:  int
+   :value: 1
+
+
+.. py:data:: TYPE_IMAGE
+   :type:  int
+   :value: 2
+
+
+.. py:class:: OpenCVCameraWithoutDepthInterface(camera_config: typing_extensions.Any)
+
+   Bases: :py:obj:`robokudo.io.camera_interface.CameraInterface`
+
+
+   An openCV camera without depth information.
+
+   An OpenCV-based interface for RGB-only cameras and video sources.
+
+   This class handles various types of RGB input sources through OpenCV:
+   * Live camera feeds (USB webcams, IP cameras)
+   * Video file playback
+   * Single image or image sequence loading
+
+   Supports features like:
+   * Automatic input type detection
+   * Configurable frame looping
+   * Image normalization
+   * Static camera calibration
+
+
+   .. py:attribute:: video_capture
+      :type:  cv2.VideoCapture
+
+      OpenCV video capture object.
+
+
+
+   .. py:attribute:: device_driver_flag
+      :type:  int
+
+      OpenCV-specific driver flags.
+
+
+
+   .. py:attribute:: stream_type
+      :type:  int
+      :value: 0
+
+
+      Type of input (video/camera/image)
+
+
+
+   .. py:attribute:: _loop_counter
+      :type:  int
+
+      Number of remaining playback loops.
+
+      Only works on video/image files.
+
+
+
+   .. py:attribute:: _backup_color
+      :type:  typing_extensions.Optional[numpy.typing.NDArray]
+      :value: None
+
+
+      Backup of image for single-image file mode.
+
+
+
+   .. py:method:: has_new_data() -> bool
+
+      Check if new frame data is available.
+
+      For video/camera streams, attempts to grab the next frame. For single images,
+      checks if backup image is available.
+
+      :return: True if new data is available, False otherwise
+
+
+
+   .. py:method:: set_data(cas: robokudo.cas.CAS) -> None
+
+      Update the Common Analysis Structure with latest frame data.
+
+      This method:
+      * Retrieves the next frame from video/camera or backup
+      * Handles looping behavior for videos and images
+      * Applies optional contrast/brightness normalization
+      * Updates the CAS with frame and camera data
+
+      :param cas: Common Analysis Structure to update
+
+
+

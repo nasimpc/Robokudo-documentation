@@ -1,0 +1,119 @@
+robokudo.annotators.pointcloud_check
+====================================
+
+.. py:module:: robokudo.annotators.pointcloud_check
+
+.. autoapi-nested-parse::
+
+   Point cloud validation and threshold checking.
+
+   This module provides an annotator for:
+
+   * Validating point cloud size
+   * Configurable threshold checking
+   * Customizable status responses
+   * Optional error raising
+
+   The annotator supports:
+
+   * Configurable point count threshold
+   * Different status returns for above/below threshold
+   * Optional exception raising on failure
+   * Detailed logging of check results
+
+   .. note::
+      Point cloud must be available in CAS under CASViews.CLOUD.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.annotators.pointcloud_check.PointcloudCheckAnnotator
+
+
+Module Contents
+---------------
+
+.. py:class:: PointcloudCheckAnnotator(name: str = 'PointcloudcloudCheckAnnotator', descriptor: PointcloudCheckAnnotator = Descriptor())
+
+   Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator`
+
+
+   Check if the CASViews.Cloud contains more than X points.
+
+   .. warning::
+      Will raise exception if point cloud not found in CAS.
+
+
+   .. py:class:: Descriptor
+
+      Bases: :py:obj:`robokudo.annotators.core.BaseAnnotator.Descriptor`
+
+
+      Configuration descriptor for point cloud checking.
+
+
+      .. py:class:: Parameters
+
+         Parameters for configuring point cloud validation.
+
+
+         .. py:attribute:: point_threshold
+            :type:  int
+            :value: 100
+
+
+            Decision boundary for: if CASViews.CLOUD has less than this amount of points
+
+
+
+         .. py:attribute:: status_below_threshold
+            :type:  py_trees.common.Status
+
+            Status when below threshold
+
+
+
+         .. py:attribute:: status_above_threshold
+            :type:  py_trees.common.Status
+
+            Status when above threshold
+
+
+
+         .. py:attribute:: raise_on_failure
+            :type:  bool
+            :value: True
+
+
+            Whether to raise exception on failure
+
+
+
+
+      .. py:attribute:: parameters
+
+
+
+   .. py:method:: update() -> py_trees.common.Status
+
+      Check point cloud size against threshold.
+
+      The method:
+
+      * Loads point cloud from CAS
+      * Counts number of points
+      * Compares against threshold:
+        * Below: Returns status_below_threshold
+        * Above: Returns status_above_threshold
+      * Optionally raises exceptions on failure
+      * Logs detailed check results
+
+      :return: Configured status based on point count
+      :raises Exception: If point count fails threshold and raise_on_failure is True
+
+
+

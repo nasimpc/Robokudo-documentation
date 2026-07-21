@@ -1,0 +1,42 @@
+robokudo.subtree
+================
+
+.. py:module:: robokudo.subtree
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   robokudo.subtree.SubtreeInterface
+
+
+Module Contents
+---------------
+
+.. py:class:: SubtreeInterface
+
+   Bases: :py:obj:`typing_extensions.Protocol`
+
+
+   Interface for Subtrees to implement.
+
+   This will be loaded by the RK runner. Please do NOT instantiate this class directly.
+   The idea is to define a subclass of this interface which is providing an
+   implementation of your desired behaviour tree. See
+   src/robokudo/descriptors/analysis_engines for examples.
+
+
+   .. py:method:: name() -> str
+
+      Return the name of this subtree.
+
+
+
+   .. py:method:: implementation() -> py_trees.behaviour.Behaviour
+
+      Return the subtree implementation.
+
+
+
